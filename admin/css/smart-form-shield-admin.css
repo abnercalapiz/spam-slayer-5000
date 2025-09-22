@@ -1,0 +1,354 @@
+/**
+ * Admin CSS for Smart Form Shield
+ *
+ * @since      1.0.0
+ * @package    Smart_Form_Shield
+ * @subpackage Smart_Form_Shield/admin/css
+ */
+
+/* Dashboard Widget */
+.sfs-dashboard-widget {
+    padding: 10px 0;
+}
+
+.sfs-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.sfs-stat {
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.sfs-stat h4 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.sfs-stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.sfs-dashboard-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.sfs-dashboard-links .button {
+    margin: 0 5px;
+}
+
+/* Admin Pages Header */
+.sfs-admin-header {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 20px 20px 0;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.sfs-admin-header h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 29px;
+}
+
+.sfs-admin-header p {
+    margin: 10px 0 0;
+    color: #666;
+}
+
+/* Tabs Navigation */
+.nav-tab-wrapper {
+    margin-top: 20px;
+}
+
+/* Submissions Table */
+.sfs-submissions-table {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin-top: 20px;
+}
+
+.sfs-spam-score {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.sfs-spam-score.low {
+    background: #d4edda;
+    color: #155724;
+}
+
+.sfs-spam-score.medium {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.sfs-spam-score.high {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Status Badge */
+.sfs-status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.sfs-status.approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.sfs-status.spam {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.sfs-status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.sfs-status.whitelist {
+    background: #cce5ff;
+    color: #004085;
+}
+
+/* Analytics Charts */
+.sfs-chart-container {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 20px 0;
+}
+
+.sfs-chart-container h3 {
+    margin-top: 0;
+}
+
+.sfs-stats-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.sfs-stat-box {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    text-align: center;
+}
+
+.sfs-stat-box h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.sfs-stat-box .value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1;
+}
+
+.sfs-stat-box .description {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* Settings Form */
+.sfs-settings-section {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.sfs-settings-section h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-table th {
+    width: 250px;
+}
+
+.sfs-provider-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.sfs-provider-status.active {
+    background: #46b450;
+}
+
+.sfs-provider-status.inactive {
+    background: #dc3545;
+}
+
+/* Whitelist Page */
+.sfs-whitelist-form {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.sfs-whitelist-form .form-field {
+    margin-bottom: 15px;
+}
+
+.sfs-whitelist-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Logs Page */
+.sfs-logs-container {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.sfs-log-viewer {
+    background: #f4f4f4;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    max-height: 500px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .sfs-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sfs-stats-boxes {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-table th {
+        width: auto;
+    }
+}
+
+/* Loading Spinner */
+.sfs-loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: sfs-spin 1s linear infinite;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+@keyframes sfs-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Notices */
+.sfs-notice {
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 3px;
+}
+
+.sfs-notice.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.sfs-notice.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.sfs-notice.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Modal */
+.sfs-modal {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.sfs-modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+}
+
+.sfs-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.sfs-modal-close:hover,
+.sfs-modal-close:focus {
+    color: #000;
+}

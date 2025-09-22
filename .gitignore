@@ -1,0 +1,51 @@
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/
+wp-content/backups/
+
+# Logs
+*.log
+error_log
+debug.log
+
+# Node
+node_modules/
+npm-debug.log
+
+# Composer
+vendor/
+composer.lock
+
+# Build files
+*.zip
+*.tar.gz
+
+# Environment files
+.env
+.env.*
+
+# Temporary files
+*.tmp
+*.temp
+~*
+
+# Development
+.phpunit.result.cache
+.sass-cache/

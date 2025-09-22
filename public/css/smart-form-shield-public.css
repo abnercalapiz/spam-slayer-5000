@@ -1,0 +1,161 @@
+/**
+ * Public CSS for Smart Form Shield
+ *
+ * @since      1.0.0
+ * @package    Smart_Form_Shield
+ * @subpackage Smart_Form_Shield/public/css
+ */
+
+/* Honeypot field (ensure it stays hidden) */
+.sfs-honeypot,
+[name="sfs_website"] {
+    position: absolute !important;
+    left: -9999px !important;
+    height: 0 !important;
+    width: 0 !important;
+    opacity: 0 !important;
+    z-index: -1 !important;
+}
+
+/* Loading state for forms */
+.sfs-validating {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.sfs-validating::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: sfs-spin 1s linear infinite;
+}
+
+@keyframes sfs-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Validation message */
+.sfs-validation-message {
+    display: none;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.sfs-validation-message.sfs-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.sfs-validation-message.sfs-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Gravity Forms specific */
+.gform_wrapper .sfs-validating .gform_footer {
+    position: relative;
+}
+
+.gform_wrapper .sfs-validation-message {
+    margin-top: 20px;
+}
+
+/* Elementor Forms specific */
+.elementor-form .sfs-validating {
+    min-height: 100px;
+}
+
+.elementor-form .sfs-validation-message {
+    margin-top: 15px;
+}
+
+/* Accessibility */
+.sfs-screen-reader-text {
+    position: absolute !important;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0 !important;
+    border: 0 !important;
+    height: 1px !important;
+    width: 1px !important;
+    overflow: hidden;
+}
+
+/* Rate limit message */
+.sfs-rate-limit-message {
+    padding: 15px;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+/* No JavaScript fallback */
+.sfs-noscript-message {
+    display: none;
+}
+
+/* Form field highlight for spam detection */
+.sfs-field-suspicious {
+    border-color: #ffc107 !important;
+}
+
+/* Mobile responsive */
+@media screen and (max-width: 600px) {
+    .sfs-validation-message {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .sfs-validation-message {
+        border-width: 2px;
+    }
+    
+    .sfs-validation-message.sfs-error {
+        background-color: #fff;
+        color: #d00;
+        border-color: #d00;
+    }
+    
+    .sfs-validation-message.sfs-success {
+        background-color: #fff;
+        color: #008000;
+        border-color: #008000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    @keyframes sfs-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(0deg); }
+    }
+    
+    .sfs-validating {
+        transition: none !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .sfs-validation-message,
+    .sfs-honeypot {
+        display: none !important;
+    }
+}
