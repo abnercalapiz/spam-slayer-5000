@@ -5,10 +5,11 @@
 Smart Form Shield is a WordPress plugin that provides advanced spam protection for your contact forms using AI providers including OpenAI and Claude (Anthropic).
 
 **Author:** [Jezweb](https://www.jezweb.com.au/)  
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Requires WordPress:** 5.8 or higher  
 **Requires PHP:** 7.4 or higher  
-**License:** GPL-2.0+
+**License:** GPL-2.0+  
+**GitHub:** [abnercalapiz/smart-form-field](https://github.com/abnercalapiz/smart-form-field)
 
 ## Features
 
@@ -40,6 +41,7 @@ Smart Form Shield is a WordPress plugin that provides advanced spam protection f
 - **Bulk Actions**: Approve, mark as spam, or whitelist multiple submissions
 - **Cost Tracking**: Monitor API usage and expenses
 - **Daily Reports**: Optional email summaries of spam activity
+- **Automatic Updates**: Update directly from GitHub releases (v1.0.1+)
 
 ### 🔒 Security & Privacy
 - **Encrypted API Keys**: All API credentials are securely encrypted
@@ -57,6 +59,13 @@ Smart Form Shield is a WordPress plugin that provides advanced spam protection f
 
 ## Installation
 
+### From GitHub Release (Recommended)
+1. Download the latest release from [GitHub Releases](https://github.com/abnercalapiz/smart-form-field/releases/latest)
+2. Upload the ZIP file through WordPress Admin → Plugins → Add New → Upload Plugin
+3. Activate the plugin
+4. Configure your AI provider API keys
+
+### Manual Installation
 1. Upload the `smart-form-shield` folder to `/wp-content/plugins/`
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Navigate to **Form Shield** in your WordPress admin menu
@@ -197,9 +206,26 @@ For support, feature requests, or bug reports:
 - **Website**: [Jezweb](https://www.jezweb.com.au/)
 - **Email**: Contact through the website
 
+## Automatic Updates
+
+Starting with version 1.0.1, Smart Form Shield supports automatic updates directly from GitHub:
+
+- Updates are checked automatically every 12 hours
+- Update notifications appear in your WordPress admin dashboard
+- One-click updates through the standard WordPress update system
+- No configuration required - updates work automatically
+
 ## Changelog
 
-### Version 1.0.0
+### Version 1.0.1 - 2025-01-24
+- Added GitHub updater system for automatic plugin updates
+- Plugin can now check for updates directly from GitHub repository
+- Fixed GitHub zip extraction issue during updates
+- Added comprehensive GitHub updater guide for developers
+- Enhanced error handling in updater class
+- Created detailed documentation for implementation
+
+### Version 1.0.0 - 2025-01-24
 - Initial release
 - Support for OpenAI and Claude AI providers
 - Gravity Forms and Elementor Pro integrations
