@@ -49,6 +49,7 @@ class Smart_Form_Shield {
 		$this->define_integration_hooks();
 		$this->define_api_hooks();
 		$this->define_cron_hooks();
+		$this->init_github_updater();
 	}
 
 	/**
@@ -94,6 +95,9 @@ class Smart_Form_Shield {
 		require_once SMART_FORM_SHIELD_PATH . 'includes/class-validator.php';
 		require_once SMART_FORM_SHIELD_PATH . 'includes/class-cache.php';
 		require_once SMART_FORM_SHIELD_PATH . 'includes/class-logger.php';
+		
+		// GitHub Updater
+		require_once SMART_FORM_SHIELD_PATH . 'includes/class-github-updater.php';
 
 		$this->loader = new Smart_Form_Shield_Loader();
 	}
@@ -278,5 +282,14 @@ class Smart_Form_Shield {
 		$subject = __( 'Smart Form Shield Daily Report', 'smart-form-shield' );
 		
 		wp_mail( $to, $subject, $report, array( 'Content-Type: text/html; charset=UTF-8' ) );
+	}
+	
+	/**
+	 * Initialize GitHub updater.
+	 *
+	 * @since    1.1.0
+	 */
+	private function init_github_updater() {
+		new Smart_Form_Shield_GitHub_Updater( SMART_FORM_SHIELD_BASENAME );
 	}
 }

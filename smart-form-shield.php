@@ -3,7 +3,7 @@
  * Plugin Name:       Smart Form Shield
  * Plugin URI:        https://jezweb.com.au/
  * Description:       Intelligent AI-powered spam filtering for Gravity Forms and Elementor contact forms using OpenAI, Claude, and Gemini APIs.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Jezweb
  * Author URI:        https://jezweb.com.au/
  * License:           GPL-2.0+
@@ -12,6 +12,7 @@
  * Domain Path:       /languages
  * Requires at least: 5.8
  * Requires PHP:      7.4
+ * Update URI:        https://github.com/abnercalapiz/smart-form-field/
  */
 
 // If this file is called directly, abort.
@@ -22,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'SMART_FORM_SHIELD_VERSION', '1.0.0' );
+define( 'SMART_FORM_SHIELD_VERSION', '1.0.1' );
 
 /**
  * Plugin base name.
