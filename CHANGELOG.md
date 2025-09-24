@@ -2,6 +2,13 @@
 
 All notable changes to Smart Form Shield will be documented in this file.
 
+## [1.0.3] - 2025-01-24
+
+### 🧪 Test Release
+- Test release to verify GitHub updater functionality
+- No functional changes from v1.0.2
+- Used for testing automatic update detection and installation
+
 ## [1.0.2] - 2025-01-24
 
 ### 🐛 Bug Fixes
