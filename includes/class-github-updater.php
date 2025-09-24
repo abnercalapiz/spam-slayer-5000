@@ -79,6 +79,10 @@ class Smart_Form_Shield_GitHub_Updater {
         add_filter( 'plugins_api', array( $this, 'plugin_info' ), 10, 3 );
         add_filter( 'upgrader_source_selection', array( $this, 'rename_github_zip' ), 10, 3 );
         add_action( 'upgrader_process_complete', array( $this, 'purge_transients' ), 10, 2 );
+        
+        // Add manual update check
+        add_action( 'admin_init', array( $this, 'maybe_force_check' ) );
+        add_filter( 'plugin_action_links_' . plugin_basename( $plugin_file ), array( $this, 'add_action_links' ) );
     }
     
     /**
@@ -106,6 +110,11 @@ class Smart_Form_Shield_GitHub_Updater {
         }
         
         // No fallback to options - only use Update URI from plugin header
+        
+        // Log for debugging
+        if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+            error_log( 'Smart Form Shield GitHub Updater: Username=' . $this->username . ', Repo=' . $this->repo );
+        }
     }
     
     /**
@@ -123,7 +132,7 @@ class Smart_Form_Shield_GitHub_Updater {
         }
         
         // Check transient first
-        $transient_key = 'sfs_github_' . md5( $this->username . '/' . $this->repo );
+        $transient_key = $this->get_transient_key();
         $github_data = get_transient( $transient_key );
         
         if ( false !== $github_data ) {
@@ -153,6 +162,9 @@ class Smart_Form_Shield_GitHub_Updater {
         $github_data = json_decode( wp_remote_retrieve_body( $response ), true );
         
         if ( empty( $github_data['tag_name'] ) ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'Smart Form Shield GitHub Updater: No tag_name in response' );
+            }
             return false;
         }
         
@@ -326,8 +338,56 @@ class Smart_Form_Shield_GitHub_Updater {
      */
     public function purge_transients( $upgrader, $options ) {
         if ( 'update' === $options['action'] && 'plugin' === $options['type'] ) {
-            $transient_key = 'sfs_github_' . md5( $this->username . '/' . $this->repo );
-            delete_transient( $transient_key );
+            delete_transient( $this->get_transient_key() );
+            delete_site_transient( 'update_plugins' );
         }
+    }
+    
+    /**
+     * Force check for updates when requested
+     */
+    public function maybe_force_check() {
+        // Check if force update is requested
+        if ( isset( $_GET['force-check'] ) && isset( $_GET['plugin'] ) && $_GET['plugin'] === $this->slug ) {
+            if ( current_user_can( 'update_plugins' ) ) {
+                delete_transient( $this->get_transient_key() );
+                delete_site_transient( 'update_plugins' );
+                
+                // Force WordPress to check for updates
+                wp_update_plugins();
+                
+                // Redirect to remove query args
+                wp_redirect( remove_query_arg( array( 'force-check', 'plugin' ) ) );
+                exit;
+            }
+        }
+    }
+    
+    /**
+     * Get transient key
+     *
+     * @return string
+     */
+    private function get_transient_key() {
+        return 'sfs_gh_' . md5( $this->username . '/' . $this->repo );
+    }
+    
+    /**
+     * Add plugin action links
+     *
+     * @param array $links Existing action links.
+     * @return array Modified action links.
+     */
+    public function add_action_links( $links ) {
+        if ( current_user_can( 'update_plugins' ) ) {
+            $url = add_query_arg( array(
+                'force-check' => 1,
+                'plugin' => $this->slug,
+            ), admin_url( 'plugins.php' ) );
+            
+            $links[] = '<a href="' . esc_url( $url ) . '">' . __( 'Check for updates', 'smart-form-shield' ) . '</a>';
+        }
+        
+        return $links;
     }
 }

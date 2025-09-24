@@ -5,7 +5,7 @@
 Smart Form Shield is a WordPress plugin that provides advanced spam protection for your contact forms using AI providers including OpenAI and Claude (Anthropic).
 
 **Author:** [Jezweb](https://www.jezweb.com.au/)  
-**Version:** 1.0.1  
+**Version:** 1.0.2  
 **Requires WordPress:** 5.8 or higher  
 **Requires PHP:** 7.4 or higher  
 **License:** GPL-2.0+  
@@ -216,6 +216,13 @@ Starting with version 1.0.1, Smart Form Shield supports automatic updates direct
 - No configuration required - updates work automatically
 
 ## Changelog
+
+### Version 1.0.2 - 2025-01-24
+- Fixed update detection issues on some WordPress sites
+- Added "Check for updates" link on plugins page
+- Improved transient cache handling
+- Added debug logging for troubleshooting
+- Created comprehensive troubleshooting guide
 
 ### Version 1.0.1 - 2025-01-24
 - Added GitHub updater system for automatic plugin updates
