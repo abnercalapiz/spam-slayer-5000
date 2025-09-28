@@ -24,6 +24,11 @@ $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'gen
 <div class="wrap">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 	
+	<?php
+	// Display settings messages
+	settings_errors( 'spam_slayer_5000_messages' );
+	?>
+	
 	<nav class="nav-tab-wrapper">
 		<a href="?page=spam-slayer-5000-settings&tab=general" class="nav-tab <?php echo $active_tab === 'general' ? 'nav-tab-active' : ''; ?>">
 			<?php esc_html_e( 'General', 'spam-slayer-5000' ); ?>

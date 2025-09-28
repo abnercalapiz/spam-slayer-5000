@@ -422,4 +422,35 @@ class Spam_Slayer_5000_Database {
 
 		return filter_var( $ip, FILTER_VALIDATE_IP ) ? $ip : '';
 	}
+
+	/**
+	 * Get table name with proper prefix.
+	 *
+	 * @since    1.0.0
+	 * @param    string    $table    Table name (submissions, api_logs, whitelist).
+	 * @return   string              Full table name with prefix.
+	 */
+	public static function get_table_name( $table ) {
+		global $wpdb;
+		
+		switch ( $table ) {
+			case 'submissions':
+				return defined( 'SPAM_SLAYER_5000_SUBMISSIONS_TABLE' ) 
+					? SPAM_SLAYER_5000_SUBMISSIONS_TABLE 
+					: $wpdb->prefix . 'ss5k_submissions';
+				
+			case 'api_logs':
+				return defined( 'SPAM_SLAYER_5000_API_LOGS_TABLE' ) 
+					? SPAM_SLAYER_5000_API_LOGS_TABLE 
+					: $wpdb->prefix . 'ss5k_api_logs';
+				
+			case 'whitelist':
+				return defined( 'SPAM_SLAYER_5000_WHITELIST_TABLE' ) 
+					? SPAM_SLAYER_5000_WHITELIST_TABLE 
+					: $wpdb->prefix . 'ss5k_whitelist';
+				
+			default:
+				return $wpdb->prefix . 'ss5k_' . $table;
+		}
+	}
 }

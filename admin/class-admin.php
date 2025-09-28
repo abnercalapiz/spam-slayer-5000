@@ -99,7 +99,9 @@ class Spam_Slayer_5000_Admin {
 					true 
 				);
 				
-				// Add chart data
+				// Add chart data - methods need to be implemented
+				// TODO: Implement get_chart_data and get_provider_stats methods in Database class
+				/*
 				$database = new Spam_Slayer_5000_Database();
 				$chart_data = $database->get_chart_data( 30 ); // Last 30 days
 				$provider_data = $database->get_provider_stats();
@@ -109,6 +111,7 @@ class Spam_Slayer_5000_Admin {
 					'spam_slayer_5000_admin.provider_data = ' . wp_json_encode( $provider_data ) . ';',
 					'before'
 				);
+				*/
 			}
 		}
 	}
@@ -189,6 +192,9 @@ class Spam_Slayer_5000_Admin {
 	 * @since    1.0.0
 	 */
 	public function register_settings() {
+		// Add action to show success message after settings save
+		add_action( 'admin_notices', array( $this, 'settings_updated_notice' ) );
+		
 		// General settings
 		register_setting( 'spam_slayer_5000_general', 'spam_slayer_5000_spam_threshold' );
 		register_setting( 'spam_slayer_5000_general', 'spam_slayer_5000_primary_provider' );
@@ -472,5 +478,27 @@ class Spam_Slayer_5000_Admin {
 		}
 		
 		return $sanitized;
+	}
+
+	/**
+	 * Display settings updated notice.
+	 *
+	 * @since    1.0.0
+	 */
+	public function settings_updated_notice() {
+		// Only show on our settings page
+		if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'spam-slayer-5000-settings' ) {
+			return;
+		}
+
+		// Check if settings were just updated
+		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] === 'true' ) {
+			add_settings_error(
+				'spam_slayer_5000_messages',
+				'spam_slayer_5000_message',
+				__( 'Settings saved successfully!', 'spam-slayer-5000' ),
+				'updated'
+			);
+		}
 	}
 }

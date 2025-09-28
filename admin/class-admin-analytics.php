@@ -221,13 +221,15 @@ class Spam_Slayer_5000_Admin_Analytics {
 	private function get_daily_breakdown( $date_from, $date_to ) {
 		global $wpdb;
 		
+		$table_name = Spam_Slayer_5000_Database::get_table_name( 'submissions' );
+		
 		$sql = $wpdb->prepare(
 			"SELECT 
 				DATE(created_at) as date,
 				COUNT(*) as total,
 				SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) as spam,
 				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved
-			FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . "
+			FROM " . $table_name . "
 			WHERE created_at BETWEEN %s AND %s
 			GROUP BY DATE(created_at)
 			ORDER BY date ASC",
@@ -274,13 +276,15 @@ class Spam_Slayer_5000_Admin_Analytics {
 	private function get_form_breakdown( $date_from, $date_to ) {
 		global $wpdb;
 		
+		$table_name = Spam_Slayer_5000_Database::get_table_name( 'submissions' );
+		
 		$sql = $wpdb->prepare(
 			"SELECT 
 				form_type,
 				form_id,
 				COUNT(*) as total,
 				SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) as spam
-			FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . "
+			FROM " . $table_name . "
 			WHERE created_at BETWEEN %s AND %s
 			GROUP BY form_type, form_id
 			ORDER BY total DESC",
@@ -302,20 +306,29 @@ class Spam_Slayer_5000_Admin_Analytics {
 	private function get_spam_score_distribution( $date_from, $date_to ) {
 		global $wpdb;
 		
+		$table_name = Spam_Slayer_5000_Database::get_table_name( 'submissions' );
+		
 		$sql = $wpdb->prepare(
 			"SELECT 
 				CASE 
 					WHEN spam_score < 20 THEN '0-20'
-					WHEN spam_score < 40 THEN '20-40'
-					WHEN spam_score < 60 THEN '40-60'
-					WHEN spam_score < 80 THEN '60-80'
-					ELSE '80-100'
+					WHEN spam_score < 40 THEN '21-40'
+					WHEN spam_score < 60 THEN '41-60'
+					WHEN spam_score < 80 THEN '61-80'
+					ELSE '81-100'
 				END as score_range,
 				COUNT(*) as count
-			FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . "
+			FROM " . $table_name . "
 			WHERE created_at BETWEEN %s AND %s
-			GROUP BY score_range
-			ORDER BY score_range",
+			GROUP BY 1
+			ORDER BY 
+				CASE score_range
+					WHEN '0-20' THEN 1
+					WHEN '21-40' THEN 2
+					WHEN '41-60' THEN 3
+					WHEN '61-80' THEN 4
+					WHEN '81-100' THEN 5
+				END",
 			$date_from,
 			$date_to
 		);
@@ -325,10 +338,10 @@ class Spam_Slayer_5000_Admin_Analytics {
 		// Ensure all ranges are present
 		$distribution = array(
 			'0-20' => 0,
-			'20-40' => 0,
-			'40-60' => 0,
-			'60-80' => 0,
-			'80-100' => 0,
+			'21-40' => 0,
+			'41-60' => 0,
+			'61-80' => 0,
+			'81-100' => 0,
 		);
 		
 		foreach ( $results as $row ) {
