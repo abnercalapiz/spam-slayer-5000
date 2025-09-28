@@ -42,8 +42,10 @@ class Spam_Slayer_5000_Database {
 			$data['provider_response'] = wp_json_encode( $data['provider_response'] );
 		}
 
+		$table_name = self::get_table_name( 'submissions' );
+		
 		$result = $wpdb->insert(
-			SPAM_SLAYER_5000_SUBMISSIONS_TABLE,
+			$table_name,
 			$data,
 			array( '%s', '%s', '%s', '%f', '%s', '%s', '%s', '%s', '%s' )
 		);
@@ -67,8 +69,10 @@ class Spam_Slayer_5000_Database {
 			return false;
 		}
 
+		$table_name = self::get_table_name( 'submissions' );
+		
 		$result = $wpdb->update(
-			SPAM_SLAYER_5000_SUBMISSIONS_TABLE,
+			$table_name,
 			array( 'status' => $status ),
 			array( 'id' => $submission_id ),
 			array( '%s' ),
@@ -139,7 +143,7 @@ class Spam_Slayer_5000_Database {
 		$where_sql = implode( ' AND ', $where_clauses );
 
 		// Build the query with proper table name escaping
-		$table_name = SPAM_SLAYER_5000_SUBMISSIONS_TABLE;
+		$table_name = self::get_table_name( 'submissions' );
 		$sql = "SELECT * FROM `{$table_name}` WHERE $where_sql";
 		
 		if ( ! empty( $where_values ) ) {
@@ -200,7 +204,8 @@ class Spam_Slayer_5000_Database {
 		}
 
 		$where_sql = implode( ' AND ', $where_clauses );
-		$sql = "SELECT COUNT(*) FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . " WHERE $where_sql";
+		$table_name = self::get_table_name( 'submissions' );
+		$sql = "SELECT COUNT(*) FROM $table_name WHERE $where_sql";
 
 		if ( ! empty( $where_values ) ) {
 			$sql = $wpdb->prepare( $sql, $where_values );
@@ -242,8 +247,10 @@ class Spam_Slayer_5000_Database {
 			$data['response_data'] = wp_json_encode( $data['response_data'] );
 		}
 
+		$table_name = self::get_table_name( 'api_logs' );
+		
 		$result = $wpdb->insert(
-			SPAM_SLAYER_5000_API_LOGS_TABLE,
+			$table_name,
 			$data,
 			array( '%s', '%s', '%s', '%s', '%d', '%f', '%f', '%s', '%s' )
 		);
@@ -273,8 +280,10 @@ class Spam_Slayer_5000_Database {
 				break;
 		}
 
-		$sql = $wpdb->prepare(
-			"SELECT 
+		$table_name = self::get_table_name( 'api_logs' );
+		
+		// Build SQL without prepare for INTERVAL clause
+		$sql = "SELECT 
 				provider,
 				COUNT(*) as total_calls,
 				SUM(tokens_used) as total_tokens,
@@ -282,11 +291,9 @@ class Spam_Slayer_5000_Database {
 				AVG(response_time) as avg_response_time,
 				SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) as success_count,
 				SUM(CASE WHEN status = 'error' THEN 1 ELSE 0 END) as error_count
-			FROM " . SPAM_SLAYER_5000_API_LOGS_TABLE . "
-			WHERE created_at >= DATE_SUB(NOW(), INTERVAL %s)
-			GROUP BY provider",
-			$interval
-		);
+			FROM $table_name
+			WHERE created_at >= DATE_SUB(NOW(), INTERVAL $interval)
+			GROUP BY provider";
 
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
@@ -304,8 +311,10 @@ class Spam_Slayer_5000_Database {
 		$email = sanitize_email( $email );
 		$domain = substr( strrchr( $email, '@' ), 1 );
 
+		$table_name = self::get_table_name( 'whitelist' );
+		
 		$sql = $wpdb->prepare(
-			"SELECT COUNT(*) FROM " . SPAM_SLAYER_5000_WHITELIST_TABLE . "
+			"SELECT COUNT(*) FROM $table_name
 			WHERE (email = %s OR domain = %s) AND is_active = 1",
 			$email,
 			$domain
@@ -335,8 +344,10 @@ class Spam_Slayer_5000_Database {
 			'added_by' => get_current_user_id(),
 		);
 
+		$table_name = self::get_table_name( 'whitelist' );
+		
 		$result = $wpdb->insert(
-			SPAM_SLAYER_5000_WHITELIST_TABLE,
+			$table_name,
 			$data,
 			array( '%s', '%s', '%s', '%d' )
 		);
@@ -354,8 +365,10 @@ class Spam_Slayer_5000_Database {
 	public function remove_from_whitelist( $id ) {
 		global $wpdb;
 
+		$table_name = self::get_table_name( 'whitelist' );
+		
 		$result = $wpdb->update(
-			SPAM_SLAYER_5000_WHITELIST_TABLE,
+			$table_name,
 			array( 'is_active' => 0 ),
 			array( 'id' => $id ),
 			array( '%d' ),
@@ -375,8 +388,10 @@ class Spam_Slayer_5000_Database {
 	public function cleanup_old_submissions( $days ) {
 		global $wpdb;
 
+		$table_name = self::get_table_name( 'submissions' );
+		
 		$sql = $wpdb->prepare(
-			"DELETE FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . "
+			"DELETE FROM $table_name
 			WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
 			$days
 		);
@@ -394,8 +409,10 @@ class Spam_Slayer_5000_Database {
 	public function cleanup_old_api_logs( $days ) {
 		global $wpdb;
 
+		$table_name = self::get_table_name( 'api_logs' );
+		
 		$sql = $wpdb->prepare(
-			"DELETE FROM " . SPAM_SLAYER_5000_API_LOGS_TABLE . "
+			"DELETE FROM $table_name
 			WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
 			$days
 		);
