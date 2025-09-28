@@ -1,9 +1,9 @@
 /**
- * Smart Form Shield Admin Styles
+ * Spam Slayer 5000 Admin Styles
  */
 
 /* General */
-.sfs-settings-section {
+.ss5k-settings-section {
 	background: #fff;
 	border: 1px solid #ccd0d4;
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
@@ -11,120 +11,120 @@
 	padding: 20px;
 }
 
-.sfs-settings-section h2 {
+.ss5k-settings-section h2 {
 	margin-top: 0;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #ddd;
 }
 
 /* Provider sections */
-.sfs-provider-section {
+.ss5k-provider-section {
 	margin: 20px 0;
 	padding: 15px;
 	background: #f9f9f9;
 	border-radius: 5px;
 }
 
-.sfs-provider-section h3 {
+.ss5k-provider-section h3 {
 	margin-top: 0;
 	display: flex;
 	align-items: center;
 	gap: 10px;
 }
 
-.sfs-provider-status {
+.ss5k-provider-status {
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
 	display: inline-block;
 }
 
-.sfs-provider-status.active {
+.ss5k-provider-status.active {
 	background: #46b450;
 }
 
-.sfs-provider-status.inactive {
+.ss5k-provider-status.inactive {
 	background: #dc3232;
 }
 
 /* Test status messages */
-.sfs-test-loading {
+.ss5k-test-loading {
 	color: #0073aa;
 }
 
-.sfs-test-success {
+.ss5k-test-success {
 	color: #46b450;
 }
 
-.sfs-test-error {
+.ss5k-test-error {
 	color: #dc3232;
 }
 
-.sfs-test-status {
+.ss5k-test-status {
 	margin-left: 10px;
 }
 
 /* Dashboard widget */
-.sfs-dashboard-widget {
+.ss5k-dashboard-widget {
 	padding: 10px 0;
 }
 
-.sfs-stats-grid {
+.ss5k-stats-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 20px;
 	margin-bottom: 20px;
 }
 
-.sfs-stat {
+.ss5k-stat {
 	text-align: center;
 	padding: 15px;
 	background: #f8f9fa;
 	border-radius: 5px;
 }
 
-.sfs-stat h4 {
+.ss5k-stat h4 {
 	margin: 0 0 10px 0;
 	color: #666;
 	font-size: 13px;
 	font-weight: 600;
 }
 
-.sfs-stat-number {
+.ss5k-stat-number {
 	font-size: 24px;
 	font-weight: bold;
 	color: #23282d;
 	margin: 0;
 }
 
-.sfs-dashboard-links {
+.ss5k-dashboard-links {
 	text-align: center;
 	padding-top: 10px;
 	border-top: 1px solid #ddd;
 }
 
-.sfs-dashboard-links .button {
+.ss5k-dashboard-links .button {
 	margin: 0 5px;
 }
 
 /* Submissions table */
-.sfs-submissions-table {
+.ss5k-submissions-table {
 	background: #fff;
 }
 
-.sfs-submissions-table .column-spam_score {
+.ss5k-submissions-table .column-spam_score {
 	width: 100px;
 }
 
-.sfs-submissions-table .column-status {
+.ss5k-submissions-table .column-status {
 	width: 100px;
 }
 
-.sfs-submissions-table .column-created_at {
+.ss5k-submissions-table .column-created_at {
 	width: 150px;
 }
 
-.sfs-spam-score {
+.ss5k-spam-score {
 	display: inline-block;
 	padding: 3px 8px;
 	border-radius: 3px;
@@ -132,22 +132,22 @@
 	font-weight: bold;
 }
 
-.sfs-spam-score.low {
+.ss5k-spam-score.low {
 	background: #d4edda;
 	color: #155724;
 }
 
-.sfs-spam-score.medium {
+.ss5k-spam-score.medium {
 	background: #fff3cd;
 	color: #856404;
 }
 
-.sfs-spam-score.high {
+.ss5k-spam-score.high {
 	background: #f8d7da;
 	color: #721c24;
 }
 
-.sfs-status {
+.ss5k-status {
 	display: inline-block;
 	padding: 3px 8px;
 	border-radius: 3px;
@@ -155,51 +155,51 @@
 	text-transform: uppercase;
 }
 
-.sfs-status.approved {
+.ss5k-status.approved {
 	background: #d4edda;
 	color: #155724;
 }
 
-.sfs-status.spam {
+.ss5k-status.spam {
 	background: #f8d7da;
 	color: #721c24;
 }
 
-.sfs-status.whitelist {
+.ss5k-status.whitelist {
 	background: #d1ecf1;
 	color: #0c5460;
 }
 
-.sfs-status.pending {
+.ss5k-status.pending {
 	background: #fff3cd;
 	color: #856404;
 }
 
 /* Analytics */
-.sfs-analytics-header {
+.ss5k-analytics-header {
 	margin: 20px 0;
 	display: flex;
 	justify-content: flex-end;
 }
 
-.sfs-period-selector {
+.ss5k-period-selector {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 }
 
-.sfs-period-selector select {
+.ss5k-period-selector select {
 	min-width: 150px;
 }
 
-.sfs-stats-boxes {
+.ss5k-stats-boxes {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 	gap: 20px;
 	margin: 30px 0;
 }
 
-.sfs-stat-box {
+.ss5k-stat-box {
 	background: #fff;
 	border: 1px solid #ccd0d4;
 	padding: 20px;
@@ -207,27 +207,27 @@
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
-.sfs-stat-box h3 {
+.ss5k-stat-box h3 {
 	margin: 0 0 15px 0;
 	color: #666;
 	font-size: 14px;
 	font-weight: 600;
 }
 
-.sfs-stat-box .value {
+.ss5k-stat-box .value {
 	font-size: 32px;
 	font-weight: bold;
 	color: #23282d;
 	line-height: 1;
 }
 
-.sfs-stat-box .description {
+.ss5k-stat-box .description {
 	margin-top: 10px;
 	color: #666;
 	font-size: 14px;
 }
 
-.sfs-chart-container {
+.ss5k-chart-container {
 	background: #fff;
 	border: 1px solid #ccd0d4;
 	padding: 20px;
@@ -235,16 +235,16 @@
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
-.sfs-chart-container h3 {
+.ss5k-chart-container h3 {
 	margin: 0 0 20px 0;
 	font-size: 16px;
 }
 
-.sfs-chart-container canvas {
+.ss5k-chart-container canvas {
 	max-height: 400px;
 }
 
-.sfs-export-section {
+.ss5k-export-section {
 	background: #fff;
 	border: 1px solid #ccd0d4;
 	padding: 20px;
@@ -252,32 +252,32 @@
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
-.sfs-export-section h3 {
+.ss5k-export-section h3 {
 	margin: 0 0 15px 0;
 }
 
 /* Filters */
-.sfs-filters {
+.ss5k-filters {
 	background: #fff;
 	border: 1px solid #ccd0d4;
 	padding: 15px;
 	margin-bottom: 20px;
 }
 
-.sfs-filters form {
+.ss5k-filters form {
 	display: flex;
 	gap: 15px;
 	align-items: center;
 	flex-wrap: wrap;
 }
 
-.sfs-filters select,
-.sfs-filters input[type="date"] {
+.ss5k-filters select,
+.ss5k-filters input[type="date"] {
 	min-width: 150px;
 }
 
 /* Whitelist */
-.sfs-whitelist-form {
+.ss5k-whitelist-form {
 	background: #fff;
 	border: 1px solid #ccd0d4;
 	padding: 20px;
@@ -285,11 +285,11 @@
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
-.sfs-whitelist-form h2 {
+.ss5k-whitelist-form h2 {
 	margin-top: 0;
 }
 
-.sfs-whitelist-info {
+.ss5k-whitelist-info {
 	background: #f0f8ff;
 	border: 1px solid #b8d4e8;
 	padding: 20px;
@@ -297,7 +297,7 @@
 	border-radius: 5px;
 }
 
-.sfs-whitelist-info h3 {
+.ss5k-whitelist-info h3 {
 	margin-top: 0;
 	color: #0073aa;
 }
@@ -327,7 +327,7 @@
 }
 
 /* Logs */
-.sfs-logs-viewer {
+.ss5k-logs-viewer {
 	background: #23282d;
 	color: #f1f1f1;
 	padding: 20px;
@@ -339,13 +339,13 @@
 	overflow-y: auto;
 }
 
-.sfs-log-entry {
+.ss5k-log-entry {
 	margin-bottom: 10px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #444;
 }
 
-.sfs-log-level {
+.ss5k-log-level {
 	display: inline-block;
 	padding: 2px 6px;
 	border-radius: 3px;
@@ -354,38 +354,38 @@
 	margin-right: 10px;
 }
 
-.sfs-log-level.debug {
+.ss5k-log-level.debug {
 	background: #666;
 }
 
-.sfs-log-level.info {
+.ss5k-log-level.info {
 	background: #0073aa;
 }
 
-.sfs-log-level.warning {
+.ss5k-log-level.warning {
 	background: #ffb900;
 	color: #23282d;
 }
 
-.sfs-log-level.error {
+.ss5k-log-level.error {
 	background: #dc3232;
 }
 
-.sfs-log-level.critical {
+.ss5k-log-level.critical {
 	background: #a00;
 }
 
 /* Notice styles */
-.smart-form-shield-notice {
+.spam-slayer-5000-notice {
 	position: relative;
 }
 
-.smart-form-shield-notice .notice-dismiss {
+.spam-slayer-5000-notice .notice-dismiss {
 	text-decoration: none;
 }
 
 /* Modal styles */
-.sfs-modal {
+.ss5k-modal {
 	display: none;
 	position: fixed;
 	z-index: 100000;
@@ -397,7 +397,7 @@
 	background-color: rgba(0,0,0,0.4);
 }
 
-.sfs-modal-content {
+.ss5k-modal-content {
 	background-color: #fefefe;
 	margin: 5% auto;
 	padding: 20px;
@@ -407,7 +407,7 @@
 	box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.sfs-modal-close {
+.ss5k-modal-close {
 	color: #aaa;
 	float: right;
 	font-size: 28px;
@@ -415,8 +415,8 @@
 	cursor: pointer;
 }
 
-.sfs-modal-close:hover,
-.sfs-modal-close:focus {
+.ss5k-modal-close:hover,
+.ss5k-modal-close:focus {
 	color: #000;
 }
 
@@ -426,24 +426,24 @@
 
 /* Responsive */
 @media screen and (max-width: 782px) {
-	.sfs-stats-grid {
+	.ss5k-stats-grid {
 		grid-template-columns: 1fr;
 	}
 	
-	.sfs-filters form {
+	.ss5k-filters form {
 		flex-direction: column;
 		align-items: stretch;
 	}
 	
-	.sfs-whitelist-form {
+	.ss5k-whitelist-form {
 		flex-direction: column;
 	}
 	
-	.sfs-whitelist-form input[type="email"] {
+	.ss5k-whitelist-form input[type="email"] {
 		min-width: 100%;
 	}
 	
-	.sfs-modal-content {
+	.ss5k-modal-content {
 		width: 95%;
 		margin: 10% auto;
 	}

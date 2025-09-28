@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Smart Form Shield will be documented in this file.
+All notable changes to Spam Slayer 5000 will be documented in this file.
 
 ## [1.0.3] - 2025-01-24
 

@@ -3,18 +3,18 @@
  * Cache handler.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield_Cache {
+class Spam_Slayer_5000_Cache {
 
 	/**
 	 * Cache prefix.
 	 *
 	 * @var string
 	 */
-	private $prefix = 'sfs_cache_';
+	private $prefix = 'ss5k_cache_';
 
 	/**
 	 * Get cached value.
@@ -96,7 +96,7 @@ class Smart_Form_Shield_Cache {
 	 * @return   bool    True if enabled.
 	 */
 	private function is_enabled() {
-		return (bool) get_option( 'smart_form_shield_cache_responses', true );
+		return (bool) get_option( 'spam_slayer_5000_cache_responses', true );
 	}
 
 	/**

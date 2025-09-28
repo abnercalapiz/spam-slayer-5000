@@ -97,8 +97,8 @@ define('WP_DEBUG_DISPLAY', false);
 
 ### 2. Check Error Logs
 Look for entries like:
-- `Smart Form Shield GitHub Updater: Username=X, Repo=Y`
-- `Smart Form Shield GitHub Updater: No tag_name in response`
+- `Spam Slayer 5000 GitHub Updater: Username=X, Repo=Y`
+- `Spam Slayer 5000 GitHub Updater: No tag_name in response`
 
 ### 3. Test GitHub API Directly
 Visit in browser:

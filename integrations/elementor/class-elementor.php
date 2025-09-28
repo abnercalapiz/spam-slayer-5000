@@ -3,11 +3,11 @@
  * Elementor Forms Integration.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/integrations
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/integrations
  */
 
-class Smart_Form_Shield_Elementor {
+class Spam_Slayer_5000_Elementor {
 
 	/**
 	 * The ID of this plugin.
@@ -55,7 +55,7 @@ class Smart_Form_Shield_Elementor {
 		$submission_data = $this->get_submission_data( $record );
 		
 		// Check whitelist first
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$email = $this->extract_email( $submission_data );
 		
 		if ( ! empty( $email ) && $database->is_whitelisted( $email ) ) {
@@ -65,7 +65,7 @@ class Smart_Form_Shield_Elementor {
 
 		// Check cache
 		$cache_key = $this->get_cache_key( $submission_data );
-		$cache = new Smart_Form_Shield_Cache();
+		$cache = new Spam_Slayer_5000_Cache();
 		$cached_result = $cache->get( $cache_key );
 		
 		if ( $cached_result !== false ) {
@@ -74,7 +74,7 @@ class Smart_Form_Shield_Elementor {
 		}
 
 		// Analyze with AI provider
-		$provider = Smart_Form_Shield_Provider_Factory::get_primary_provider();
+		$provider = Spam_Slayer_5000_Provider_Factory::get_primary_provider();
 		
 		if ( ! $provider ) {
 			// No provider available, allow submission
@@ -85,7 +85,7 @@ class Smart_Form_Shield_Elementor {
 		
 		// Cache the result
 		if ( ! isset( $analysis['error'] ) ) {
-			$cache->set( $cache_key, $analysis, get_option( 'smart_form_shield_cache_duration', 3600 ) );
+			$cache->set( $cache_key, $analysis, get_option( 'spam_slayer_5000_cache_duration', 3600 ) );
 		}
 
 		// Log submission
@@ -112,15 +112,15 @@ class Smart_Form_Shield_Elementor {
 	}
 
 	/**
-	 * Register Smart Form Shield action.
+	 * Register Spam Slayer 5000 action.
 	 *
 	 * @since    1.0.0
 	 * @param    \ElementorPro\Modules\Forms\Registrars\Form_Actions_Registrar    $form_actions_registrar
 	 */
 	public function register_action( $form_actions_registrar ) {
-		include_once SMART_FORM_SHIELD_PATH . 'integrations/elementor/class-elementor-action.php';
+		include_once SPAM_SLAYER_5000_PATH . 'integrations/elementor/class-elementor-action.php';
 		
-		$form_actions_registrar->register( new Smart_Form_Shield_Elementor_Action() );
+		$form_actions_registrar->register( new Spam_Slayer_5000_Elementor_Action() );
 	}
 
 	/**
@@ -131,8 +131,8 @@ class Smart_Form_Shield_Elementor {
 	 * @return   bool                       True if enabled.
 	 */
 	private function is_protection_enabled( $form_settings ) {
-		return isset( $form_settings['smart_form_shield_enable'] ) && 
-			$form_settings['smart_form_shield_enable'] === 'yes';
+		return isset( $form_settings['spam_slayer_5000_enable'] ) && 
+			$form_settings['spam_slayer_5000_enable'] === 'yes';
 	}
 
 	/**
@@ -193,7 +193,7 @@ class Smart_Form_Shield_Elementor {
 	 * @return   string                       Cache key.
 	 */
 	private function get_cache_key( $submission_data ) {
-		return 'sfs_' . md5( wp_json_encode( $submission_data ) );
+		return 'ss5k_' . md5( wp_json_encode( $submission_data ) );
 	}
 
 	/**
@@ -205,16 +205,16 @@ class Smart_Form_Shield_Elementor {
 	 * @param    array     $form_settings     Form settings.
 	 */
 	private function apply_validation_result( $analysis, $ajax_handler, $form_settings ) {
-		$threshold = isset( $form_settings['smart_form_shield_threshold'] ) && $form_settings['smart_form_shield_threshold']
-			? absint( $form_settings['smart_form_shield_threshold'] )
-			: get_option( 'smart_form_shield_spam_threshold', 75 );
+		$threshold = isset( $form_settings['spam_slayer_5000_threshold'] ) && $form_settings['spam_slayer_5000_threshold']
+			? absint( $form_settings['spam_slayer_5000_threshold'] )
+			: get_option( 'spam_slayer_5000_spam_threshold', 75 );
 		
 		if ( isset( $analysis['spam_score'] ) && $analysis['spam_score'] >= $threshold ) {
-			$error_message = isset( $form_settings['smart_form_shield_error_message'] ) && $form_settings['smart_form_shield_error_message']
-				? $form_settings['smart_form_shield_error_message']
-				: __( 'Your submission has been blocked as potential spam. Please try again or contact support.', 'smart-form-shield' );
+			$error_message = isset( $form_settings['spam_slayer_5000_error_message'] ) && $form_settings['spam_slayer_5000_error_message']
+				? $form_settings['spam_slayer_5000_error_message']
+				: __( 'Your submission has been blocked as potential spam. Please try again or contact support.', 'spam-slayer-5000' );
 			
-			$ajax_handler->add_error( 'smart-form-shield', $error_message );
+			$ajax_handler->add_error( 'spam-slayer-5000', $error_message );
 		}
 	}
 
@@ -229,7 +229,7 @@ class Smart_Form_Shield_Elementor {
 	 * @return   int                               Submission ID.
 	 */
 	private function log_submission_to_database( $submission_data, $form_settings, $analysis, $spam_score = 0 ) {
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		
 		$data = array(
 			'form_type' => 'elementor_forms',
@@ -247,7 +247,7 @@ class Smart_Form_Shield_Elementor {
 			$data['provider_used'] = isset( $analysis['provider'] ) ? $analysis['provider'] : null;
 			$data['provider_response'] = $analysis;
 			// Get threshold
-			$threshold = get_option( 'smart_form_shield_spam_threshold', 75 );
+			$threshold = get_option( 'spam_slayer_5000_spam_threshold', 75 );
 			
 			// Set status based on threshold, not is_spam
 			$spam_score = isset( $analysis['spam_score'] ) ? $analysis['spam_score'] : 0;
@@ -270,7 +270,7 @@ class Smart_Form_Shield_Elementor {
 			return;
 		}
 		
-		$threshold = get_option( 'smart_form_shield_notification_threshold', 90 );
+		$threshold = get_option( 'spam_slayer_5000_notification_threshold', 90 );
 		
 		if ( $analysis['spam_score'] >= $threshold ) {
 			$this->send_notification( $analysis, $submission_data, $form_settings );
@@ -286,21 +286,21 @@ class Smart_Form_Shield_Elementor {
 	 * @param    array    $form_settings      Form settings.
 	 */
 	private function send_notification( $analysis, $submission_data, $form_settings ) {
-		$to = get_option( 'smart_form_shield_notification_email', get_option( 'admin_email' ) );
-		$form_name = isset( $form_settings['form_name'] ) ? $form_settings['form_name'] : __( 'Unknown Form', 'smart-form-shield' );
+		$to = get_option( 'spam_slayer_5000_notification_email', get_option( 'admin_email' ) );
+		$form_name = isset( $form_settings['form_name'] ) ? $form_settings['form_name'] : __( 'Unknown Form', 'spam-slayer-5000' );
 		
 		$subject = sprintf(
-			__( '[Smart Form Shield] High spam score detected on form: %s', 'smart-form-shield' ),
+			__( '[Spam Slayer 5000] High spam score detected on form: %s', 'spam-slayer-5000' ),
 			$form_name
 		);
 		
 		$message = sprintf(
-			__( "A submission with a high spam score has been detected.\n\nForm: %s\nSpam Score: %d%%\nProvider: %s\n\nSubmission Data:\n%s\n\nView all submissions: %s", 'smart-form-shield' ),
+			__( "A submission with a high spam score has been detected.\n\nForm: %s\nSpam Score: %d%%\nProvider: %s\n\nSubmission Data:\n%s\n\nView all submissions: %s", 'spam-slayer-5000' ),
 			$form_name,
 			$analysis['spam_score'],
 			isset( $analysis['provider'] ) ? $analysis['provider'] : 'Unknown',
 			print_r( $submission_data, true ),
-			admin_url( 'admin.php?page=smart-form-shield-submissions' )
+			admin_url( 'admin.php?page=spam-slayer-5000-submissions' )
 		);
 		
 		wp_mail( $to, $subject, $message );

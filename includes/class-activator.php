@@ -3,11 +3,11 @@
  * Fired during plugin activation.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield_Activator {
+class Spam_Slayer_5000_Activator {
 
 	/**
 	 * Activation hook callback.
@@ -15,17 +15,77 @@ class Smart_Form_Shield_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
+		// Migrate old tables if they exist
+		self::migrate_old_tables();
+		
 		self::create_database_tables();
 		self::set_default_options();
 		self::create_upload_directory();
 		
 		// Schedule cron events
-		if ( ! wp_next_scheduled( 'smart_form_shield_daily_cleanup' ) ) {
-			wp_schedule_event( time(), 'daily', 'smart_form_shield_daily_cleanup' );
+		if ( ! wp_next_scheduled( 'spam_slayer_5000_daily_cleanup' ) ) {
+			wp_schedule_event( time(), 'daily', 'spam_slayer_5000_daily_cleanup' );
 		}
 		
 		// Flush rewrite rules for REST API endpoints
 		flush_rewrite_rules();
+	}
+
+	/**
+	 * Migrate old tables from sfs_ to ss5k_ prefix.
+	 *
+	 * @since    1.0.3
+	 */
+	private static function migrate_old_tables() {
+		global $wpdb;
+		
+		// Check if old tables exist
+		$old_submissions_table = $wpdb->prefix . 'sfs_submissions';
+		$old_api_logs_table = $wpdb->prefix . 'sfs_api_logs';
+		$old_whitelist_table = $wpdb->prefix . 'sfs_whitelist';
+		
+		// Ensure new table names are defined
+		if ( function_exists( 'spam_slayer_5000_define_tables' ) ) {
+			spam_slayer_5000_define_tables();
+		}
+		
+		// New table names
+		$new_submissions_table = defined( 'SPAM_SLAYER_5000_SUBMISSIONS_TABLE' ) 
+			? SPAM_SLAYER_5000_SUBMISSIONS_TABLE 
+			: $wpdb->prefix . 'ss5k_submissions';
+		$new_api_logs_table = defined( 'SPAM_SLAYER_5000_API_LOGS_TABLE' ) 
+			? SPAM_SLAYER_5000_API_LOGS_TABLE 
+			: $wpdb->prefix . 'ss5k_api_logs';
+		$new_whitelist_table = defined( 'SPAM_SLAYER_5000_WHITELIST_TABLE' ) 
+			? SPAM_SLAYER_5000_WHITELIST_TABLE 
+			: $wpdb->prefix . 'ss5k_whitelist';
+		
+		// Check and rename submissions table
+		$table_exists = $wpdb->get_var( $wpdb->prepare(
+			"SHOW TABLES LIKE %s",
+			$old_submissions_table
+		) );
+		if ( $table_exists ) {
+			$wpdb->query( "RENAME TABLE `$old_submissions_table` TO `$new_submissions_table`" );
+		}
+		
+		// Check and rename API logs table
+		$table_exists = $wpdb->get_var( $wpdb->prepare(
+			"SHOW TABLES LIKE %s",
+			$old_api_logs_table
+		) );
+		if ( $table_exists ) {
+			$wpdb->query( "RENAME TABLE `$old_api_logs_table` TO `$new_api_logs_table`" );
+		}
+		
+		// Check and rename whitelist table
+		$table_exists = $wpdb->get_var( $wpdb->prepare(
+			"SHOW TABLES LIKE %s",
+			$old_whitelist_table
+		) );
+		if ( $table_exists ) {
+			$wpdb->query( "RENAME TABLE `$old_whitelist_table` TO `$new_whitelist_table`" );
+		}
 	}
 
 	/**
@@ -38,14 +98,14 @@ class Smart_Form_Shield_Activator {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		// Ensure table names are defined
-		if ( function_exists( 'smart_form_shield_define_tables' ) ) {
-			smart_form_shield_define_tables();
+		if ( function_exists( 'spam_slayer_5000_define_tables' ) ) {
+			spam_slayer_5000_define_tables();
 		}
 		
 		// Use direct table names as fallback if constants aren't defined
-		$submissions_table = defined( 'SMART_FORM_SHIELD_SUBMISSIONS_TABLE' ) 
-			? SMART_FORM_SHIELD_SUBMISSIONS_TABLE 
-			: $wpdb->prefix . 'sfs_submissions';
+		$submissions_table = defined( 'SPAM_SLAYER_5000_SUBMISSIONS_TABLE' ) 
+			? SPAM_SLAYER_5000_SUBMISSIONS_TABLE 
+			: $wpdb->prefix . 'ss5k_submissions';
 		$sql_submissions = "CREATE TABLE IF NOT EXISTS $submissions_table (
 			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			form_type varchar(50) NOT NULL,
@@ -67,9 +127,9 @@ class Smart_Form_Shield_Activator {
 		) $charset_collate;";
 
 		// API logs table
-		$api_logs_table = defined( 'SMART_FORM_SHIELD_API_LOGS_TABLE' ) 
-			? SMART_FORM_SHIELD_API_LOGS_TABLE 
-			: $wpdb->prefix . 'sfs_api_logs';
+		$api_logs_table = defined( 'SPAM_SLAYER_5000_API_LOGS_TABLE' ) 
+			? SPAM_SLAYER_5000_API_LOGS_TABLE 
+			: $wpdb->prefix . 'ss5k_api_logs';
 		$sql_api_logs = "CREATE TABLE IF NOT EXISTS $api_logs_table (
 			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			provider varchar(50) NOT NULL,
@@ -89,9 +149,9 @@ class Smart_Form_Shield_Activator {
 		) $charset_collate;";
 
 		// Whitelist table
-		$whitelist_table = defined( 'SMART_FORM_SHIELD_WHITELIST_TABLE' ) 
-			? SMART_FORM_SHIELD_WHITELIST_TABLE 
-			: $wpdb->prefix . 'sfs_whitelist';
+		$whitelist_table = defined( 'SPAM_SLAYER_5000_WHITELIST_TABLE' ) 
+			? SPAM_SLAYER_5000_WHITELIST_TABLE 
+			: $wpdb->prefix . 'ss5k_whitelist';
 		$sql_whitelist = "CREATE TABLE IF NOT EXISTS $whitelist_table (
 			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			email varchar(255) NOT NULL,
@@ -115,12 +175,12 @@ class Smart_Form_Shield_Activator {
 		// Check for errors
 		global $wpdb;
 		if ( ! empty( $wpdb->last_error ) ) {
-			error_log( 'Smart Form Shield DB Error: ' . $wpdb->last_error );
+			error_log( 'Spam Slayer 5000 DB Error: ' . $wpdb->last_error );
 		}
 
 		// Store database version
-		$version = defined( 'SMART_FORM_SHIELD_VERSION' ) ? SMART_FORM_SHIELD_VERSION : '1.0.0';
-		update_option( 'smart_form_shield_db_version', $version );
+		$version = defined( 'SPAM_SLAYER_5000_VERSION' ) ? SPAM_SLAYER_5000_VERSION : '1.0.0';
+		update_option( 'spam_slayer_5000_db_version', $version );
 	}
 
 	/**
@@ -146,16 +206,16 @@ class Smart_Form_Shield_Activator {
 		);
 
 		foreach ( $default_options as $option => $value ) {
-			if ( get_option( 'smart_form_shield_' . $option ) === false ) {
-				update_option( 'smart_form_shield_' . $option, $value );
+			if ( get_option( 'spam_slayer_5000_' . $option ) === false ) {
+				update_option( 'spam_slayer_5000_' . $option, $value );
 			}
 		}
 
 		// Initialize API provider settings
 		$providers = array( 'openai', 'claude' );
 		foreach ( $providers as $provider ) {
-			if ( get_option( 'smart_form_shield_' . $provider . '_settings' ) === false ) {
-				update_option( 'smart_form_shield_' . $provider . '_settings', array(
+			if ( get_option( 'spam_slayer_5000_' . $provider . '_settings' ) === false ) {
+				update_option( 'spam_slayer_5000_' . $provider . '_settings', array(
 					'api_key' => '',
 					'model' => '',
 					'enabled' => false,
@@ -171,7 +231,7 @@ class Smart_Form_Shield_Activator {
 	 */
 	private static function create_upload_directory() {
 		$upload_dir = wp_upload_dir();
-		$plugin_upload_dir = $upload_dir['basedir'] . '/smart-form-shield';
+		$plugin_upload_dir = $upload_dir['basedir'] . '/spam-slayer-5000';
 		
 		if ( ! file_exists( $plugin_upload_dir ) ) {
 			wp_mkdir_p( $plugin_upload_dir );

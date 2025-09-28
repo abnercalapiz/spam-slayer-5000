@@ -3,8 +3,8 @@
  * Analytics admin page display.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/admin/partials
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/admin/partials
  */
 
 // Security check
@@ -12,69 +12,77 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Include required classes if not already loaded
+if ( ! class_exists( 'Spam_Slayer_5000_Admin_Analytics' ) ) {
+	require_once SPAM_SLAYER_5000_PATH . 'admin/class-admin-analytics.php';
+}
+if ( ! class_exists( 'Spam_Slayer_5000_Database' ) ) {
+	require_once SPAM_SLAYER_5000_PATH . 'database/class-database.php';
+}
+
 // Get analytics data
-$analytics = new Smart_Form_Shield_Admin_Analytics( 'smart-form-shield', SMART_FORM_SHIELD_VERSION );
+$analytics = new Spam_Slayer_5000_Admin_Analytics( 'spam-slayer-5000', SPAM_SLAYER_5000_VERSION );
 $period = isset( $_GET['period'] ) ? sanitize_text_field( $_GET['period'] ) : 'week';
 $data = $analytics->get_analytics_data( $period );
 ?>
 
 <div class="wrap">
-	<h1><?php esc_html_e( 'Analytics', 'smart-form-shield' ); ?></h1>
+	<h1><?php esc_html_e( 'Analytics', 'spam-slayer-5000' ); ?></h1>
 	
-	<div class="sfs-analytics-header">
-		<div class="sfs-period-selector">
-			<label for="sfs-analytics-range"><?php esc_html_e( 'Time Period:', 'smart-form-shield' ); ?></label>
-			<select id="sfs-analytics-range" onchange="window.location.href='?page=smart-form-shield-analytics&period=' + this.value">
-				<option value="day" <?php selected( $period, 'day' ); ?>><?php esc_html_e( 'Today', 'smart-form-shield' ); ?></option>
-				<option value="week" <?php selected( $period, 'week' ); ?>><?php esc_html_e( 'Last 7 Days', 'smart-form-shield' ); ?></option>
-				<option value="month" <?php selected( $period, 'month' ); ?>><?php esc_html_e( 'Last 30 Days', 'smart-form-shield' ); ?></option>
+	<div class="ss5k-analytics-header">
+		<div class="ss5k-period-selector">
+			<label for="ss5k-analytics-range"><?php esc_html_e( 'Time Period:', 'spam-slayer-5000' ); ?></label>
+			<select id="ss5k-analytics-range" onchange="window.location.href='?page=spam-slayer-5000-analytics&period=' + this.value">
+				<option value="day" <?php selected( $period, 'day' ); ?>><?php esc_html_e( 'Today', 'spam-slayer-5000' ); ?></option>
+				<option value="week" <?php selected( $period, 'week' ); ?>><?php esc_html_e( 'Last 7 Days', 'spam-slayer-5000' ); ?></option>
+				<option value="month" <?php selected( $period, 'month' ); ?>><?php esc_html_e( 'Last 30 Days', 'spam-slayer-5000' ); ?></option>
 			</select>
 		</div>
 	</div>
 	
 	<!-- Summary Stats -->
-	<div class="sfs-stats-boxes">
-		<div class="sfs-stat-box">
-			<h3><?php esc_html_e( 'Total Submissions', 'smart-form-shield' ); ?></h3>
+	<div class="ss5k-stats-boxes">
+		<div class="ss5k-stat-box">
+			<h3><?php esc_html_e( 'Total Submissions', 'spam-slayer-5000' ); ?></h3>
 			<div class="value"><?php echo number_format( $data['summary']['total_submissions'] ); ?></div>
 		</div>
 		
-		<div class="sfs-stat-box">
-			<h3><?php esc_html_e( 'Spam Blocked', 'smart-form-shield' ); ?></h3>
+		<div class="ss5k-stat-box">
+			<h3><?php esc_html_e( 'Spam Blocked', 'spam-slayer-5000' ); ?></h3>
 			<div class="value"><?php echo number_format( $data['summary']['spam_submissions'] ); ?></div>
 			<div class="description"><?php echo number_format( $data['summary']['spam_rate'], 1 ); ?>%</div>
 		</div>
 		
-		<div class="sfs-stat-box">
-			<h3><?php esc_html_e( 'Total Cost', 'smart-form-shield' ); ?></h3>
+		<div class="ss5k-stat-box">
+			<h3><?php esc_html_e( 'Total Cost', 'spam-slayer-5000' ); ?></h3>
 			<div class="value">$<?php echo number_format( $data['summary']['total_cost'], 4 ); ?></div>
 		</div>
 		
-		<div class="sfs-stat-box">
-			<h3><?php esc_html_e( 'API Calls', 'smart-form-shield' ); ?></h3>
+		<div class="ss5k-stat-box">
+			<h3><?php esc_html_e( 'API Calls', 'spam-slayer-5000' ); ?></h3>
 			<div class="value"><?php echo number_format( $data['summary']['total_api_calls'] ); ?></div>
 			<div class="description"><?php echo number_format( $data['summary']['avg_response_time'], 3 ); ?>s avg</div>
 		</div>
 	</div>
 	
 	<!-- Daily Breakdown Chart -->
-	<div class="sfs-chart-container">
-		<h3><?php esc_html_e( 'Daily Submissions', 'smart-form-shield' ); ?></h3>
+	<div class="ss5k-chart-container">
+		<h3><?php esc_html_e( 'Daily Submissions', 'spam-slayer-5000' ); ?></h3>
 		<canvas id="daily-submissions-chart" width="400" height="150"></canvas>
 	</div>
 	
 	<!-- Provider Performance -->
 	<?php if ( ! empty( $data['providers'] ) ) : ?>
-	<div class="sfs-chart-container">
-		<h3><?php esc_html_e( 'Provider Performance', 'smart-form-shield' ); ?></h3>
+	<div class="ss5k-chart-container">
+		<h3><?php esc_html_e( 'Provider Performance', 'spam-slayer-5000' ); ?></h3>
 		<table class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th><?php esc_html_e( 'Provider', 'smart-form-shield' ); ?></th>
-					<th><?php esc_html_e( 'API Calls', 'smart-form-shield' ); ?></th>
-					<th><?php esc_html_e( 'Success Rate', 'smart-form-shield' ); ?></th>
-					<th><?php esc_html_e( 'Avg Response Time', 'smart-form-shield' ); ?></th>
-					<th><?php esc_html_e( 'Total Cost', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'Provider', 'spam-slayer-5000' ); ?></th>
+					<th><?php esc_html_e( 'API Calls', 'spam-slayer-5000' ); ?></th>
+					<th><?php esc_html_e( 'Success Rate', 'spam-slayer-5000' ); ?></th>
+					<th><?php esc_html_e( 'Avg Response Time', 'spam-slayer-5000' ); ?></th>
+					<th><?php esc_html_e( 'Total Cost', 'spam-slayer-5000' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -94,15 +102,15 @@ $data = $analytics->get_analytics_data( $period );
 	
 	<!-- Form Breakdown -->
 	<?php if ( ! empty( $data['form_breakdown'] ) ) : ?>
-	<div class="sfs-chart-container">
-		<h3><?php esc_html_e( 'Form Breakdown', 'smart-form-shield' ); ?></h3>
+	<div class="ss5k-chart-container">
+		<h3><?php esc_html_e( 'Form Breakdown', 'spam-slayer-5000' ); ?></h3>
 		<table class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th><?php esc_html_e( 'Form', 'smart-form-shield' ); ?></th>
-					<th><?php esc_html_e( 'Total Submissions', 'smart-form-shield' ); ?></th>
-					<th><?php esc_html_e( 'Spam Caught', 'smart-form-shield' ); ?></th>
-					<th><?php esc_html_e( 'Spam Rate', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'Form', 'spam-slayer-5000' ); ?></th>
+					<th><?php esc_html_e( 'Total Submissions', 'spam-slayer-5000' ); ?></th>
+					<th><?php esc_html_e( 'Spam Caught', 'spam-slayer-5000' ); ?></th>
+					<th><?php esc_html_e( 'Spam Rate', 'spam-slayer-5000' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -129,22 +137,22 @@ $data = $analytics->get_analytics_data( $period );
 	<?php endif; ?>
 	
 	<!-- Spam Score Distribution -->
-	<div class="sfs-chart-container">
-		<h3><?php esc_html_e( 'Spam Score Distribution', 'smart-form-shield' ); ?></h3>
+	<div class="ss5k-chart-container">
+		<h3><?php esc_html_e( 'Spam Score Distribution', 'spam-slayer-5000' ); ?></h3>
 		<canvas id="spam-distribution-chart" width="400" height="150"></canvas>
 	</div>
 	
 	<!-- Export Options -->
-	<div class="sfs-export-section">
-		<h3><?php esc_html_e( 'Export Analytics', 'smart-form-shield' ); ?></h3>
+	<div class="ss5k-export-section">
+		<h3><?php esc_html_e( 'Export Analytics', 'spam-slayer-5000' ); ?></h3>
 		<p>
-			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=sfs_export_data&export_type=analytics&format=csv' ), 'sfs_admin_nonce', 'nonce' ); ?>" 
+			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=ss5k_export_data&export_type=analytics&format=csv' ), 'ss5k_admin_nonce', 'nonce' ); ?>" 
 				class="button">
-				<?php esc_html_e( 'Export as CSV', 'smart-form-shield' ); ?>
+				<?php esc_html_e( 'Export as CSV', 'spam-slayer-5000' ); ?>
 			</a>
-			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=sfs_export_data&export_type=analytics&format=json' ), 'sfs_admin_nonce', 'nonce' ); ?>" 
+			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=ss5k_export_data&export_type=analytics&format=json' ), 'ss5k_admin_nonce', 'nonce' ); ?>" 
 				class="button">
-				<?php esc_html_e( 'Export as JSON', 'smart-form-shield' ); ?>
+				<?php esc_html_e( 'Export as JSON', 'spam-slayer-5000' ); ?>
 			</a>
 		</p>
 	</div>
@@ -166,19 +174,19 @@ jQuery(document).ready(function($) {
 		data: {
 			labels: labels,
 			datasets: [{
-				label: '<?php esc_html_e( 'Total', 'smart-form-shield' ); ?>',
+				label: '<?php esc_html_e( 'Total', 'spam-slayer-5000' ); ?>',
 				data: totalData,
 				borderColor: 'rgb(75, 192, 192)',
 				backgroundColor: 'rgba(75, 192, 192, 0.2)',
 				tension: 0.1
 			}, {
-				label: '<?php esc_html_e( 'Spam', 'smart-form-shield' ); ?>',
+				label: '<?php esc_html_e( 'Spam', 'spam-slayer-5000' ); ?>',
 				data: spamData,
 				borderColor: 'rgb(255, 99, 132)',
 				backgroundColor: 'rgba(255, 99, 132, 0.2)',
 				tension: 0.1
 			}, {
-				label: '<?php esc_html_e( 'Approved', 'smart-form-shield' ); ?>',
+				label: '<?php esc_html_e( 'Approved', 'spam-slayer-5000' ); ?>',
 				data: approvedData,
 				borderColor: 'rgb(54, 162, 235)',
 				backgroundColor: 'rgba(54, 162, 235, 0.2)',
@@ -211,7 +219,7 @@ jQuery(document).ready(function($) {
 		data: {
 			labels: Object.keys(distribution),
 			datasets: [{
-				label: '<?php esc_html_e( 'Submissions', 'smart-form-shield' ); ?>',
+				label: '<?php esc_html_e( 'Submissions', 'spam-slayer-5000' ); ?>',
 				data: Object.values(distribution),
 				backgroundColor: [
 					'rgba(75, 192, 192, 0.6)',

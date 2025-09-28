@@ -3,26 +3,26 @@
  * AI Provider Factory.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/providers
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/providers
  */
 
-class Smart_Form_Shield_Provider_Factory {
+class Spam_Slayer_5000_Provider_Factory {
 
 	/**
 	 * Create provider instance.
 	 *
 	 * @since    1.0.0
 	 * @param    string   $provider    Provider name.
-	 * @return   Smart_Form_Shield_Provider_Interface|null    Provider instance or null.
+	 * @return   Spam_Slayer_5000_Provider_Interface|null    Provider instance or null.
 	 */
 	public static function create( $provider ) {
 		switch ( $provider ) {
 			case 'openai':
-				return new Smart_Form_Shield_OpenAI_Provider();
+				return new Spam_Slayer_5000_OpenAI_Provider();
 			
 			case 'claude':
-				return new Smart_Form_Shield_Claude_Provider();
+				return new Spam_Slayer_5000_Claude_Provider();
 			
 			default:
 				return null;
@@ -54,10 +54,10 @@ class Smart_Form_Shield_Provider_Factory {
 	 * Get primary provider.
 	 *
 	 * @since    1.0.0
-	 * @return   Smart_Form_Shield_Provider_Interface|null    Provider instance or null.
+	 * @return   Spam_Slayer_5000_Provider_Interface|null    Provider instance or null.
 	 */
 	public static function get_primary_provider() {
-		$primary = get_option( 'smart_form_shield_primary_provider', 'openai' );
+		$primary = get_option( 'spam_slayer_5000_primary_provider', 'openai' );
 		$provider = self::create( $primary );
 		
 		if ( $provider && $provider->is_available() ) {
@@ -72,10 +72,10 @@ class Smart_Form_Shield_Provider_Factory {
 	 * Get fallback provider.
 	 *
 	 * @since    1.0.0
-	 * @return   Smart_Form_Shield_Provider_Interface|null    Provider instance or null.
+	 * @return   Spam_Slayer_5000_Provider_Interface|null    Provider instance or null.
 	 */
 	public static function get_fallback_provider() {
-		$fallback = get_option( 'smart_form_shield_fallback_provider', 'claude' );
+		$fallback = get_option( 'spam_slayer_5000_fallback_provider', 'claude' );
 		$provider = self::create( $fallback );
 		
 		if ( $provider && $provider->is_available() ) {

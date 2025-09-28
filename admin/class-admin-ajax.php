@@ -3,11 +3,11 @@
  * Admin AJAX handlers.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/admin
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/admin
  */
 
-class Smart_Form_Shield_Admin_Ajax {
+class Spam_Slayer_5000_Admin_Ajax {
 
 	/**
 	 * The ID of this plugin.
@@ -43,7 +43,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function get_submissions() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -59,7 +59,7 @@ class Smart_Form_Shield_Admin_Ajax {
 			'offset' => absint( $_POST['offset'] ?? 0 ),
 		);
 
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$submissions = $database->get_submissions( $args );
 		$total = $database->get_submissions_count( $args );
 
@@ -75,7 +75,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function update_submission_status() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -85,25 +85,25 @@ class Smart_Form_Shield_Admin_Ajax {
 		$status = sanitize_text_field( $_POST['status'] ?? '' );
 
 		if ( ! $submission_id ) {
-			wp_send_json_error( __( 'Invalid submission ID', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Invalid submission ID', 'spam-slayer-5000' ) );
 		}
 
 		if ( $status === 'delete' ) {
 			global $wpdb;
 			$result = $wpdb->delete(
-				SMART_FORM_SHIELD_SUBMISSIONS_TABLE,
+				SPAM_SLAYER_5000_SUBMISSIONS_TABLE,
 				array( 'id' => $submission_id ),
 				array( '%d' )
 			);
 		} else {
-			$database = new Smart_Form_Shield_Database();
+			$database = new Spam_Slayer_5000_Database();
 			$result = $database->update_submission_status( $submission_id, $status );
 		}
 
 		if ( $result ) {
 			wp_send_json_success();
 		} else {
-			wp_send_json_error( __( 'Failed to update submission', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Failed to update submission', 'spam-slayer-5000' ) );
 		}
 	}
 
@@ -113,7 +113,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function handle_bulk_action() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -123,17 +123,17 @@ class Smart_Form_Shield_Admin_Ajax {
 		$ids = array_map( 'absint', $_POST['ids'] ?? array() );
 
 		if ( empty( $ids ) ) {
-			wp_send_json_error( __( 'No items selected', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'No items selected', 'spam-slayer-5000' ) );
 		}
 
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$success_count = 0;
 
 		foreach ( $ids as $id ) {
 			if ( $action === 'delete' ) {
 				global $wpdb;
 				$result = $wpdb->delete(
-					SMART_FORM_SHIELD_SUBMISSIONS_TABLE,
+					SPAM_SLAYER_5000_SUBMISSIONS_TABLE,
 					array( 'id' => $id ),
 					array( '%d' )
 				);
@@ -158,7 +158,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function test_provider() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -172,16 +172,16 @@ class Smart_Form_Shield_Admin_Ajax {
 		
 		if ( empty( $api_key ) ) {
 			wp_send_json_error( array(
-				'message' => __( 'API key is required', 'smart-form-shield' )
+				'message' => __( 'API key is required', 'spam-slayer-5000' )
 			) );
 		}
 		
 		// Create provider instance
-		$provider = Smart_Form_Shield_Provider_Factory::create( $provider_name );
+		$provider = Spam_Slayer_5000_Provider_Factory::create( $provider_name );
 		
 		if ( ! $provider ) {
 			wp_send_json_error( array(
-				'message' => __( 'Invalid provider', 'smart-form-shield' )
+				'message' => __( 'Invalid provider', 'spam-slayer-5000' )
 			) );
 		}
 		
@@ -216,9 +216,9 @@ class Smart_Form_Shield_Admin_Ajax {
 		
 		// Debug logging
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'Smart Form Shield test_provider - Provider created: ' . ( $provider ? 'yes' : 'no' ) );
+			error_log( 'Spam Slayer 5000 test_provider - Provider created: ' . ( $provider ? 'yes' : 'no' ) );
 			if ( $provider ) {
-				error_log( 'Smart Form Shield test_provider - Provider class: ' . get_class( $provider ) );
+				error_log( 'Spam Slayer 5000 test_provider - Provider class: ' . get_class( $provider ) );
 			}
 		}
 		
@@ -235,16 +235,16 @@ class Smart_Form_Shield_Admin_Ajax {
 			
 			// Debug logging
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'Smart Form Shield test_connection result for ' . $provider_name . ': ' . print_r( $result, true ) );
+				error_log( 'Spam Slayer 5000 test_connection result for ' . $provider_name . ': ' . print_r( $result, true ) );
 			}
 			
 			if ( $result === true ) {
 				wp_send_json_success( array(
-					'message' => __( 'Connection successful!', 'smart-form-shield' )
+					'message' => __( 'Connection successful!', 'spam-slayer-5000' )
 				) );
 			} else if ( is_array( $result ) && isset( $result['error'] ) ) {
 				wp_send_json_error( array(
-					'message' => sprintf( __( 'Connection failed: %s', 'smart-form-shield' ), $result['error'] )
+					'message' => sprintf( __( 'Connection failed: %s', 'spam-slayer-5000' ), $result['error'] )
 				) );
 			} else {
 				// Log unexpected result type
@@ -258,7 +258,7 @@ class Smart_Form_Shield_Admin_Ajax {
 				}
 				
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( 'Smart Form Shield unexpected test_connection result: ' . $debug_message );
+					error_log( 'Spam Slayer 5000 unexpected test_connection result: ' . $debug_message );
 				}
 				
 				// For now, show the debug info directly in the error message
@@ -268,7 +268,7 @@ class Smart_Form_Shield_Admin_Ajax {
 			}
 		} catch ( Exception $e ) {
 			wp_send_json_error( array(
-				'message' => sprintf( __( 'Connection error: %s', 'smart-form-shield' ), $e->getMessage() )
+				'message' => sprintf( __( 'Connection error: %s', 'spam-slayer-5000' ), $e->getMessage() )
 			) );
 		}
 	}
@@ -279,7 +279,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function get_submission_details() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -288,14 +288,14 @@ class Smart_Form_Shield_Admin_Ajax {
 		$id = absint( $_POST['id'] ?? 0 );
 		
 		if ( ! $id ) {
-			wp_send_json_error( __( 'Invalid submission ID', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Invalid submission ID', 'spam-slayer-5000' ) );
 		}
 
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$submissions = $database->get_submissions( array( 'id' => $id, 'limit' => 1 ) );
 		
 		if ( empty( $submissions ) ) {
-			wp_send_json_error( __( 'Submission not found', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Submission not found', 'spam-slayer-5000' ) );
 		}
 		
 		$submission = $submissions[0];
@@ -306,38 +306,38 @@ class Smart_Form_Shield_Admin_Ajax {
 		<div class="sfs-submission-details">
 			<table class="widefat">
 				<tr>
-					<th><?php esc_html_e( 'Date', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'Date', 'spam-slayer-5000' ); ?></th>
 					<td><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $submission['created_at'] ) ) ); ?></td>
 				</tr>
 				<tr>
-					<th><?php esc_html_e( 'Form Type', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'Form Type', 'spam-slayer-5000' ); ?></th>
 					<td><?php echo esc_html( ucwords( str_replace( '_', ' ', $submission['form_type'] ) ) ); ?></td>
 				</tr>
 				<tr>
-					<th><?php esc_html_e( 'Form ID', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'Form ID', 'spam-slayer-5000' ); ?></th>
 					<td><?php echo esc_html( $submission['form_id'] ); ?></td>
 				</tr>
 				<tr>
-					<th><?php esc_html_e( 'Status', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'Status', 'spam-slayer-5000' ); ?></th>
 					<td><span class="sfs-status <?php echo esc_attr( $submission['status'] ); ?>"><?php echo esc_html( ucfirst( $submission['status'] ) ); ?></span></td>
 				</tr>
 				<tr>
-					<th><?php esc_html_e( 'Spam Score', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'Spam Score', 'spam-slayer-5000' ); ?></th>
 					<td><?php echo number_format( $submission['spam_score'], 1 ); ?>%</td>
 				</tr>
 				<tr>
-					<th><?php esc_html_e( 'Provider Used', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'Provider Used', 'spam-slayer-5000' ); ?></th>
 					<td><?php echo esc_html( $submission['provider_used'] ?? '-' ); ?></td>
 				</tr>
 				<?php if ( ! empty( $submission['ip_address'] ) ) : ?>
 				<tr>
-					<th><?php esc_html_e( 'IP Address', 'smart-form-shield' ); ?></th>
+					<th><?php esc_html_e( 'IP Address', 'spam-slayer-5000' ); ?></th>
 					<td><?php echo esc_html( $submission['ip_address'] ); ?></td>
 				</tr>
 				<?php endif; ?>
 			</table>
 			
-			<h3><?php esc_html_e( 'Submission Data', 'smart-form-shield' ); ?></h3>
+			<h3><?php esc_html_e( 'Submission Data', 'spam-slayer-5000' ); ?></h3>
 			<table class="widefat">
 				<?php
 				$data = is_array( $submission['submission_data'] ) ? $submission['submission_data'] : array();
@@ -351,7 +351,7 @@ class Smart_Form_Shield_Admin_Ajax {
 			</table>
 			
 			<?php if ( ! empty( $submission['provider_response'] ) ) : ?>
-			<h3><?php esc_html_e( 'AI Provider Response', 'smart-form-shield' ); ?></h3>
+			<h3><?php esc_html_e( 'AI Provider Response', 'spam-slayer-5000' ); ?></h3>
 			<pre style="background: #f0f0f0; padding: 10px; overflow-x: auto;"><?php 
 				$response = is_array( $submission['provider_response'] ) ? $submission['provider_response'] : array();
 				echo esc_html( wp_json_encode( $response, JSON_PRETTY_PRINT ) ); 
@@ -370,7 +370,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function export_data() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -387,7 +387,7 @@ class Smart_Form_Shield_Admin_Ajax {
 				break;
 			
 			case 'analytics':
-				$analytics = new Smart_Form_Shield_Admin_Analytics( $this->plugin_name, $this->version );
+				$analytics = new Spam_Slayer_5000_Admin_Analytics( $this->plugin_name, $this->version );
 				$analytics->export_analytics( $format, $date_from, $date_to );
 				break;
 			
@@ -403,7 +403,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function get_analytics() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -413,7 +413,7 @@ class Smart_Form_Shield_Admin_Ajax {
 		$start_date = sanitize_text_field( $_POST['start_date'] ?? '' );
 		$end_date = sanitize_text_field( $_POST['end_date'] ?? '' );
 
-		$analytics = new Smart_Form_Shield_Admin_Analytics( $this->plugin_name, $this->version );
+		$analytics = new Spam_Slayer_5000_Admin_Analytics( $this->plugin_name, $this->version );
 		
 		if ( $range === 'custom' && $start_date && $end_date ) {
 			// Custom date range handling
@@ -431,7 +431,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function add_to_whitelist() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -441,16 +441,16 @@ class Smart_Form_Shield_Admin_Ajax {
 		$reason = sanitize_textarea_field( $_POST['reason'] ?? '' );
 
 		if ( ! is_email( $email ) ) {
-			wp_send_json_error( __( 'Invalid email address', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Invalid email address', 'spam-slayer-5000' ) );
 		}
 
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$result = $database->add_to_whitelist( $email, $reason );
 
 		if ( $result ) {
 			wp_send_json_success( array( 'id' => $result ) );
 		} else {
-			wp_send_json_error( __( 'Failed to add to whitelist', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Failed to add to whitelist', 'spam-slayer-5000' ) );
 		}
 	}
 
@@ -460,7 +460,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function remove_from_whitelist() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
@@ -469,16 +469,16 @@ class Smart_Form_Shield_Admin_Ajax {
 		$id = absint( $_POST['id'] ?? 0 );
 
 		if ( ! $id ) {
-			wp_send_json_error( __( 'Invalid ID', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Invalid ID', 'spam-slayer-5000' ) );
 		}
 
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$result = $database->remove_from_whitelist( $id );
 
 		if ( $result ) {
 			wp_send_json_success();
 		} else {
-			wp_send_json_error( __( 'Failed to remove from whitelist', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Failed to remove from whitelist', 'spam-slayer-5000' ) );
 		}
 	}
 
@@ -488,19 +488,19 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @since    1.0.0
 	 */
 	public function clear_logs() {
-		check_ajax_referer( 'sfs_admin_nonce', 'nonce' );
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
 		
 		if ( ! current_user_can( 'manage_network' ) ) {
 			wp_die( -1 );
 		}
 
-		$logger = new Smart_Form_Shield_Logger();
+		$logger = new Spam_Slayer_5000_Logger();
 		$result = $logger->clear_log();
 
 		if ( $result ) {
 			wp_send_json_success();
 		} else {
-			wp_send_json_error( __( 'Failed to clear logs', 'smart-form-shield' ) );
+			wp_send_json_error( __( 'Failed to clear logs', 'spam-slayer-5000' ) );
 		}
 	}
 
@@ -513,7 +513,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @param    string    $date_to      End date.
 	 */
 	private function export_submissions( $format, $date_from, $date_to ) {
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		
 		$args = array(
 			'limit' => 9999,
@@ -543,10 +543,10 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @param    string    $format    Export format.
 	 */
 	private function export_logs( $format ) {
-		$logger = new Smart_Form_Shield_Logger();
+		$logger = new Spam_Slayer_5000_Logger();
 		$logs = $logger->get_log( 10000 );
 		
-		$filename = 'smart-form-shield-logs-' . date( 'Y-m-d' ) . '.txt';
+		$filename = 'spam-slayer-5000-logs-' . date( 'Y-m-d' ) . '.txt';
 		
 		header( 'Content-Type: text/plain' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -563,7 +563,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @param    string    $type    Export type.
 	 */
 	private function export_csv( $data, $type ) {
-		$filename = 'smart-form-shield-' . $type . '-' . date( 'Y-m-d' ) . '.csv';
+		$filename = 'spam-slayer-5000-' . $type . '-' . date( 'Y-m-d' ) . '.csv';
 		
 		header( 'Content-Type: text/csv' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -599,7 +599,7 @@ class Smart_Form_Shield_Admin_Ajax {
 	 * @param    string    $type    Export type.
 	 */
 	private function export_json( $data, $type ) {
-		$filename = 'smart-form-shield-' . $type . '-' . date( 'Y-m-d' ) . '.json';
+		$filename = 'spam-slayer-5000-' . $type . '-' . date( 'Y-m-d' ) . '.json';
 		
 		header( 'Content-Type: application/json' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );

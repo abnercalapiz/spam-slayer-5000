@@ -1,6 +1,6 @@
-# Google Vertex AI Setup Guide for Smart Form Shield
+# Google Vertex AI Setup Guide for Spam Slayer 5000
 
-This guide will help you set up Google Vertex AI (Gemini models) for use with Smart Form Shield WordPress plugin.
+This guide will help you set up Google Vertex AI (Gemini models) for use with Spam Slayer 5000 WordPress plugin.
 
 ## Prerequisites
 
@@ -88,9 +88,9 @@ The plugin fully supports service account authentication with automatic JWT sign
 3. Paste it into the API Key field in the plugin settings
 4. The plugin will automatically detect it's a service account and use OAuth2
 
-## Step 4: Configure Smart Form Shield
+## Step 4: Configure Spam Slayer 5000
 
-1. In WordPress admin, go to **Smart Form Shield** → **Settings** → **API Settings**
+1. In WordPress admin, go to **Spam Slayer 5000** → **Settings** → **API Settings**
 
 2. Find the **Google Vertex AI** section
 
@@ -161,7 +161,7 @@ Choose a region close to your WordPress server for best performance:
 ## Cost Optimization
 
 1. **Use Gemini 2.5 Flash Lite** for most spam detection - it's cost-effective and sufficient
-2. **Enable caching** in Smart Form Shield settings to avoid duplicate API calls
+2. **Enable caching** in Spam Slayer 5000 settings to avoid duplicate API calls
 3. **Set up budget alerts** in GCP to monitor spending
 4. **Monitor usage** in the plugin's Analytics section
 
@@ -206,7 +206,7 @@ To view/increase quotas:
 ## Support
 
 For plugin-specific issues:
-- Check the Smart Form Shield logs in WordPress
+- Check the Spam Slayer 5000 logs in WordPress
 - Enable WP_DEBUG for detailed error messages
 
 For Vertex AI issues:

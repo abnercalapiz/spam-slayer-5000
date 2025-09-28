@@ -4,7 +4,7 @@
  *
  * Handles automatic updates from GitHub releases
  *
- * @package Smart_Form_Shield
+ * @package Spam_Slayer_5000
  * @since   1.1.0
  */
 
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class Smart_Form_Shield_GitHub_Updater {
+class Spam_Slayer_5000_GitHub_Updater {
     
     /**
      * Plugin slug
@@ -113,7 +113,7 @@ class Smart_Form_Shield_GitHub_Updater {
         
         // Log for debugging
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-            error_log( 'Smart Form Shield GitHub Updater: Username=' . $this->username . ', Repo=' . $this->repo );
+            error_log( 'Spam Slayer 5000 GitHub Updater: Username=' . $this->username . ', Repo=' . $this->repo );
         }
     }
     
@@ -163,7 +163,7 @@ class Smart_Form_Shield_GitHub_Updater {
         
         if ( empty( $github_data['tag_name'] ) ) {
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                error_log( 'Smart Form Shield GitHub Updater: No tag_name in response' );
+                error_log( 'Spam Slayer 5000 GitHub Updater: No tag_name in response' );
             }
             return false;
         }
@@ -278,7 +278,7 @@ class Smart_Form_Shield_GitHub_Updater {
      * @return string
      */
     private function parse_changelog( $body ) {
-        $changelog = '<h4>' . __( 'Changelog', 'smart-form-shield' ) . '</h4>';
+        $changelog = '<h4>' . __( 'Changelog', 'spam-slayer-5000' ) . '</h4>';
         $changelog .= '<pre>' . esc_html( $body ) . '</pre>';
         return $changelog;
     }
@@ -369,7 +369,7 @@ class Smart_Form_Shield_GitHub_Updater {
      * @return string
      */
     private function get_transient_key() {
-        return 'sfs_gh_' . md5( $this->username . '/' . $this->repo );
+        return 'ss5k_gh_' . md5( $this->username . '/' . $this->repo );
     }
     
     /**
@@ -385,7 +385,7 @@ class Smart_Form_Shield_GitHub_Updater {
                 'plugin' => $this->slug,
             ), admin_url( 'plugins.php' ) );
             
-            $links[] = '<a href="' . esc_url( $url ) . '">' . __( 'Check for updates', 'smart-form-shield' ) . '</a>';
+            $links[] = '<a href="' . esc_url( $url ) . '">' . __( 'Check for updates', 'spam-slayer-5000' ) . '</a>';
         }
         
         return $links;

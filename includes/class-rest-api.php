@@ -3,11 +3,11 @@
  * REST API endpoints.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield_REST_API {
+class Spam_Slayer_5000_REST_API {
 
 	/**
 	 * The ID of this plugin.
@@ -43,7 +43,7 @@ class Smart_Form_Shield_REST_API {
 	 * @since    1.0.0
 	 */
 	public function register_routes() {
-		$namespace = 'smart-form-shield/v1';
+		$namespace = 'spam-slayer-5000/v1';
 
 		// Submissions endpoints
 		register_rest_route( $namespace, '/submissions', array(
@@ -166,7 +166,7 @@ class Smart_Form_Shield_REST_API {
 	 */
 	public function get_submissions( $request ) {
 		$params = $request->get_params();
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		
 		$args = array(
 			'status'    => $params['status'],
@@ -200,7 +200,7 @@ class Smart_Form_Shield_REST_API {
 	 */
 	public function get_submission( $request ) {
 		$id = $request->get_param( 'id' );
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		
 		$submissions = $database->get_submissions( array(
 			'id' => $id,
@@ -208,7 +208,7 @@ class Smart_Form_Shield_REST_API {
 		) );
 
 		if ( empty( $submissions ) ) {
-			return new WP_Error( 'not_found', __( 'Submission not found', 'smart-form-shield' ), array( 'status' => 404 ) );
+			return new WP_Error( 'not_found', __( 'Submission not found', 'spam-slayer-5000' ), array( 'status' => 404 ) );
 		}
 
 		return new WP_REST_Response( $submissions[0] );
@@ -225,11 +225,11 @@ class Smart_Form_Shield_REST_API {
 		$id = $request->get_param( 'id' );
 		$status = $request->get_param( 'status' );
 		
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$result = $database->update_submission_status( $id, $status );
 
 		if ( ! $result ) {
-			return new WP_Error( 'update_failed', __( 'Failed to update submission', 'smart-form-shield' ), array( 'status' => 500 ) );
+			return new WP_Error( 'update_failed', __( 'Failed to update submission', 'spam-slayer-5000' ), array( 'status' => 500 ) );
 		}
 
 		return new WP_REST_Response( array( 'success' => true ) );
@@ -247,10 +247,10 @@ class Smart_Form_Shield_REST_API {
 		$form_type = $request->get_param( 'form_type' );
 		$form_id = $request->get_param( 'form_id' );
 
-		$result = Smart_Form_Shield_Validator::validate_submission( $data );
+		$result = Spam_Slayer_5000_Validator::validate_submission( $data );
 
 		// Log submission
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$database->insert_submission( array(
 			'form_type' => $form_type,
 			'form_id' => $form_id,
@@ -278,7 +278,7 @@ class Smart_Form_Shield_REST_API {
 	public function get_analytics( $request ) {
 		$period = $request->get_param( 'period' );
 		
-		$analytics = new Smart_Form_Shield_Admin_Analytics( $this->plugin_name, $this->version );
+		$analytics = new Spam_Slayer_5000_Admin_Analytics( $this->plugin_name, $this->version );
 		$data = $analytics->get_analytics_data( $period );
 
 		return new WP_REST_Response( $data );
@@ -295,7 +295,7 @@ class Smart_Form_Shield_REST_API {
 		global $wpdb;
 		
 		$results = $wpdb->get_results(
-			"SELECT * FROM " . SMART_FORM_SHIELD_WHITELIST_TABLE . " 
+			"SELECT * FROM " . SPAM_SLAYER_5000_WHITELIST_TABLE . " 
 			WHERE is_active = 1 
 			ORDER BY created_at DESC",
 			ARRAY_A
@@ -315,11 +315,11 @@ class Smart_Form_Shield_REST_API {
 		$email = $request->get_param( 'email' );
 		$reason = $request->get_param( 'reason' );
 		
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		$result = $database->add_to_whitelist( $email, $reason );
 
 		if ( ! $result ) {
-			return new WP_Error( 'add_failed', __( 'Failed to add to whitelist', 'smart-form-shield' ), array( 'status' => 500 ) );
+			return new WP_Error( 'add_failed', __( 'Failed to add to whitelist', 'spam-slayer-5000' ), array( 'status' => 500 ) );
 		}
 
 		return new WP_REST_Response( array( 'success' => true, 'id' => $result ) );
@@ -333,7 +333,7 @@ class Smart_Form_Shield_REST_API {
 	 * @return   WP_REST_Response              Response object.
 	 */
 	public function get_providers_status( $request ) {
-		$providers = Smart_Form_Shield_Provider_Factory::get_available_providers();
+		$providers = Spam_Slayer_5000_Provider_Factory::get_available_providers();
 		$status = array();
 
 		foreach ( $providers as $key => $provider ) {
@@ -369,15 +369,15 @@ class Smart_Form_Shield_REST_API {
 		$api_key = $request->get_header( 'X-SFS-API-Key' );
 		
 		if ( empty( $api_key ) ) {
-			return new WP_Error( 'missing_api_key', __( 'API key required', 'smart-form-shield' ), array( 'status' => 401 ) );
+			return new WP_Error( 'missing_api_key', __( 'API key required', 'spam-slayer-5000' ), array( 'status' => 401 ) );
 		}
 
-		$stored_key = get_option( 'smart_form_shield_api_key' );
+		$stored_key = get_option( 'spam_slayer_5000_api_key' );
 		
 		if ( empty( $stored_key ) ) {
 			// Generate API key if not exists
 			$stored_key = wp_generate_password( 32, false );
-			update_option( 'smart_form_shield_api_key', $stored_key );
+			update_option( 'spam_slayer_5000_api_key', $stored_key );
 		}
 
 		return hash_equals( $stored_key, $api_key );

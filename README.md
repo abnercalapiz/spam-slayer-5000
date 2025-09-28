@@ -1,15 +1,15 @@
-# Smart Form Shield
+# Spam Slayer 5000
 
 **Intelligent AI-powered spam filtering for WordPress contact forms**
 
-Smart Form Shield is a WordPress plugin that provides advanced spam protection for your contact forms using AI providers including OpenAI and Claude (Anthropic).
+Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection for your contact forms using AI providers including OpenAI and Claude (Anthropic).
 
 **Author:** [Jezweb](https://www.jezweb.com.au/)  
-**Version:** 1.0.3  
+**Version:** 1.0.4  
 **Requires WordPress:** 5.8 or higher  
 **Requires PHP:** 7.4 or higher  
 **License:** GPL-2.0+  
-**GitHub:** [abnercalapiz/smart-form-field](https://github.com/abnercalapiz/smart-form-field)
+**GitHub:** [abnercalapiz/spam-slayer-5000](https://github.com/abnercalapiz/spam-slayer-5000)
 
 ## Features
 
@@ -60,15 +60,15 @@ Smart Form Shield is a WordPress plugin that provides advanced spam protection f
 ## Installation
 
 ### From GitHub Release (Recommended)
-1. Download the latest release from [GitHub Releases](https://github.com/abnercalapiz/smart-form-field/releases/latest)
+1. Download the latest release from [GitHub Releases](https://github.com/abnercalapiz/spam-slayer-5000/releases/latest)
 2. Upload the ZIP file through WordPress Admin → Plugins → Add New → Upload Plugin
 3. Activate the plugin
 4. Configure your AI provider API keys
 
 ### Manual Installation
-1. Upload the `smart-form-shield` folder to `/wp-content/plugins/`
+1. Upload the `spam-slayer-5000` folder to `/wp-content/plugins/`
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Navigate to **Form Shield** in your WordPress admin menu
+3. Navigate to **Spam Slayer 5000** in your WordPress admin menu
 4. Configure at least one AI provider with your API key
 5. Enable the form integrations you want to protect
 
@@ -81,7 +81,7 @@ Smart Form Shield is a WordPress plugin that provides advanced spam protection f
    - [Claude API](https://console.anthropic.com/) - For Claude models
 
 2. **Add API Key**: 
-   - Go to **Form Shield → Settings → API Settings**
+   - Go to **Spam Slayer 5000 → Settings → API Settings**
    - Enter your API key for OpenAI and/or Claude
    - Select your preferred model
    - Test the connection
@@ -106,7 +106,7 @@ Smart Form Shield is a WordPress plugin that provides advanced spam protection f
 1. Protection is automatic for all forms once enabled
 2. Configure per-form settings:
    - Edit any Gravity Form
-   - Go to **Settings → Smart Form Shield**
+   - Go to **Settings → Spam Slayer 5000**
    - Enable/disable protection or set custom threshold
 
 ### Elementor Forms Integration
@@ -117,7 +117,7 @@ Smart Form Shield is a WordPress plugin that provides advanced spam protection f
 
 ### Managing Submissions
 
-Access **Form Shield → Submissions** to:
+Access **Spam Slayer 5000 → Submissions** to:
 - View all form submissions with spam scores
 - Filter by status (spam, approved, whitelist)
 - Search submissions by content
@@ -127,7 +127,7 @@ Access **Form Shield → Submissions** to:
 
 ### Analytics
 
-View insights at **Form Shield → Analytics**:
+View insights at **Spam Slayer 5000 → Analytics**:
 - Total submissions and spam rate
 - API costs and usage
 - Provider performance metrics
@@ -169,12 +169,12 @@ View insights at **Form Shield → Analytics**:
 
 ```php
 // Modify spam threshold globally
-add_filter('smart_form_shield_spam_threshold', function($threshold) {
+add_filter('spam_slayer_5000_spam_threshold', function($threshold) {
     return 80; // Custom threshold
 });
 
 // Customize provider selection
-add_filter('smart_form_shield_primary_provider', function($provider) {
+add_filter('spam_slayer_5000_primary_provider', function($provider) {
     return 'claude'; // Use Claude as primary
 });
 ```
@@ -182,9 +182,9 @@ add_filter('smart_form_shield_primary_provider', function($provider) {
 ### Database Tables
 
 The plugin creates three tables:
-- `wp_sfs_submissions` - Form submission records
-- `wp_sfs_api_logs` - API usage tracking
-- `wp_sfs_whitelist` - Whitelisted emails/domains
+- `wp_ss5k_submissions` - Form submission records
+- `wp_ss5k_api_logs` - API usage tracking
+- `wp_ss5k_whitelist` - Whitelisted emails/domains
 
 ## Frequently Asked Questions
 
@@ -208,7 +208,7 @@ For support, feature requests, or bug reports:
 
 ## Automatic Updates
 
-Starting with version 1.0.1, Smart Form Shield supports automatic updates directly from GitHub:
+Starting with version 1.0.1, Spam Slayer 5000 supports automatic updates directly from GitHub:
 
 - Updates are checked automatically every 12 hours
 - Update notifications appear in your WordPress admin dashboard
@@ -216,6 +216,17 @@ Starting with version 1.0.1, Smart Form Shield supports automatic updates direct
 - No configuration required - updates work automatically
 
 ## Changelog
+
+### Version 1.0.4 - 2025-09-28
+- Complete rebrand from "Smart Form Shield" to "Spam Slayer 5000"
+- Fixed critical errors on Analytics, Submissions, and Settings pages
+- Added automatic table migration from old sfs_ to new ss5k_ prefixes
+- Fixed Plugin Update Checker initialization and path issues
+- Updated all CSS class names from sfs- to ss5k- prefix
+- Fixed menu name in WordPress admin
+- Integrated Plugin Update Checker library for GitHub updates
+- Improved error handling and class loading
+- Updated all internal references to match new branding
 
 ### Version 1.0.3 - 2025-01-24
 - Test release for verifying update system
@@ -252,6 +263,6 @@ This plugin is licensed under the GPL v2 or later.
 
 ---
 
-**Smart Form Shield** - Protecting your WordPress forms with intelligent AI-powered spam detection.
+**Spam Slayer 5000** - Protecting your WordPress forms with intelligent AI-powered spam detection.
 
 Developed with ❤️ by [Jezweb](https://www.jezweb.com.au/)

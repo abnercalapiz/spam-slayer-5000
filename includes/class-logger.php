@@ -3,11 +3,11 @@
  * Logger handler.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield_Logger {
+class Spam_Slayer_5000_Logger {
 
 	/**
 	 * Log levels.
@@ -34,14 +34,14 @@ class Smart_Form_Shield_Logger {
 	 *
 	 * @var string
 	 */
-	private $log_file = 'smart-form-shield.log';
+	private $log_file = 'spam-slayer-5000.log';
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$upload_dir = wp_upload_dir();
-		$this->log_dir = $upload_dir['basedir'] . '/smart-form-shield/';
+		$this->log_dir = $upload_dir['basedir'] . '/spam-slayer-5000/';
 	}
 
 	/**
@@ -199,7 +199,7 @@ class Smart_Form_Shield_Logger {
 		$max_size = 5 * MB_IN_BYTES; // 5MB
 
 		if ( $file_size > $max_size ) {
-			$backup_file = $this->log_dir . 'smart-form-shield-' . date( 'Y-m-d-His' ) . '.log';
+			$backup_file = $this->log_dir . 'spam-slayer-5000-' . date( 'Y-m-d-His' ) . '.log';
 			rename( $log_path, $backup_file );
 
 			// Keep only last 5 backup files
@@ -214,7 +214,7 @@ class Smart_Form_Shield_Logger {
 	 * @return   bool    True if enabled.
 	 */
 	private function is_enabled() {
-		return (bool) get_option( 'smart_form_shield_enable_logging', true );
+		return (bool) get_option( 'spam_slayer_5000_enable_logging', true );
 	}
 
 	/**
@@ -225,7 +225,7 @@ class Smart_Form_Shield_Logger {
 	 * @return   bool               True if should log.
 	 */
 	private function should_log( $level ) {
-		$min_level = get_option( 'smart_form_shield_log_level', 'info' );
+		$min_level = get_option( 'spam_slayer_5000_log_level', 'info' );
 
 		if ( ! isset( $this->levels[ $level ] ) || ! isset( $this->levels[ $min_level ] ) ) {
 			return false;
@@ -253,7 +253,7 @@ class Smart_Form_Shield_Logger {
 	 * @since    1.0.0
 	 */
 	private function cleanup_old_logs() {
-		$files = glob( $this->log_dir . 'smart-form-shield-*.log' );
+		$files = glob( $this->log_dir . 'spam-slayer-5000-*.log' );
 
 		if ( count( $files ) > 5 ) {
 			usort( $files, function( $a, $b ) {

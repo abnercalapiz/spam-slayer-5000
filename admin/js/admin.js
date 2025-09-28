@@ -2,17 +2,17 @@
 	'use strict';
 
 	/**
-	 * Smart Form Shield Admin JavaScript
+	 * Spam Slayer 5000 Admin JavaScript
 	 */
 	
 	$( document ).ready( function() {
 		
 		// Test provider connection
-		$( '.sfs-test-provider' ).on( 'click', function( e ) {
+		$( '.ss5k-test-provider' ).on( 'click', function( e ) {
 			e.preventDefault();
 			
 			var $button = $( this );
-			var $status = $button.siblings( '.sfs-test-status' );
+			var $status = $button.siblings( '.ss5k-test-status' );
 			var provider = $button.data( 'provider' );
 			
 			// Get form data for this provider
@@ -39,16 +39,16 @@
 			
 			// Make AJAX request
 			$.ajax( {
-				url: smart_form_shield_admin.ajax_url,
+				url: spam_slayer_5000_admin.ajax_url,
 				type: 'POST',
 				data: {
-					action: 'sfs_test_provider',
+					action: 'ss5k_test_provider',
 					provider: provider,
 					api_key: apiKey,
 					model: model,
 					project_id: projectId,
 					region: region,
-					nonce: smart_form_shield_admin.nonce
+					nonce: spam_slayer_5000_admin.nonce
 				},
 				success: function( response ) {
 					if ( response.success ) {
@@ -67,10 +67,10 @@
 		} );
 		
 		// Handle whitelist actions
-		$( '.sfs-remove-whitelist' ).on( 'click', function( e ) {
+		$( '.ss5k-remove-whitelist' ).on( 'click', function( e ) {
 			e.preventDefault();
 			
-			if ( ! confirm( smart_form_shield_admin.confirm_remove ) ) {
+			if ( ! confirm( spam_slayer_5000_admin.confirm_remove ) ) {
 				return;
 			}
 			
@@ -78,12 +78,12 @@
 			var id = $link.data( 'id' );
 			
 			$.ajax( {
-				url: smart_form_shield_admin.ajax_url,
+				url: spam_slayer_5000_admin.ajax_url,
 				type: 'POST',
 				data: {
-					action: 'sfs_remove_whitelist',
+					action: 'ss5k_remove_whitelist',
 					id: id,
-					nonce: smart_form_shield_admin.nonce
+					nonce: spam_slayer_5000_admin.nonce
 				},
 				success: function( response ) {
 					if ( response.success ) {
@@ -96,7 +96,7 @@
 		} );
 		
 		// Handle submission actions
-		$( document ).on( 'click', '.sfs-action-btn', function( e ) {
+		$( document ).on( 'click', '.ss5k-action-btn', function( e ) {
 			e.preventDefault();
 			
 			var $button = $( this );
@@ -109,12 +109,12 @@
 				$( '#sfs-modal-body' ).html( '<p>Loading...</p>' );
 				
 				$.ajax( {
-					url: smart_form_shield_admin.ajax_url,
+					url: spam_slayer_5000_admin.ajax_url,
 					type: 'POST',
 					data: {
-						action: 'sfs_get_submission_details',
+						action: 'ss5k_get_submission_details',
 						id: id,
-						nonce: smart_form_shield_admin.nonce
+						nonce: spam_slayer_5000_admin.nonce
 					},
 					success: function( response ) {
 						if ( response.success ) {
@@ -127,13 +127,13 @@
 			} else {
 				// Handle approve/spam actions
 				$.ajax( {
-					url: smart_form_shield_admin.ajax_url,
+					url: spam_slayer_5000_admin.ajax_url,
 					type: 'POST',
 					data: {
-						action: 'sfs_update_submission_status',
+						action: 'ss5k_update_submission_status',
 						id: id,
 						status: action,
-						nonce: smart_form_shield_admin.nonce
+						nonce: spam_slayer_5000_admin.nonce
 					},
 					success: function( response ) {
 						if ( response.success ) {
@@ -146,7 +146,7 @@
 		} );
 		
 		// Handle add to whitelist
-		$( document ).on( 'click', '.sfs-add-whitelist', function( e ) {
+		$( document ).on( 'click', '.ss5k-add-whitelist', function( e ) {
 			e.preventDefault();
 			
 			var $button = $( this );
@@ -154,12 +154,12 @@
 			
 			if ( confirm( 'Add ' + email + ' to whitelist?' ) ) {
 				$.ajax( {
-					url: smart_form_shield_admin.ajax_url,
+					url: spam_slayer_5000_admin.ajax_url,
 					type: 'POST',
 					data: {
-						action: 'sfs_add_to_whitelist',
+						action: 'ss5k_add_to_whitelist',
 						email: email,
-						nonce: smart_form_shield_admin.nonce
+						nonce: spam_slayer_5000_admin.nonce
 					},
 					success: function( response ) {
 						if ( response.success ) {
@@ -172,7 +172,7 @@
 		} );
 		
 		// Modal close
-		$( '.sfs-modal-close' ).on( 'click', function() {
+		$( '.ss5k-modal-close' ).on( 'click', function() {
 			$( '#sfs-view-modal' ).hide();
 		} );
 		
@@ -188,13 +188,13 @@
 			e.preventDefault();
 			
 			var filters = $( '#sfs-filters-form' ).serialize();
-			window.location.href = smart_form_shield_admin.export_url + '&' + filters;
+			window.location.href = spam_slayer_5000_admin.export_url + '&' + filters;
 		} );
 		
 		// Chart.js initialization for analytics
 		if ( $( '#sfs-submissions-chart' ).length ) {
 			var ctx = document.getElementById( 'sfs-submissions-chart' ).getContext( '2d' );
-			var chartData = smart_form_shield_admin.chart_data;
+			var chartData = spam_slayer_5000_admin.chart_data;
 			
 			new Chart( ctx, {
 				type: 'line',
@@ -232,7 +232,7 @@
 		// Provider cost chart
 		if ( $( '#sfs-provider-chart' ).length ) {
 			var ctx = document.getElementById( 'sfs-provider-chart' ).getContext( '2d' );
-			var providerData = smart_form_shield_admin.provider_data;
+			var providerData = spam_slayer_5000_admin.provider_data;
 			
 			new Chart( ctx, {
 				type: 'doughnut',
@@ -261,7 +261,7 @@
 		}
 		
 		// Toggle API key visibility
-		$( '.sfs-toggle-api-key' ).on( 'click', function( e ) {
+		$( '.ss5k-toggle-api-key' ).on( 'click', function( e ) {
 			e.preventDefault();
 			
 			var $input = $( this ).siblings( 'input[type="password"], input[type="text"]' );

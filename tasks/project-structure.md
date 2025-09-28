@@ -5,7 +5,7 @@
 **Priority**: High
 
 ## Description
-Created the initial project structure for Smart Form Shield WordPress plugin.
+Created the initial project structure for Spam Slayer 5000 WordPress plugin.
 
 ## Implementation Details
 

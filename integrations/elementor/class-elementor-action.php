@@ -3,13 +3,13 @@
  * Elementor Form Action.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/integrations
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/integrations
  */
 
 use ElementorPro\Modules\Forms\Classes\Action_Base;
 
-class Smart_Form_Shield_Elementor_Action extends Action_Base {
+class Spam_Slayer_5000_Elementor_Action extends Action_Base {
 
 	/**
 	 * Get action name.
@@ -18,7 +18,7 @@ class Smart_Form_Shield_Elementor_Action extends Action_Base {
 	 * @return   string    Action name.
 	 */
 	public function get_name() {
-		return 'smart_form_shield';
+		return 'spam_slayer_5000';
 	}
 
 	/**
@@ -28,7 +28,7 @@ class Smart_Form_Shield_Elementor_Action extends Action_Base {
 	 * @return   string    Action label.
 	 */
 	public function get_label() {
-		return __( 'Smart Form Shield', 'smart-form-shield' );
+		return __( 'Spam Slayer 5000', 'spam-slayer-5000' );
 	}
 
 	/**
@@ -39,9 +39,9 @@ class Smart_Form_Shield_Elementor_Action extends Action_Base {
 	 */
 	public function register_settings_section( $widget ) {
 		$widget->start_controls_section(
-			'section_smart_form_shield',
+			'section_spam_slayer_5000',
 			[
-				'label' => __( 'Smart Form Shield', 'smart-form-shield' ),
+				'label' => __( 'Spam Slayer 5000', 'spam-slayer-5000' ),
 				'condition' => [
 					'submit_actions' => $this->get_name(),
 				],
@@ -49,58 +49,58 @@ class Smart_Form_Shield_Elementor_Action extends Action_Base {
 		);
 
 		$widget->add_control(
-			'smart_form_shield_enable',
+			'spam_slayer_5000_enable',
 			[
-				'label' => __( 'Enable Spam Protection', 'smart-form-shield' ),
+				'label' => __( 'Enable Spam Protection', 'spam-slayer-5000' ),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'smart-form-shield' ),
-				'label_off' => __( 'No', 'smart-form-shield' ),
+				'label_on' => __( 'Yes', 'spam-slayer-5000' ),
+				'label_off' => __( 'No', 'spam-slayer-5000' ),
 				'return_value' => 'yes',
 				'default' => 'yes',
 			]
 		);
 
 		$widget->add_control(
-			'smart_form_shield_threshold',
+			'spam_slayer_5000_threshold',
 			[
-				'label' => __( 'Spam Threshold', 'smart-form-shield' ),
+				'label' => __( 'Spam Threshold', 'spam-slayer-5000' ),
 				'type' => \Elementor\Controls_Manager::NUMBER,
 				'min' => 0,
 				'max' => 100,
 				'step' => 5,
-				'default' => get_option( 'smart_form_shield_spam_threshold', 75 ),
-				'description' => __( 'Submissions with spam score above this threshold will be blocked (0-100)', 'smart-form-shield' ),
+				'default' => get_option( 'spam_slayer_5000_spam_threshold', 75 ),
+				'description' => __( 'Submissions with spam score above this threshold will be blocked (0-100)', 'spam-slayer-5000' ),
 				'condition' => [
-					'smart_form_shield_enable' => 'yes',
+					'spam_slayer_5000_enable' => 'yes',
 				],
 			]
 		);
 
 		$widget->add_control(
-			'smart_form_shield_error_message',
+			'spam_slayer_5000_error_message',
 			[
-				'label' => __( 'Error Message', 'smart-form-shield' ),
+				'label' => __( 'Error Message', 'spam-slayer-5000' ),
 				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'default' => __( 'Your submission has been blocked as potential spam. Please try again or contact support.', 'smart-form-shield' ),
-				'placeholder' => __( 'Enter custom error message', 'smart-form-shield' ),
+				'default' => __( 'Your submission has been blocked as potential spam. Please try again or contact support.', 'spam-slayer-5000' ),
+				'placeholder' => __( 'Enter custom error message', 'spam-slayer-5000' ),
 				'condition' => [
-					'smart_form_shield_enable' => 'yes',
+					'spam_slayer_5000_enable' => 'yes',
 				],
 			]
 		);
 
 		$widget->add_control(
-			'smart_form_shield_whitelist_logged_in',
+			'spam_slayer_5000_whitelist_logged_in',
 			[
-				'label' => __( 'Whitelist Logged-in Users', 'smart-form-shield' ),
+				'label' => __( 'Whitelist Logged-in Users', 'spam-slayer-5000' ),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'smart-form-shield' ),
-				'label_off' => __( 'No', 'smart-form-shield' ),
+				'label_on' => __( 'Yes', 'spam-slayer-5000' ),
+				'label_off' => __( 'No', 'spam-slayer-5000' ),
 				'return_value' => 'yes',
 				'default' => 'no',
-				'description' => __( 'Automatically approve submissions from logged-in users', 'smart-form-shield' ),
+				'description' => __( 'Automatically approve submissions from logged-in users', 'spam-slayer-5000' ),
 				'condition' => [
-					'smart_form_shield_enable' => 'yes',
+					'spam_slayer_5000_enable' => 'yes',
 				],
 			]
 		);
@@ -108,15 +108,15 @@ class Smart_Form_Shield_Elementor_Action extends Action_Base {
 		$providers = $this->get_available_providers();
 		if ( ! empty( $providers ) ) {
 			$widget->add_control(
-				'smart_form_shield_provider',
+				'spam_slayer_5000_provider',
 				[
-					'label' => __( 'AI Provider', 'smart-form-shield' ),
+					'label' => __( 'AI Provider', 'spam-slayer-5000' ),
 					'type' => \Elementor\Controls_Manager::SELECT,
 					'options' => $providers,
-					'default' => get_option( 'smart_form_shield_primary_provider', 'openai' ),
-					'description' => __( 'Select which AI provider to use for this form', 'smart-form-shield' ),
+					'default' => get_option( 'spam_slayer_5000_primary_provider', 'openai' ),
+					'description' => __( 'Select which AI provider to use for this form', 'spam-slayer-5000' ),
 					'condition' => [
-						'smart_form_shield_enable' => 'yes',
+						'spam_slayer_5000_enable' => 'yes',
 					],
 				]
 			);
@@ -138,13 +138,13 @@ class Smart_Form_Shield_Elementor_Action extends Action_Base {
 		
 		$form_settings = $record->get( 'form_settings' );
 		
-		if ( isset( $form_settings['smart_form_shield_enable'] ) && 
-			$form_settings['smart_form_shield_enable'] === 'yes' ) {
+		if ( isset( $form_settings['spam_slayer_5000_enable'] ) && 
+			$form_settings['spam_slayer_5000_enable'] === 'yes' ) {
 			
 			// Add success message if needed
-			$ajax_handler->add_response_data( 'smart_form_shield', [
+			$ajax_handler->add_response_data( 'spam_slayer_5000', [
 				'status' => 'validated',
-				'message' => __( 'Form validated by Smart Form Shield', 'smart-form-shield' ),
+				'message' => __( 'Form validated by Spam Slayer 5000', 'spam-slayer-5000' ),
 			] );
 		}
 	}
@@ -158,7 +158,7 @@ class Smart_Form_Shield_Elementor_Action extends Action_Base {
 	public function on_export( $element ) {
 		// Remove sensitive data when exporting
 		unset(
-			$element['smart_form_shield_provider']
+			$element['spam_slayer_5000_provider']
 		);
 		
 		return $element;
@@ -172,7 +172,7 @@ class Smart_Form_Shield_Elementor_Action extends Action_Base {
 	 */
 	private function get_available_providers() {
 		$providers = array();
-		$available = Smart_Form_Shield_Provider_Factory::get_available_providers();
+		$available = Spam_Slayer_5000_Provider_Factory::get_available_providers();
 		
 		foreach ( $available as $key => $provider ) {
 			$providers[ $key ] = $provider->get_name();

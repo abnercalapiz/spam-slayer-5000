@@ -3,11 +3,11 @@
  * Fired during plugin deactivation.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield_Deactivator {
+class Spam_Slayer_5000_Deactivator {
 
 	/**
 	 * Deactivation hook callback.
@@ -16,9 +16,9 @@ class Smart_Form_Shield_Deactivator {
 	 */
 	public static function deactivate() {
 		// Unschedule cron events
-		$timestamp = wp_next_scheduled( 'smart_form_shield_daily_cleanup' );
+		$timestamp = wp_next_scheduled( 'spam_slayer_5000_daily_cleanup' );
 		if ( $timestamp ) {
-			wp_unschedule_event( $timestamp, 'smart_form_shield_daily_cleanup' );
+			wp_unschedule_event( $timestamp, 'spam_slayer_5000_daily_cleanup' );
 		}
 
 		// Clear any transients
@@ -39,8 +39,8 @@ class Smart_Form_Shield_Deactivator {
 		// Delete all transients with our prefix
 		$wpdb->query(
 			"DELETE FROM {$wpdb->options} 
-			WHERE option_name LIKE '_transient_sfs_%' 
-			OR option_name LIKE '_transient_timeout_sfs_%'"
+			WHERE option_name LIKE '_transient_ss5k_%' 
+			OR option_name LIKE '_transient_timeout_ss5k_%'"
 		);
 	}
 }

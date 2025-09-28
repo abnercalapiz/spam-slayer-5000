@@ -1,5 +1,5 @@
 /**
- * Public JavaScript for Smart Form Shield
+ * Public JavaScript for Spam Slayer 5000
  *
  * @since      1.0.0
  * @package    Smart_Form_Shield
@@ -45,10 +45,10 @@
          */
         setupHoneypot: function() {
             // Add autocomplete="off" to honeypot fields
-            $('[name="sfs_website"]').attr('autocomplete', 'off');
+            $('[name="ss5k_website"]').attr('autocomplete', 'off');
             
             // Ensure honeypot stays empty
-            $('[name="sfs_website"]').val('');
+            $('[name="ss5k_website"]').val('');
         },
 
         /**
@@ -56,7 +56,7 @@
          */
         setupRateLimiting: function() {
             // Check if rate limit message should be shown
-            var rateLimitCookie = this.getCookie('sfs_rate_limit');
+            var rateLimitCookie = this.getCookie('ss5k_rate_limit');
             if (rateLimitCookie) {
                 this.showRateLimitMessage();
             }
@@ -99,7 +99,7 @@
         validateForm: function($form) {
             // Check honeypot
             if (!this.checkHoneypot($form)) {
-                console.log('Smart Form Shield: Honeypot field detected');
+                console.log('Spam Slayer 5000: Honeypot field detected');
                 return false;
             }
 
@@ -120,15 +120,15 @@
             
             // Show loading state
             $form.addClass('sfs-validating');
-            this.showMessage($form, sfs_public.strings.validating, 'info');
+            this.showMessage($form, ss5k_public.strings.validating, 'info');
 
             $.ajax({
-                url: sfs_public.ajax_url,
+                url: ss5k_public.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'sfs_validate_form',
+                    action: 'ss5k_validate_form',
                     form_data: formData,
-                    nonce: sfs_public.nonce
+                    nonce: ss5k_public.nonce
                 },
                 success: function(response) {
                     if (response.success && !response.data.is_spam) {
@@ -142,7 +142,7 @@
                 },
                 error: function() {
                     // On error, allow submission (fail open)
-                    console.error('Smart Form Shield: Validation failed, allowing submission');
+                    console.error('Spam Slayer 5000: Validation failed, allowing submission');
                     $form.addClass('sfs-validated');
                     $form.submit();
                 },
@@ -163,7 +163,7 @@
                 var name = $field.attr('name');
                 var type = $field.attr('type');
                 
-                if (name && name !== 'sfs_website') {
+                if (name && name !== 'ss5k_website') {
                     if (type === 'checkbox' || type === 'radio') {
                         if ($field.is(':checked')) {
                             data[name] = $field.val();
@@ -181,7 +181,7 @@
          * Check honeypot field
          */
         checkHoneypot: function($form) {
-            var $honeypot = $form.find('[name="sfs_website"]');
+            var $honeypot = $form.find('[name="ss5k_website"]');
             return $honeypot.length === 0 || $honeypot.val() === '';
         },
 
@@ -189,7 +189,7 @@
          * Check rate limit
          */
         checkRateLimit: function() {
-            var submissions = parseInt(this.getCookie('sfs_submissions') || 0);
+            var submissions = parseInt(this.getCookie('ss5k_submissions') || 0);
             var maxSubmissions = 5; // Default, should match server setting
 
             if (submissions >= maxSubmissions) {
@@ -197,7 +197,7 @@
             }
 
             // Increment counter
-            this.setCookie('sfs_submissions', submissions + 1, 1/24/60); // 1 minute
+            this.setCookie('ss5k_submissions', submissions + 1, 1/24/60); // 1 minute
             return true;
         },
 
@@ -210,7 +210,7 @@
 
             // Log to console in development
             if (window.location.hostname === 'localhost') {
-                console.log('Smart Form Shield: Spam detected', data);
+                console.log('Spam Slayer 5000: Spam detected', data);
             }
 
             // Trigger custom event
@@ -222,7 +222,7 @@
          */
         showRateLimitMessage: function() {
             var message = 'You have exceeded the maximum number of submissions. Please try again later.';
-            $('.sfs-rate-limit-message').remove();
+            $('.ss5k-rate-limit-message').remove();
             
             $('form').each(function() {
                 $(this).before('<div class="sfs-rate-limit-message">' + message + '</div>');
@@ -233,7 +233,7 @@
          * Show message
          */
         showMessage: function($form, message, type) {
-            var $message = $form.find('.sfs-validation-message');
+            var $message = $form.find('.ss5k-validation-message');
             
             if ($message.length === 0) {
                 $message = $('<div class="sfs-validation-message"></div>');

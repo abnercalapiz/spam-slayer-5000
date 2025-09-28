@@ -3,17 +3,17 @@
  * The core plugin class.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield {
+class Spam_Slayer_5000 {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks.
 	 *
 	 * @since    1.0.0
-	 * @var      Smart_Form_Shield_Loader    $loader
+	 * @var      Spam_Slayer_5000_Loader    $loader
 	 */
 	protected $loader;
 
@@ -39,8 +39,8 @@ class Smart_Form_Shield {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		$this->version = SMART_FORM_SHIELD_VERSION;
-		$this->plugin_name = 'smart-form-shield';
+		$this->version = SPAM_SLAYER_5000_VERSION;
+		$this->plugin_name = 'spam-slayer-5000';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -59,47 +59,47 @@ class Smart_Form_Shield {
 	 */
 	private function load_dependencies() {
 		// Core classes
-		require_once SMART_FORM_SHIELD_PATH . 'includes/class-loader.php';
-		require_once SMART_FORM_SHIELD_PATH . 'includes/class-i18n.php';
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-loader.php';
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-i18n.php';
 		
 		// Database handler
-		require_once SMART_FORM_SHIELD_PATH . 'database/class-database.php';
+		require_once SPAM_SLAYER_5000_PATH . 'database/class-database.php';
 		
 		// Provider classes
-		require_once SMART_FORM_SHIELD_PATH . 'providers/class-provider-interface.php';
-		require_once SMART_FORM_SHIELD_PATH . 'providers/class-provider-factory.php';
-		require_once SMART_FORM_SHIELD_PATH . 'providers/class-openai-provider.php';
-		require_once SMART_FORM_SHIELD_PATH . 'providers/class-claude-provider.php';
+		require_once SPAM_SLAYER_5000_PATH . 'providers/class-provider-interface.php';
+		require_once SPAM_SLAYER_5000_PATH . 'providers/class-provider-factory.php';
+		require_once SPAM_SLAYER_5000_PATH . 'providers/class-openai-provider.php';
+		require_once SPAM_SLAYER_5000_PATH . 'providers/class-claude-provider.php';
 		
 		// Admin classes
-		require_once SMART_FORM_SHIELD_PATH . 'admin/class-admin.php';
-		require_once SMART_FORM_SHIELD_PATH . 'admin/class-admin-ajax.php';
-		require_once SMART_FORM_SHIELD_PATH . 'admin/class-admin-analytics.php';
+		require_once SPAM_SLAYER_5000_PATH . 'admin/class-admin.php';
+		require_once SPAM_SLAYER_5000_PATH . 'admin/class-admin-ajax.php';
+		require_once SPAM_SLAYER_5000_PATH . 'admin/class-admin-analytics.php';
 		
 		// Public classes
-		require_once SMART_FORM_SHIELD_PATH . 'public/class-public.php';
+		require_once SPAM_SLAYER_5000_PATH . 'public/class-public.php';
 		
 		// Integration classes
 		if ( class_exists( 'GFForms' ) ) {
-			require_once SMART_FORM_SHIELD_PATH . 'integrations/gravity-forms/class-gravity-forms.php';
+			require_once SPAM_SLAYER_5000_PATH . 'integrations/gravity-forms/class-gravity-forms.php';
 		}
 		
 		if ( did_action( 'elementor/loaded' ) ) {
-			require_once SMART_FORM_SHIELD_PATH . 'integrations/elementor/class-elementor.php';
+			require_once SPAM_SLAYER_5000_PATH . 'integrations/elementor/class-elementor.php';
 		}
 		
 		// REST API
-		require_once SMART_FORM_SHIELD_PATH . 'includes/class-rest-api.php';
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-rest-api.php';
 		
 		// Utilities
-		require_once SMART_FORM_SHIELD_PATH . 'includes/class-validator.php';
-		require_once SMART_FORM_SHIELD_PATH . 'includes/class-cache.php';
-		require_once SMART_FORM_SHIELD_PATH . 'includes/class-logger.php';
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-validator.php';
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-cache.php';
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-logger.php';
 		
 		// GitHub Updater
-		require_once SMART_FORM_SHIELD_PATH . 'includes/class-github-updater.php';
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-github-updater.php';
 
-		$this->loader = new Smart_Form_Shield_Loader();
+		$this->loader = new Spam_Slayer_5000_Loader();
 	}
 
 	/**
@@ -108,7 +108,7 @@ class Smart_Form_Shield {
 	 * @since    1.0.0
 	 */
 	private function set_locale() {
-		$plugin_i18n = new Smart_Form_Shield_i18n();
+		$plugin_i18n = new Spam_Slayer_5000_i18n();
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
 
@@ -118,7 +118,7 @@ class Smart_Form_Shield {
 	 * @since    1.0.0
 	 */
 	private function define_admin_hooks() {
-		$plugin_admin = new Smart_Form_Shield_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Spam_Slayer_5000_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -129,22 +129,22 @@ class Smart_Form_Shield {
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin, 'add_dashboard_widget' );
 		
 		// Plugin action links
-		$this->loader->add_filter( 'plugin_action_links_' . SMART_FORM_SHIELD_BASENAME, $plugin_admin, 'add_action_links' );
+		$this->loader->add_filter( 'plugin_action_links_' . SPAM_SLAYER_5000_BASENAME, $plugin_admin, 'add_action_links' );
 		
 		// Admin notices
 		$this->loader->add_action( 'admin_notices', $plugin_admin, 'display_admin_notices' );
 		
 		// AJAX handlers
-		$plugin_ajax = new Smart_Form_Shield_Admin_Ajax( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_action( 'wp_ajax_sfs_get_submissions', $plugin_ajax, 'get_submissions' );
-		$this->loader->add_action( 'wp_ajax_sfs_get_submission_details', $plugin_ajax, 'get_submission_details' );
-		$this->loader->add_action( 'wp_ajax_sfs_update_submission_status', $plugin_ajax, 'update_submission_status' );
-		$this->loader->add_action( 'wp_ajax_sfs_bulk_action', $plugin_ajax, 'handle_bulk_action' );
-		$this->loader->add_action( 'wp_ajax_sfs_test_provider', $plugin_ajax, 'test_provider' );
-		$this->loader->add_action( 'wp_ajax_sfs_export_data', $plugin_ajax, 'export_data' );
-		$this->loader->add_action( 'wp_ajax_sfs_get_analytics', $plugin_ajax, 'get_analytics' );
-		$this->loader->add_action( 'wp_ajax_sfs_add_to_whitelist', $plugin_ajax, 'add_to_whitelist' );
-		$this->loader->add_action( 'wp_ajax_sfs_remove_from_whitelist', $plugin_ajax, 'remove_from_whitelist' );
+		$plugin_ajax = new Spam_Slayer_5000_Admin_Ajax( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'wp_ajax_ss5k_get_submissions', $plugin_ajax, 'get_submissions' );
+		$this->loader->add_action( 'wp_ajax_ss5k_get_submission_details', $plugin_ajax, 'get_submission_details' );
+		$this->loader->add_action( 'wp_ajax_ss5k_update_submission_status', $plugin_ajax, 'update_submission_status' );
+		$this->loader->add_action( 'wp_ajax_ss5k_bulk_action', $plugin_ajax, 'handle_bulk_action' );
+		$this->loader->add_action( 'wp_ajax_ss5k_test_provider', $plugin_ajax, 'test_provider' );
+		$this->loader->add_action( 'wp_ajax_ss5k_export_data', $plugin_ajax, 'export_data' );
+		$this->loader->add_action( 'wp_ajax_ss5k_get_analytics', $plugin_ajax, 'get_analytics' );
+		$this->loader->add_action( 'wp_ajax_ss5k_add_to_whitelist', $plugin_ajax, 'add_to_whitelist' );
+		$this->loader->add_action( 'wp_ajax_ss5k_remove_from_whitelist', $plugin_ajax, 'remove_from_whitelist' );
 	}
 
 	/**
@@ -153,7 +153,7 @@ class Smart_Form_Shield {
 	 * @since    1.0.0
 	 */
 	private function define_public_hooks() {
-		$plugin_public = new Smart_Form_Shield_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Spam_Slayer_5000_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -166,19 +166,19 @@ class Smart_Form_Shield {
 	 */
 	private function define_integration_hooks() {
 		// Gravity Forms integration
-		if ( class_exists( 'GFForms' ) && class_exists( 'Smart_Form_Shield_Gravity_Forms' ) && get_option( 'smart_form_shield_enable_gravity_forms', true ) ) {
-			$gravity_forms = new Smart_Form_Shield_Gravity_Forms( $this->get_plugin_name(), $this->get_version() );
+		if ( class_exists( 'GFForms' ) && class_exists( 'Spam_Slayer_5000_Gravity_Forms' ) && get_option( 'spam_slayer_5000_enable_gravity_forms', true ) ) {
+			$gravity_forms = new Spam_Slayer_5000_Gravity_Forms( $this->get_plugin_name(), $this->get_version() );
 			
 			$this->loader->add_filter( 'gform_validation', $gravity_forms, 'validate_submission', 10, 1 );
 			$this->loader->add_filter( 'gform_entry_post_save', $gravity_forms, 'log_submission', 10, 2 );
 			$this->loader->add_action( 'gform_after_submission', $gravity_forms, 'after_submission', 10, 2 );
 			$this->loader->add_filter( 'gform_form_settings_menu', $gravity_forms, 'add_form_settings_menu', 10, 2 );
-			$this->loader->add_action( 'gform_form_settings_page_smart_form_shield', $gravity_forms, 'form_settings_page' );
+			$this->loader->add_action( 'gform_form_settings_page_spam_slayer_5000', $gravity_forms, 'form_settings_page' );
 		}
 		
 		// Elementor Forms integration
-		if ( did_action( 'elementor/loaded' ) && class_exists( 'Smart_Form_Shield_Elementor' ) && get_option( 'smart_form_shield_enable_elementor_forms', true ) ) {
-			$elementor_forms = new Smart_Form_Shield_Elementor( $this->get_plugin_name(), $this->get_version() );
+		if ( did_action( 'elementor/loaded' ) && class_exists( 'Spam_Slayer_5000_Elementor' ) && get_option( 'spam_slayer_5000_enable_elementor_forms', true ) ) {
+			$elementor_forms = new Spam_Slayer_5000_Elementor( $this->get_plugin_name(), $this->get_version() );
 			
 			$this->loader->add_action( 'elementor_pro/forms/validation', $elementor_forms, 'validate_submission', 10, 2 );
 			$this->loader->add_action( 'elementor_pro/forms/new_record', $elementor_forms, 'log_submission', 10, 2 );
@@ -192,7 +192,7 @@ class Smart_Form_Shield {
 	 * @since    1.0.0
 	 */
 	private function define_api_hooks() {
-		$rest_api = new Smart_Form_Shield_REST_API( $this->get_plugin_name(), $this->get_version() );
+		$rest_api = new Spam_Slayer_5000_REST_API( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'rest_api_init', $rest_api, 'register_routes' );
 	}
 
@@ -202,7 +202,7 @@ class Smart_Form_Shield {
 	 * @since    1.0.0
 	 */
 	private function define_cron_hooks() {
-		$this->loader->add_action( 'smart_form_shield_daily_cleanup', $this, 'daily_cleanup' );
+		$this->loader->add_action( 'spam_slayer_5000_daily_cleanup', $this, 'daily_cleanup' );
 	}
 
 	/**
@@ -228,7 +228,7 @@ class Smart_Form_Shield {
 	 * The reference to the class that orchestrates the hooks.
 	 *
 	 * @since     1.0.0
-	 * @return    Smart_Form_Shield_Loader    Orchestrates the hooks.
+	 * @return    Spam_Slayer_5000_Loader    Orchestrates the hooks.
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -250,8 +250,8 @@ class Smart_Form_Shield {
 	 * @since    1.0.0
 	 */
 	public function daily_cleanup() {
-		$database = new Smart_Form_Shield_Database();
-		$retention_days = get_option( 'smart_form_shield_retention_days', 30 );
+		$database = new Spam_Slayer_5000_Database();
+		$retention_days = get_option( 'spam_slayer_5000_retention_days', 30 );
 		
 		// Clean old submissions
 		$database->cleanup_old_submissions( $retention_days );
@@ -260,11 +260,11 @@ class Smart_Form_Shield {
 		$database->cleanup_old_api_logs( $retention_days );
 		
 		// Clear expired cache
-		$cache = new Smart_Form_Shield_Cache();
+		$cache = new Spam_Slayer_5000_Cache();
 		$cache->cleanup();
 		
 		// Send daily report if enabled
-		if ( get_option( 'smart_form_shield_daily_report', false ) ) {
+		if ( get_option( 'spam_slayer_5000_daily_report', false ) ) {
 			$this->send_daily_report();
 		}
 	}
@@ -275,11 +275,11 @@ class Smart_Form_Shield {
 	 * @since    1.0.0
 	 */
 	private function send_daily_report() {
-		$analytics = new Smart_Form_Shield_Admin_Analytics( $this->get_plugin_name(), $this->get_version() );
+		$analytics = new Spam_Slayer_5000_Admin_Analytics( $this->get_plugin_name(), $this->get_version() );
 		$report = $analytics->generate_daily_report();
 		
-		$to = get_option( 'smart_form_shield_notification_email', get_option( 'admin_email' ) );
-		$subject = __( 'Smart Form Shield Daily Report', 'smart-form-shield' );
+		$to = get_option( 'spam_slayer_5000_notification_email', get_option( 'admin_email' ) );
+		$subject = __( 'Spam Slayer 5000 Daily Report', 'spam-slayer-5000' );
 		
 		wp_mail( $to, $subject, $report, array( 'Content-Type: text/html; charset=UTF-8' ) );
 	}
@@ -290,6 +290,6 @@ class Smart_Form_Shield {
 	 * @since    1.1.0
 	 */
 	private function init_github_updater() {
-		new Smart_Form_Shield_GitHub_Updater( SMART_FORM_SHIELD_BASENAME );
+		new Spam_Slayer_5000_GitHub_Updater( SPAM_SLAYER_5000_BASENAME );
 	}
 }

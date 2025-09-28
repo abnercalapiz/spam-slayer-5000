@@ -1,4 +1,4 @@
-# Smart Form Shield Plugin Activation Issues
+# Spam Slayer 5000 Plugin Activation Issues
 
 ## Potential Causes of Fatal Error
 
@@ -37,13 +37,13 @@ function smart_form_shield_activate() {
         // Check PHP version
         if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
             deactivate_plugins( plugin_basename( __FILE__ ) );
-            wp_die( esc_html__( 'Smart Form Shield requires PHP 7.4 or higher. Please upgrade your PHP version.', 'smart-form-shield' ) );
+            wp_die( esc_html__( 'Spam Slayer 5000 requires PHP 7.4 or higher. Please upgrade your PHP version.', 'smart-form-shield' ) );
         }
         
         require_once plugin_dir_path( __FILE__ ) . 'includes/class-activator.php';
         Smart_Form_Shield_Activator::activate();
     } catch ( Exception $e ) {
-        error_log( 'Smart Form Shield Activation Error: ' . $e->getMessage() );
+        error_log( 'Spam Slayer 5000 Activation Error: ' . $e->getMessage() );
         wp_die( 'Plugin activation failed: ' . esc_html( $e->getMessage() ) );
     }
 }
@@ -99,7 +99,7 @@ Create a simple error logger to help debug:
 if ( ! function_exists( 'sfs_log_error' ) ) {
     function sfs_log_error( $message ) {
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-            error_log( 'Smart Form Shield: ' . $message );
+            error_log( 'Spam Slayer 5000: ' . $message );
         }
     }
 }

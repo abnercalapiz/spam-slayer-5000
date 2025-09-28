@@ -3,11 +3,11 @@
  * The public-facing functionality of the plugin.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/public
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/public
  */
 
-class Smart_Form_Shield_Public {
+class Spam_Slayer_5000_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -47,7 +47,7 @@ class Smart_Form_Shield_Public {
 		if ( $this->should_enqueue_assets() ) {
 			wp_enqueue_style( 
 				$this->plugin_name, 
-				SMART_FORM_SHIELD_URL . 'public/css/smart-form-shield-public.css', 
+				SPAM_SLAYER_5000_URL . 'public/css/spam-slayer-5000-public.css', 
 				array(), 
 				$this->version, 
 				'all' 
@@ -65,18 +65,18 @@ class Smart_Form_Shield_Public {
 		if ( $this->should_enqueue_assets() ) {
 			wp_enqueue_script( 
 				$this->plugin_name, 
-				SMART_FORM_SHIELD_URL . 'public/js/smart-form-shield-public.js', 
+				SPAM_SLAYER_5000_URL . 'public/js/spam-slayer-5000-public.js', 
 				array( 'jquery' ), 
 				$this->version, 
 				false 
 			);
 
-			wp_localize_script( $this->plugin_name, 'sfs_public', array(
+			wp_localize_script( $this->plugin_name, 'ss5k_public', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce' => wp_create_nonce( 'sfs_public_nonce' ),
+				'nonce' => wp_create_nonce( 'ss5k_public_nonce' ),
 				'strings' => array(
-					'validating' => __( 'Validating submission...', 'smart-form-shield' ),
-					'error' => __( 'An error occurred. Please try again.', 'smart-form-shield' ),
+					'validating' => __( 'Validating submission...', 'spam-slayer-5000' ),
+					'error' => __( 'An error occurred. Please try again.', 'spam-slayer-5000' ),
 				),
 			) );
 		}
@@ -93,7 +93,7 @@ class Smart_Form_Shield_Public {
 		// This helps with performance by not loading unnecessary assets
 		
 		// Check for Gravity Forms
-		if ( class_exists( 'GFForms' ) && get_option( 'smart_form_shield_enable_gravity_forms', true ) ) {
+		if ( class_exists( 'GFForms' ) && get_option( 'spam_slayer_5000_enable_gravity_forms', true ) ) {
 			if ( is_singular() ) {
 				global $post;
 				if ( has_shortcode( $post->post_content, 'gravityform' ) ) {
@@ -103,7 +103,7 @@ class Smart_Form_Shield_Public {
 		}
 
 		// Check for Elementor Forms
-		if ( did_action( 'elementor/loaded' ) && get_option( 'smart_form_shield_enable_elementor_forms', true ) ) {
+		if ( did_action( 'elementor/loaded' ) && get_option( 'spam_slayer_5000_enable_elementor_forms', true ) ) {
 			if ( \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
 				return true;
 			}
@@ -117,7 +117,7 @@ class Smart_Form_Shield_Public {
 		}
 
 		// Allow filtering
-		return apply_filters( 'smart_form_shield_enqueue_public_assets', false );
+		return apply_filters( 'spam_slayer_5000_enqueue_public_assets', false );
 	}
 
 	/**
@@ -128,13 +128,13 @@ class Smart_Form_Shield_Public {
 	 * @return   string                  Modified form HTML.
 	 */
 	public function add_honeypot_field( $form_html ) {
-		if ( ! get_option( 'smart_form_shield_enable_honeypot', true ) ) {
+		if ( ! get_option( 'spam_slayer_5000_enable_honeypot', true ) ) {
 			return $form_html;
 		}
 
 		$honeypot_field = '<div style="position: absolute; left: -9999px;">';
-		$honeypot_field .= '<label for="sfs_website">' . __( 'Website', 'smart-form-shield' ) . '</label>';
-		$honeypot_field .= '<input type="text" name="sfs_website" id="sfs_website" value="" tabindex="-1" autocomplete="off">';
+		$honeypot_field .= '<label for="ss5k_website">' . __( 'Website', 'spam-slayer-5000' ) . '</label>';
+		$honeypot_field .= '<input type="text" name="ss5k_website" id="ss5k_website" value="" tabindex="-1" autocomplete="off">';
 		$honeypot_field .= '</div>';
 
 		// Insert before closing form tag
@@ -150,11 +150,11 @@ class Smart_Form_Shield_Public {
 	 * @return   bool    True if honeypot is empty (legitimate).
 	 */
 	public static function check_honeypot() {
-		if ( ! get_option( 'smart_form_shield_enable_honeypot', true ) ) {
+		if ( ! get_option( 'spam_slayer_5000_enable_honeypot', true ) ) {
 			return true;
 		}
 
-		return empty( $_POST['sfs_website'] );
+		return empty( $_POST['ss5k_website'] );
 	}
 
 	/**
@@ -170,8 +170,8 @@ class Smart_Form_Shield_Public {
 		?>
 		<noscript>
 			<style>
-				.sfs-js-required { display: none !important; }
-				.sfs-noscript-message { 
+				.ss5k-js-required { display: none !important; }
+				.ss5k-noscript-message { 
 					display: block !important; 
 					padding: 15px; 
 					background: #fff3cd; 
@@ -182,7 +182,7 @@ class Smart_Form_Shield_Public {
 				}
 			</style>
 			<div class="sfs-noscript-message" style="display: none;">
-				<?php esc_html_e( 'JavaScript is required for form spam protection. Please enable JavaScript in your browser.', 'smart-form-shield' ); ?>
+				<?php esc_html_e( 'JavaScript is required for form spam protection. Please enable JavaScript in your browser.', 'spam-slayer-5000' ); ?>
 			</div>
 		</noscript>
 		<?php
@@ -195,7 +195,7 @@ class Smart_Form_Shield_Public {
 	 * @return   bool    True if within rate limit.
 	 */
 	public static function check_rate_limit() {
-		if ( ! get_option( 'smart_form_shield_enable_rate_limit', true ) ) {
+		if ( ! get_option( 'spam_slayer_5000_enable_rate_limit', true ) ) {
 			return true;
 		}
 
@@ -204,7 +204,7 @@ class Smart_Form_Shield_Public {
 			return true;
 		}
 
-		$transient_key = 'sfs_rate_limit_' . md5( $ip );
+		$transient_key = 'ss5k_rate_limit_' . md5( $ip );
 		$submissions = get_transient( $transient_key );
 
 		if ( $submissions === false ) {
@@ -212,7 +212,7 @@ class Smart_Form_Shield_Public {
 			return true;
 		}
 
-		$max_submissions = get_option( 'smart_form_shield_rate_limit_max', 5 );
+		$max_submissions = get_option( 'spam_slayer_5000_rate_limit_max', 5 );
 		
 		if ( $submissions >= $max_submissions ) {
 			return false;
@@ -251,7 +251,7 @@ class Smart_Form_Shield_Public {
 	 */
 	public function add_body_class( $classes ) {
 		if ( $this->should_enqueue_assets() ) {
-			$classes[] = 'smart-form-shield-active';
+			$classes[] = 'spam-slayer-5000-active';
 		}
 
 		return $classes;

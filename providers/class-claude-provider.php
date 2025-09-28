@@ -3,11 +3,11 @@
  * Claude Provider Implementation.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/providers
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/providers
  */
 
-class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_Interface {
+class Spam_Slayer_5000_Claude_Provider implements Spam_Slayer_5000_Provider_Interface {
 
 	/**
 	 * API endpoint.
@@ -60,7 +60,7 @@ class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_In
 	 * Constructor.
 	 */
 	public function __construct() {
-		$settings = get_option( 'smart_form_shield_claude_settings', array() );
+		$settings = get_option( 'spam_slayer_5000_claude_settings', array() );
 		
 		// Debug logging
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -69,8 +69,8 @@ class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_In
 		
 		// Decrypt API key if needed
 		if ( isset( $settings['api_key'] ) && ! empty( $settings['api_key'] ) ) {
-			require_once SMART_FORM_SHIELD_PATH . 'includes/class-security.php';
-			$decrypted = Smart_Form_Shield_Security::decrypt( $settings['api_key'] );
+			require_once SPAM_SLAYER_5000_PATH . 'includes/class-security.php';
+			$decrypted = Spam_Slayer_5000_Security::decrypt( $settings['api_key'] );
 			$this->api_key = ! empty( $decrypted ) ? $decrypted : $settings['api_key'];
 			
 			// Debug logging
@@ -104,7 +104,7 @@ class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_In
 				'is_spam' => false,
 				'spam_score' => 0,
 				'provider' => $this->get_name(),
-				'error' => __( 'Provider not available', 'smart-form-shield' ),
+				'error' => __( 'Provider not available', 'spam-slayer-5000' ),
 			);
 		}
 
@@ -147,7 +147,7 @@ class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_In
 			}
 
 			if ( ! isset( $data['content'][0]['text'] ) ) {
-				throw new Exception( __( 'Invalid response format', 'smart-form-shield' ) );
+				throw new Exception( __( 'Invalid response format', 'spam-slayer-5000' ) );
 			}
 
 			// Extract JSON from response
@@ -155,13 +155,13 @@ class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_In
 			preg_match( '/\{[^}]+\}/', $response_text, $matches );
 			
 			if ( empty( $matches[0] ) ) {
-				throw new Exception( __( 'Could not parse response', 'smart-form-shield' ) );
+				throw new Exception( __( 'Could not parse response', 'spam-slayer-5000' ) );
 			}
 
 			$analysis = json_decode( $matches[0], true );
 			
 			if ( ! is_array( $analysis ) ) {
-				throw new Exception( __( 'Invalid analysis format', 'smart-form-shield' ) );
+				throw new Exception( __( 'Invalid analysis format', 'spam-slayer-5000' ) );
 			}
 
 			// Get actual token counts from API response
@@ -173,7 +173,7 @@ class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_In
 			$cost = $this->calculate_cost_with_actual_tokens( $input_tokens, $output_tokens );
 
 			// Log API call
-			$database = new Smart_Form_Shield_Database();
+			$database = new Spam_Slayer_5000_Database();
 			$database->log_api_call( array(
 				'provider' => 'claude',
 				'model' => $this->model,
@@ -198,7 +198,7 @@ class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_In
 
 		} catch ( Exception $e ) {
 			// Log error
-			$database = new Smart_Form_Shield_Database();
+			$database = new Spam_Slayer_5000_Database();
 			$database->log_api_call( array(
 				'provider' => 'claude',
 				'model' => $this->model,
@@ -399,7 +399,7 @@ class Smart_Form_Shield_Claude_Provider implements Smart_Form_Shield_Provider_In
 	 * @return bool True if available.
 	 */
 	public function is_available() {
-		$settings = get_option( 'smart_form_shield_claude_settings', array() );
+		$settings = get_option( 'spam_slayer_5000_claude_settings', array() );
 		return ! empty( $settings['api_key'] ) && ! empty( $settings['enabled'] );
 	}
 

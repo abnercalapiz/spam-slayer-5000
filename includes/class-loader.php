@@ -3,11 +3,11 @@
  * Register all actions and filters for the plugin.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield_Loader {
+class Spam_Slayer_5000_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

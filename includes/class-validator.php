@@ -3,11 +3,11 @@
  * Validator handler.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield_Validator {
+class Spam_Slayer_5000_Validator {
 
 	/**
 	 * Validate submission data with AI.
@@ -31,7 +31,7 @@ class Smart_Form_Shield_Validator {
 		if ( $options['check_whitelist'] ) {
 			$email = self::extract_email( $submission_data );
 			if ( ! empty( $email ) ) {
-				$database = new Smart_Form_Shield_Database();
+				$database = new Spam_Slayer_5000_Database();
 				if ( $database->is_whitelisted( $email ) ) {
 					return array(
 						'is_spam' => false,
@@ -46,7 +46,7 @@ class Smart_Form_Shield_Validator {
 		// Check cache
 		if ( $options['use_cache'] ) {
 			$cache_key = self::get_cache_key( $submission_data );
-			$cache = new Smart_Form_Shield_Cache();
+			$cache = new Spam_Slayer_5000_Cache();
 			$cached_result = $cache->get( $cache_key );
 
 			if ( $cached_result !== false ) {
@@ -56,10 +56,10 @@ class Smart_Form_Shield_Validator {
 		}
 
 		// Get provider
-		if ( $options['provider'] instanceof Smart_Form_Shield_Provider_Interface ) {
+		if ( $options['provider'] instanceof Spam_Slayer_5000_Provider_Interface ) {
 			$provider = $options['provider'];
 		} else {
-			$provider = Smart_Form_Shield_Provider_Factory::get_primary_provider();
+			$provider = Spam_Slayer_5000_Provider_Factory::get_primary_provider();
 		}
 
 		if ( ! $provider ) {
@@ -77,7 +77,7 @@ class Smart_Form_Shield_Validator {
 		// Apply threshold
 		$threshold = $options['threshold'] !== null 
 			? $options['threshold'] 
-			: get_option( 'smart_form_shield_spam_threshold', 75 );
+			: get_option( 'spam_slayer_5000_spam_threshold', 75 );
 
 		if ( isset( $result['spam_score'] ) ) {
 			$result['is_spam'] = $result['spam_score'] >= $threshold;
@@ -85,11 +85,11 @@ class Smart_Form_Shield_Validator {
 
 		// Cache result
 		if ( $options['use_cache'] && ! isset( $result['error'] ) ) {
-			$cache = new Smart_Form_Shield_Cache();
+			$cache = new Spam_Slayer_5000_Cache();
 			$cache->set( 
 				$cache_key, 
 				$result, 
-				get_option( 'smart_form_shield_cache_duration', 3600 ) 
+				get_option( 'spam_slayer_5000_cache_duration', 3600 ) 
 			);
 		}
 

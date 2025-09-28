@@ -3,11 +3,11 @@
  * Analytics functionality.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/admin
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/admin
  */
 
-class Smart_Form_Shield_Admin_Analytics {
+class Spam_Slayer_5000_Admin_Analytics {
 
 	/**
 	 * The ID of this plugin.
@@ -45,7 +45,7 @@ class Smart_Form_Shield_Admin_Analytics {
 	 * @return   array                Analytics data.
 	 */
 	public function get_analytics_data( $period = 'week' ) {
-		$database = new Smart_Form_Shield_Database();
+		$database = new Spam_Slayer_5000_Database();
 		
 		// Set date range
 		$date_from = $this->get_date_from( $period );
@@ -147,26 +147,26 @@ class Smart_Form_Shield_Admin_Analytics {
 		
 		ob_start();
 		?>
-		<h2><?php esc_html_e( 'Smart Form Shield Daily Report', 'smart-form-shield' ); ?></h2>
+		<h2><?php esc_html_e( 'Spam Slayer 5000 Daily Report', 'spam-slayer-5000' ); ?></h2>
 		<p><?php echo esc_html( date_i18n( get_option( 'date_format' ) ) ); ?></p>
 		
-		<h3><?php esc_html_e( 'Summary', 'smart-form-shield' ); ?></h3>
+		<h3><?php esc_html_e( 'Summary', 'spam-slayer-5000' ); ?></h3>
 		<ul>
-			<li><?php printf( __( 'Total Submissions: %d', 'smart-form-shield' ), $data['summary']['total_submissions'] ); ?></li>
-			<li><?php printf( __( 'Spam Blocked: %d (%.1f%%)', 'smart-form-shield' ), $data['summary']['spam_submissions'], $data['summary']['spam_rate'] ); ?></li>
-			<li><?php printf( __( 'Approved: %d', 'smart-form-shield' ), $data['summary']['approved_submissions'] ); ?></li>
-			<li><?php printf( __( 'API Calls: %d', 'smart-form-shield' ), $data['summary']['total_api_calls'] ); ?></li>
-			<li><?php printf( __( 'Total Cost: $%.4f', 'smart-form-shield' ), $data['summary']['total_cost'] ); ?></li>
+			<li><?php printf( __( 'Total Submissions: %d', 'spam-slayer-5000' ), $data['summary']['total_submissions'] ); ?></li>
+			<li><?php printf( __( 'Spam Blocked: %d (%.1f%%)', 'spam-slayer-5000' ), $data['summary']['spam_submissions'], $data['summary']['spam_rate'] ); ?></li>
+			<li><?php printf( __( 'Approved: %d', 'spam-slayer-5000' ), $data['summary']['approved_submissions'] ); ?></li>
+			<li><?php printf( __( 'API Calls: %d', 'spam-slayer-5000' ), $data['summary']['total_api_calls'] ); ?></li>
+			<li><?php printf( __( 'Total Cost: $%.4f', 'spam-slayer-5000' ), $data['summary']['total_cost'] ); ?></li>
 		</ul>
 		
 		<?php if ( ! empty( $data['providers'] ) ) : ?>
-			<h3><?php esc_html_e( 'Provider Performance', 'smart-form-shield' ); ?></h3>
+			<h3><?php esc_html_e( 'Provider Performance', 'spam-slayer-5000' ); ?></h3>
 			<table style="border-collapse: collapse; width: 100%;">
 				<tr>
-					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Provider', 'smart-form-shield' ); ?></th>
-					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Calls', 'smart-form-shield' ); ?></th>
-					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Cost', 'smart-form-shield' ); ?></th>
-					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Success Rate', 'smart-form-shield' ); ?></th>
+					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Provider', 'spam-slayer-5000' ); ?></th>
+					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Calls', 'spam-slayer-5000' ); ?></th>
+					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Cost', 'spam-slayer-5000' ); ?></th>
+					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Success Rate', 'spam-slayer-5000' ); ?></th>
 				</tr>
 				<?php foreach ( $data['providers'] as $provider => $stats ) : ?>
 					<tr>
@@ -180,8 +180,8 @@ class Smart_Form_Shield_Admin_Analytics {
 		<?php endif; ?>
 		
 		<p style="margin-top: 20px;">
-			<a href="<?php echo admin_url( 'admin.php?page=smart-form-shield-analytics' ); ?>">
-				<?php esc_html_e( 'View Full Analytics', 'smart-form-shield' ); ?>
+			<a href="<?php echo admin_url( 'admin.php?page=spam-slayer-5000-analytics' ); ?>">
+				<?php esc_html_e( 'View Full Analytics', 'spam-slayer-5000' ); ?>
 			</a>
 		</p>
 		<?php
@@ -227,7 +227,7 @@ class Smart_Form_Shield_Admin_Analytics {
 				COUNT(*) as total,
 				SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) as spam,
 				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved
-			FROM " . SMART_FORM_SHIELD_SUBMISSIONS_TABLE . "
+			FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . "
 			WHERE created_at BETWEEN %s AND %s
 			GROUP BY DATE(created_at)
 			ORDER BY date ASC",
@@ -280,7 +280,7 @@ class Smart_Form_Shield_Admin_Analytics {
 				form_id,
 				COUNT(*) as total,
 				SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) as spam
-			FROM " . SMART_FORM_SHIELD_SUBMISSIONS_TABLE . "
+			FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . "
 			WHERE created_at BETWEEN %s AND %s
 			GROUP BY form_type, form_id
 			ORDER BY total DESC",
@@ -312,7 +312,7 @@ class Smart_Form_Shield_Admin_Analytics {
 					ELSE '80-100'
 				END as score_range,
 				COUNT(*) as count
-			FROM " . SMART_FORM_SHIELD_SUBMISSIONS_TABLE . "
+			FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . "
 			WHERE created_at BETWEEN %s AND %s
 			GROUP BY score_range
 			ORDER BY score_range",
@@ -377,7 +377,7 @@ class Smart_Form_Shield_Admin_Analytics {
 	 * @param    array    $data    Data to export.
 	 */
 	private function export_csv( $data ) {
-		$filename = 'smart-form-shield-analytics-' . date( 'Y-m-d' ) . '.csv';
+		$filename = 'spam-slayer-5000-analytics-' . date( 'Y-m-d' ) . '.csv';
 		
 		header( 'Content-Type: text/csv' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -385,7 +385,7 @@ class Smart_Form_Shield_Admin_Analytics {
 		$output = fopen( 'php://output', 'w' );
 		
 		// Summary
-		fputcsv( $output, array( 'Smart Form Shield Analytics Report' ) );
+		fputcsv( $output, array( 'Spam Slayer 5000 Analytics Report' ) );
 		fputcsv( $output, array( 'Period:', $data['date_from'] . ' to ' . $data['date_to'] ) );
 		fputcsv( $output, array() );
 		
@@ -424,7 +424,7 @@ class Smart_Form_Shield_Admin_Analytics {
 	 * @param    array    $data    Data to export.
 	 */
 	private function export_json( $data ) {
-		$filename = 'smart-form-shield-analytics-' . date( 'Y-m-d' ) . '.json';
+		$filename = 'spam-slayer-5000-analytics-' . date( 'Y-m-d' ) . '.json';
 		
 		header( 'Content-Type: application/json' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );

@@ -3,11 +3,11 @@
  * AI Provider Interface.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/providers
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/providers
  */
 
-interface Smart_Form_Shield_Provider_Interface {
+interface Spam_Slayer_5000_Provider_Interface {
 
 	/**
 	 * Analyze submission for spam.

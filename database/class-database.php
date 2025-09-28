@@ -3,11 +3,11 @@
  * Database operations handler.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/database
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/database
  */
 
-class Smart_Form_Shield_Database {
+class Spam_Slayer_5000_Database {
 
 	/**
 	 * Insert a new submission record.
@@ -43,7 +43,7 @@ class Smart_Form_Shield_Database {
 		}
 
 		$result = $wpdb->insert(
-			SMART_FORM_SHIELD_SUBMISSIONS_TABLE,
+			SPAM_SLAYER_5000_SUBMISSIONS_TABLE,
 			$data,
 			array( '%s', '%s', '%s', '%f', '%s', '%s', '%s', '%s', '%s' )
 		);
@@ -68,7 +68,7 @@ class Smart_Form_Shield_Database {
 		}
 
 		$result = $wpdb->update(
-			SMART_FORM_SHIELD_SUBMISSIONS_TABLE,
+			SPAM_SLAYER_5000_SUBMISSIONS_TABLE,
 			array( 'status' => $status ),
 			array( 'id' => $submission_id ),
 			array( '%s' ),
@@ -139,7 +139,7 @@ class Smart_Form_Shield_Database {
 		$where_sql = implode( ' AND ', $where_clauses );
 
 		// Build the query with proper table name escaping
-		$table_name = SMART_FORM_SHIELD_SUBMISSIONS_TABLE;
+		$table_name = SPAM_SLAYER_5000_SUBMISSIONS_TABLE;
 		$sql = "SELECT * FROM `{$table_name}` WHERE $where_sql";
 		
 		if ( ! empty( $where_values ) ) {
@@ -200,7 +200,7 @@ class Smart_Form_Shield_Database {
 		}
 
 		$where_sql = implode( ' AND ', $where_clauses );
-		$sql = "SELECT COUNT(*) FROM " . SMART_FORM_SHIELD_SUBMISSIONS_TABLE . " WHERE $where_sql";
+		$sql = "SELECT COUNT(*) FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . " WHERE $where_sql";
 
 		if ( ! empty( $where_values ) ) {
 			$sql = $wpdb->prepare( $sql, $where_values );
@@ -243,7 +243,7 @@ class Smart_Form_Shield_Database {
 		}
 
 		$result = $wpdb->insert(
-			SMART_FORM_SHIELD_API_LOGS_TABLE,
+			SPAM_SLAYER_5000_API_LOGS_TABLE,
 			$data,
 			array( '%s', '%s', '%s', '%s', '%d', '%f', '%f', '%s', '%s' )
 		);
@@ -282,7 +282,7 @@ class Smart_Form_Shield_Database {
 				AVG(response_time) as avg_response_time,
 				SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) as success_count,
 				SUM(CASE WHEN status = 'error' THEN 1 ELSE 0 END) as error_count
-			FROM " . SMART_FORM_SHIELD_API_LOGS_TABLE . "
+			FROM " . SPAM_SLAYER_5000_API_LOGS_TABLE . "
 			WHERE created_at >= DATE_SUB(NOW(), INTERVAL %s)
 			GROUP BY provider",
 			$interval
@@ -305,7 +305,7 @@ class Smart_Form_Shield_Database {
 		$domain = substr( strrchr( $email, '@' ), 1 );
 
 		$sql = $wpdb->prepare(
-			"SELECT COUNT(*) FROM " . SMART_FORM_SHIELD_WHITELIST_TABLE . "
+			"SELECT COUNT(*) FROM " . SPAM_SLAYER_5000_WHITELIST_TABLE . "
 			WHERE (email = %s OR domain = %s) AND is_active = 1",
 			$email,
 			$domain
@@ -336,7 +336,7 @@ class Smart_Form_Shield_Database {
 		);
 
 		$result = $wpdb->insert(
-			SMART_FORM_SHIELD_WHITELIST_TABLE,
+			SPAM_SLAYER_5000_WHITELIST_TABLE,
 			$data,
 			array( '%s', '%s', '%s', '%d' )
 		);
@@ -355,7 +355,7 @@ class Smart_Form_Shield_Database {
 		global $wpdb;
 
 		$result = $wpdb->update(
-			SMART_FORM_SHIELD_WHITELIST_TABLE,
+			SPAM_SLAYER_5000_WHITELIST_TABLE,
 			array( 'is_active' => 0 ),
 			array( 'id' => $id ),
 			array( '%d' ),
@@ -376,7 +376,7 @@ class Smart_Form_Shield_Database {
 		global $wpdb;
 
 		$sql = $wpdb->prepare(
-			"DELETE FROM " . SMART_FORM_SHIELD_SUBMISSIONS_TABLE . "
+			"DELETE FROM " . SPAM_SLAYER_5000_SUBMISSIONS_TABLE . "
 			WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
 			$days
 		);
@@ -395,7 +395,7 @@ class Smart_Form_Shield_Database {
 		global $wpdb;
 
 		$sql = $wpdb->prepare(
-			"DELETE FROM " . SMART_FORM_SHIELD_API_LOGS_TABLE . "
+			"DELETE FROM " . SPAM_SLAYER_5000_API_LOGS_TABLE . "
 			WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
 			$days
 		);

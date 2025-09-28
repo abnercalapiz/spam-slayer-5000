@@ -3,11 +3,11 @@
  * Security utilities for the plugin.
  *
  * @since      1.0.0
- * @package    Smart_Form_Shield
- * @subpackage Smart_Form_Shield/includes
+ * @package    Spam_Slayer_5000
+ * @subpackage Spam_Slayer_5000/includes
  */
 
-class Smart_Form_Shield_Security {
+class Spam_Slayer_5000_Security {
 
 	/**
 	 * Encrypt sensitive data.
@@ -58,11 +58,11 @@ class Smart_Form_Shield_Security {
 	 * @return   string    Encryption key.
 	 */
 	private static function get_encryption_key() {
-		$key = get_option( 'smart_form_shield_encryption_key' );
+		$key = get_option( 'spam_slayer_5000_encryption_key' );
 		
 		if ( empty( $key ) ) {
 			$key = wp_generate_password( 32, true, true );
-			update_option( 'smart_form_shield_encryption_key', $key );
+			update_option( 'spam_slayer_5000_encryption_key', $key );
 		}
 		
 		return $key;
@@ -138,7 +138,7 @@ class Smart_Form_Shield_Security {
 	 * @return   bool                     True if within rate limit.
 	 */
 	public static function check_rate_limit( $identifier, $max_attempts = 5, $window = 60 ) {
-		$transient_key = 'sfs_rate_' . md5( $identifier );
+		$transient_key = 'ss5k_rate_' . md5( $identifier );
 		$attempts = get_transient( $transient_key );
 		
 		if ( $attempts === false ) {

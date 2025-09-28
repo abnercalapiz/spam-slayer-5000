@@ -1,5 +1,5 @@
 /**
- * Public CSS for Smart Form Shield
+ * Public CSS for Spam Slayer 5000
  *
  * @since      1.0.0
  * @package    Smart_Form_Shield
@@ -7,8 +7,8 @@
  */
 
 /* Honeypot field (ensure it stays hidden) */
-.sfs-honeypot,
-[name="sfs_website"] {
+.ss5k-honeypot,
+[name="ss5k_website"] {
     position: absolute !important;
     left: -9999px !important;
     height: 0 !important;
@@ -18,13 +18,13 @@
 }
 
 /* Loading state for forms */
-.sfs-validating {
+.ss5k-validating {
     position: relative;
     opacity: 0.6;
     pointer-events: none;
 }
 
-.sfs-validating::after {
+.ss5k-validating::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -44,7 +44,7 @@
 }
 
 /* Validation message */
-.sfs-validation-message {
+.ss5k-validation-message {
     display: none;
     padding: 10px 15px;
     margin: 10px 0;
@@ -52,38 +52,38 @@
     font-size: 14px;
 }
 
-.sfs-validation-message.sfs-error {
+.ss5k-validation-message.ss5k-error {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
 
-.sfs-validation-message.sfs-success {
+.ss5k-validation-message.ss5k-success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
 /* Gravity Forms specific */
-.gform_wrapper .sfs-validating .gform_footer {
+.gform_wrapper .ss5k-validating .gform_footer {
     position: relative;
 }
 
-.gform_wrapper .sfs-validation-message {
+.gform_wrapper .ss5k-validation-message {
     margin-top: 20px;
 }
 
 /* Elementor Forms specific */
-.elementor-form .sfs-validating {
+.elementor-form .ss5k-validating {
     min-height: 100px;
 }
 
-.elementor-form .sfs-validation-message {
+.elementor-form .ss5k-validation-message {
     margin-top: 15px;
 }
 
 /* Accessibility */
-.sfs-screen-reader-text {
+.ss5k-screen-reader-text {
     position: absolute !important;
     clip: rect(1px, 1px, 1px, 1px);
     padding: 0 !important;
@@ -94,7 +94,7 @@
 }
 
 /* Rate limit message */
-.sfs-rate-limit-message {
+.ss5k-rate-limit-message {
     padding: 15px;
     background-color: #fff3cd;
     color: #856404;
@@ -104,18 +104,18 @@
 }
 
 /* No JavaScript fallback */
-.sfs-noscript-message {
+.ss5k-noscript-message {
     display: none;
 }
 
 /* Form field highlight for spam detection */
-.sfs-field-suspicious {
+.ss5k-field-suspicious {
     border-color: #ffc107 !important;
 }
 
 /* Mobile responsive */
 @media screen and (max-width: 600px) {
-    .sfs-validation-message {
+    .ss5k-validation-message {
         font-size: 13px;
         padding: 8px 12px;
     }
@@ -123,17 +123,17 @@
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-    .sfs-validation-message {
+    .ss5k-validation-message {
         border-width: 2px;
     }
     
-    .sfs-validation-message.sfs-error {
+    .ss5k-validation-message.ss5k-error {
         background-color: #fff;
         color: #d00;
         border-color: #d00;
     }
     
-    .sfs-validation-message.sfs-success {
+    .ss5k-validation-message.ss5k-success {
         background-color: #fff;
         color: #008000;
         border-color: #008000;
@@ -147,15 +147,15 @@
         100% { transform: rotate(0deg); }
     }
     
-    .sfs-validating {
+    .ss5k-validating {
         transition: none !important;
     }
 }
 
 /* Print styles */
 @media print {
-    .sfs-validation-message,
-    .sfs-honeypot {
+    .ss5k-validation-message,
+    .ss5k-honeypot {
         display: none !important;
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Admin JavaScript for Smart Form Shield
+ * Admin JavaScript for Spam Slayer 5000
  *
  * @since      1.0.0
  * @package    Smart_Form_Shield
@@ -11,7 +11,7 @@
 
     $(document).ready(function() {
         // Initialize color picker
-        $('.sfs-color-picker').wpColorPicker();
+        $('.ss5k-color-picker').wpColorPicker();
 
         // Tab navigation
         $('.nav-tab').on('click', function(e) {
@@ -21,7 +21,7 @@
             $('.nav-tab').removeClass('nav-tab-active');
             $(this).addClass('nav-tab-active');
             
-            $('.sfs-tab-content').hide();
+            $('.ss5k-tab-content').hide();
             $(target).show();
             
             // Update URL without reload
@@ -33,23 +33,23 @@
         $('.nav-tab[href="' + activeTab + '"]').click();
 
         // Test API Provider
-        $('.sfs-test-provider').on('click', function(e) {
+        $('.ss5k-test-provider').on('click', function(e) {
             e.preventDefault();
             
             var $button = $(this);
             var provider = $button.data('provider');
-            var $status = $button.siblings('.sfs-test-status');
+            var $status = $button.siblings('.ss5k-test-status');
             
             $button.prop('disabled', true);
             $status.html('<span class="sfs-loading"></span> Testing...');
             
             $.ajax({
-                url: sfs_admin.ajax_url,
+                url: ss5k_admin.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'sfs_test_provider',
+                    action: 'ss5k_test_provider',
                     provider: provider,
-                    nonce: sfs_admin.nonce
+                    nonce: ss5k_admin.nonce
                 },
                 success: function(response) {
                     if (response.success) {
@@ -68,38 +68,38 @@
         });
 
         // Submission Actions
-        $('.sfs-action-btn').on('click', function(e) {
+        $('.ss5k-action-btn').on('click', function(e) {
             e.preventDefault();
             
             var $button = $(this);
             var action = $button.data('action');
             var submissionId = $button.data('id');
             
-            if (action === 'delete' && !confirm(sfs_admin.strings.confirm_delete)) {
+            if (action === 'delete' && !confirm(ss5k_admin.strings.confirm_delete)) {
                 return;
             }
             
-            $button.prop('disabled', true).text(sfs_admin.strings.processing);
+            $button.prop('disabled', true).text(ss5k_admin.strings.processing);
             
             $.ajax({
-                url: sfs_admin.ajax_url,
+                url: ss5k_admin.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'sfs_update_submission_status',
+                    action: 'ss5k_update_submission_status',
                     submission_id: submissionId,
                     status: action,
-                    nonce: sfs_admin.nonce
+                    nonce: ss5k_admin.nonce
                 },
                 success: function(response) {
                     if (response.success) {
                         location.reload();
                     } else {
-                        alert(response.data || sfs_admin.strings.error);
+                        alert(response.data || ss5k_admin.strings.error);
                         $button.prop('disabled', false).text($button.data('original-text'));
                     }
                 },
                 error: function() {
-                    alert(sfs_admin.strings.error);
+                    alert(ss5k_admin.strings.error);
                     $button.prop('disabled', false).text($button.data('original-text'));
                 }
             });
@@ -121,7 +121,7 @@
                 return;
             }
             
-            if (action === 'delete' && !confirm(sfs_admin.strings.confirm_bulk_delete)) {
+            if (action === 'delete' && !confirm(ss5k_admin.strings.confirm_bulk_delete)) {
                 e.preventDefault();
                 return;
             }
@@ -134,7 +134,7 @@
         });
 
         // Add to Whitelist
-        $('.sfs-add-whitelist').on('click', function(e) {
+        $('.ss5k-add-whitelist').on('click', function(e) {
             e.preventDefault();
             
             var email = $(this).data('email');
@@ -148,32 +148,32 @@
             $button.prop('disabled', true);
             
             $.ajax({
-                url: sfs_admin.ajax_url,
+                url: ss5k_admin.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'sfs_add_to_whitelist',
+                    action: 'ss5k_add_to_whitelist',
                     email: email,
                     reason: reason,
-                    nonce: sfs_admin.nonce
+                    nonce: ss5k_admin.nonce
                 },
                 success: function(response) {
                     if (response.success) {
                         alert('Email added to whitelist successfully.');
                         $button.text('Whitelisted').removeClass('button-primary');
                     } else {
-                        alert(response.data || sfs_admin.strings.error);
+                        alert(response.data || ss5k_admin.strings.error);
                         $button.prop('disabled', false);
                     }
                 },
                 error: function() {
-                    alert(sfs_admin.strings.error);
+                    alert(ss5k_admin.strings.error);
                     $button.prop('disabled', false);
                 }
             });
         });
 
         // Remove from Whitelist
-        $('.sfs-remove-whitelist').on('click', function(e) {
+        $('.ss5k-remove-whitelist').on('click', function(e) {
             e.preventDefault();
             
             if (!confirm('Are you sure you want to remove this email from whitelist?')) {
@@ -186,23 +186,23 @@
             $button.prop('disabled', true);
             
             $.ajax({
-                url: sfs_admin.ajax_url,
+                url: ss5k_admin.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'sfs_remove_from_whitelist',
+                    action: 'ss5k_remove_from_whitelist',
                     id: id,
-                    nonce: sfs_admin.nonce
+                    nonce: ss5k_admin.nonce
                 },
                 success: function(response) {
                     if (response.success) {
                         $button.closest('tr').fadeOut();
                     } else {
-                        alert(response.data || sfs_admin.strings.error);
+                        alert(response.data || ss5k_admin.strings.error);
                         $button.prop('disabled', false);
                     }
                 },
                 error: function() {
-                    alert(sfs_admin.strings.error);
+                    alert(ss5k_admin.strings.error);
                     $button.prop('disabled', false);
                 }
             });
@@ -216,12 +216,12 @@
             var dateFrom = $('#sfs-export-date-from').val();
             var dateTo = $('#sfs-export-date-to').val();
             
-            window.location.href = sfs_admin.ajax_url + '?' + $.param({
-                action: 'sfs_export_data',
+            window.location.href = ss5k_admin.ajax_url + '?' + $.param({
+                action: 'ss5k_export_data',
                 export_type: exportType,
                 date_from: dateFrom,
                 date_to: dateTo,
-                nonce: sfs_admin.nonce
+                nonce: ss5k_admin.nonce
             });
         });
 
@@ -237,21 +237,21 @@
             $button.prop('disabled', true);
             
             $.ajax({
-                url: sfs_admin.ajax_url,
+                url: ss5k_admin.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'sfs_clear_logs',
-                    nonce: sfs_admin.nonce
+                    action: 'ss5k_clear_logs',
+                    nonce: ss5k_admin.nonce
                 },
                 success: function(response) {
                     if (response.success) {
                         $('#sfs-log-viewer').text('Logs cleared successfully.');
                     } else {
-                        alert(response.data || sfs_admin.strings.error);
+                        alert(response.data || ss5k_admin.strings.error);
                     }
                 },
                 error: function() {
-                    alert(sfs_admin.strings.error);
+                    alert(ss5k_admin.strings.error);
                 },
                 complete: function() {
                     $button.prop('disabled', false);
@@ -260,22 +260,22 @@
         });
 
         // Modal Handler
-        $('.sfs-modal-trigger').on('click', function(e) {
+        $('.ss5k-modal-trigger').on('click', function(e) {
             e.preventDefault();
             var targetModal = $(this).data('modal');
             $('#' + targetModal).show();
         });
 
-        $('.sfs-modal-close, .sfs-modal').on('click', function(e) {
+        $('.ss5k-modal-close, .ss5k-modal').on('click', function(e) {
             if (e.target === this) {
-                $(this).closest('.sfs-modal').hide();
+                $(this).closest('.ss5k-modal').hide();
             }
         });
 
         // Analytics Date Range
         $('#sfs-analytics-range').on('change', function() {
             var range = $(this).val();
-            var customRange = $('.sfs-custom-range');
+            var customRange = $('.ss5k-custom-range');
             
             if (range === 'custom') {
                 customRange.show();
@@ -287,27 +287,27 @@
 
         // Load Analytics
         function loadAnalytics(range, startDate, endDate) {
-            $('.sfs-analytics-content').html('<div class="sfs-loading"></div> Loading analytics...');
+            $('.ss5k-analytics-content').html('<div class="sfs-loading"></div> Loading analytics...');
             
             $.ajax({
-                url: sfs_admin.ajax_url,
+                url: ss5k_admin.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'sfs_get_analytics',
+                    action: 'ss5k_get_analytics',
                     range: range,
                     start_date: startDate,
                     end_date: endDate,
-                    nonce: sfs_admin.nonce
+                    nonce: ss5k_admin.nonce
                 },
                 success: function(response) {
                     if (response.success) {
                         updateAnalyticsDisplay(response.data);
                     } else {
-                        $('.sfs-analytics-content').html('<p>Error loading analytics.</p>');
+                        $('.ss5k-analytics-content').html('<p>Error loading analytics.</p>');
                     }
                 },
                 error: function() {
-                    $('.sfs-analytics-content').html('<p>Error loading analytics.</p>');
+                    $('.ss5k-analytics-content').html('<p>Error loading analytics.</p>');
                 }
             });
         }
@@ -319,7 +319,7 @@
         }
 
         // Form Validation
-        $('form.sfs-settings-form').on('submit', function(e) {
+        $('form.ss5k-settings-form').on('submit', function(e) {
             var hasError = false;
             
             // Validate threshold
@@ -347,7 +347,7 @@
         }
 
         // Store original button text
-        $('.sfs-action-btn').each(function() {
+        $('.ss5k-action-btn').each(function() {
             $(this).data('original-text', $(this).text());
         });
     });

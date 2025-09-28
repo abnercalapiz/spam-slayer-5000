@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Smart Form Shield is a WordPress plugin that provides AI-powered spam filtering for contact forms using multiple AI providers (OpenAI, Claude, and Gemini).
+Spam Slayer 5000 is a WordPress plugin that provides AI-powered spam filtering for contact forms using multiple AI providers (OpenAI, Claude, and Gemini).
 
 ## Key Architecture
 
