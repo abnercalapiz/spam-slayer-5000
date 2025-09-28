@@ -3,7 +3,7 @@
  * Plugin Name:       Spam Slayer 5000
  * Plugin URI:        https://jezweb.com.au/
  * Description:       Intelligent AI-powered spam filtering for Gravity Forms and Elementor contact forms using OpenAI, Claude, and Gemini APIs.
- * Version:           1.0.8
+ * Version:           1.0.9
  * Author:            Jezweb
  * Author URI:        https://jezweb.com.au/
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'SPAM_SLAYER_5000_VERSION', '1.0.8' );
+define( 'SPAM_SLAYER_5000_VERSION', '1.0.9' );
 
 /**
  * Plugin base name.
