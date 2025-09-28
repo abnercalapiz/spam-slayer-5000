@@ -3,7 +3,7 @@
  * Plugin Name:       Spam Slayer 5000
  * Plugin URI:        https://jezweb.com.au/
  * Description:       Intelligent AI-powered spam filtering for Gravity Forms and Elementor contact forms using OpenAI, Claude, and Gemini APIs.
- * Version:           1.0.4
+ * Version:           1.0.5
  * Author:            Jezweb
  * Author URI:        https://jezweb.com.au/
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'SPAM_SLAYER_5000_VERSION', '1.0.4' );
+define( 'SPAM_SLAYER_5000_VERSION', '1.0.5' );
 
 /**
  * Plugin base name.
@@ -125,7 +125,7 @@ add_action( 'init', function() {
 		try {
 			$myUpdateChecker = PucFactory::buildUpdateChecker(
 				'https://github.com/abnercalapiz/spam-slayer-5000/',
-				WP_PLUGIN_DIR . '/spam-slayer-5000/spam-slayer-5000.php',
+				__FILE__,
 				'spam-slayer-5000'
 			);
 			
@@ -142,6 +142,25 @@ add_action( 'init', function() {
 		}
 	}
 }, 5 );
+
+// Fix directory name when updating from GitHub
+add_filter( 'upgrader_source_selection', function( $source, $remote_source, $upgrader, $extra ) {
+	global $wp_filesystem;
+	
+	// Check if this is our plugin update
+	if ( isset( $extra['plugin'] ) && strpos( $extra['plugin'], 'spam-slayer-5000.php' ) !== false ) {
+		// The source will be something like /path/to/spam-slayer-5000-main/
+		// We need to rename it to match the installed directory
+		$plugin_dir = dirname( $extra['plugin'] );
+		$desired_source = trailingslashit( dirname( $source ) ) . $plugin_dir . '/';
+		
+		if ( $source !== $desired_source && $wp_filesystem->move( $source, $desired_source ) ) {
+			return $desired_source;
+		}
+	}
+	
+	return $source;
+}, 10, 4 );
 
 /**
  * Begins execution of the plugin.
