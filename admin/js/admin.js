@@ -81,7 +81,7 @@
 				url: spam_slayer_5000_admin.ajax_url,
 				type: 'POST',
 				data: {
-					action: 'ss5k_remove_whitelist',
+					action: 'ss5k_remove_from_whitelist',
 					id: id,
 					nonce: spam_slayer_5000_admin.nonce
 				},
@@ -105,8 +105,8 @@
 			
 			if ( action === 'view' ) {
 				// Handle view action
-				$( '#sfs-view-modal' ).show();
-				$( '#sfs-modal-body' ).html( '<p>Loading...</p>' );
+				$( '#ss5k-view-modal' ).show();
+				$( '#ss5k-modal-body' ).html( '<p>Loading...</p>' );
 				
 				$.ajax( {
 					url: spam_slayer_5000_admin.ajax_url,
@@ -118,9 +118,9 @@
 					},
 					success: function( response ) {
 						if ( response.success ) {
-							$( '#sfs-modal-body' ).html( response.data );
+							$( '#ss5k-modal-body' ).html( response.data );
 						} else {
-							$( '#sfs-modal-body' ).html( '<p>Error loading submission details.</p>' );
+							$( '#ss5k-modal-body' ).html( '<p>Error loading submission details.</p>' );
 						}
 					}
 				} );
@@ -173,13 +173,13 @@
 		
 		// Modal close
 		$( '.ss5k-modal-close' ).on( 'click', function() {
-			$( '#sfs-view-modal' ).hide();
+			$( '#ss5k-view-modal' ).hide();
 		} );
 		
 		// Close modal on outside click
 		$( window ).on( 'click', function( e ) {
-			if ( $( e.target ).is( '#sfs-view-modal' ) ) {
-				$( '#sfs-view-modal' ).hide();
+			if ( $( e.target ).is( '#ss5k-view-modal' ) ) {
+				$( '#ss5k-view-modal' ).hide();
 			}
 		} );
 		
