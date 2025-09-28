@@ -54,40 +54,18 @@ class Spam_Slayer_5000_Elementor {
 
 		$submission_data = $this->get_submission_data( $record );
 		
-		// Check whitelist first
-		$database = new Spam_Slayer_5000_Database();
-		$email = $this->extract_email( $submission_data );
+		// Use the centralized validator
+		$threshold = get_option( 'spam_slayer_5000_spam_threshold', 75 );
+		$validation_options = array(
+			'check_whitelist' => true,
+			'check_blocklist' => true,
+			'use_cache' => true,
+			'provider' => null,
+			'threshold' => $threshold,
+		);
 		
-		if ( ! empty( $email ) && $database->is_whitelisted( $email ) ) {
-			$this->log_submission_to_database( $submission_data, $form_settings, 'whitelist', 0 );
-			return;
-		}
-
-		// Check cache
-		$cache_key = $this->get_cache_key( $submission_data );
-		$cache = new Spam_Slayer_5000_Cache();
-		$cached_result = $cache->get( $cache_key );
+		$analysis = Spam_Slayer_5000_Validator::validate_submission( $submission_data, $validation_options );
 		
-		if ( $cached_result !== false ) {
-			$this->apply_validation_result( $cached_result, $ajax_handler, $form_settings );
-			return;
-		}
-
-		// Analyze with AI provider
-		$provider = Spam_Slayer_5000_Provider_Factory::get_primary_provider();
-		
-		if ( ! $provider ) {
-			// No provider available, allow submission
-			return;
-		}
-
-		$analysis = $provider->analyze( $submission_data );
-		
-		// Cache the result
-		if ( ! isset( $analysis['error'] ) ) {
-			$cache->set( $cache_key, $analysis, get_option( 'spam_slayer_5000_cache_duration', 3600 ) );
-		}
-
 		// Log submission
 		$submission_id = $this->log_submission_to_database( $submission_data, $form_settings, $analysis );
 		

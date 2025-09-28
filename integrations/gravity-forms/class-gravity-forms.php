@@ -53,39 +53,18 @@ class Spam_Slayer_5000_Gravity_Forms {
 			return $validation_result;
 		}
 
-		// Check whitelist first
-		$database = new Spam_Slayer_5000_Database();
-		$email = $this->extract_email( $entry );
+		// Use the centralized validator
+		$threshold = $this->get_form_threshold( $form );
+		$validation_options = array(
+			'check_whitelist' => true,
+			'check_blocklist' => true,
+			'use_cache' => true,
+			'provider' => null,
+			'threshold' => $threshold,
+		);
 		
-		if ( ! empty( $email ) && $database->is_whitelisted( $email ) ) {
-			$this->log_submission_to_database( $entry, $form, 'whitelist', 0 );
-			return $validation_result;
-		}
-
-		// Check cache
-		$cache_key = $this->get_cache_key( $entry );
-		$cache = new Spam_Slayer_5000_Cache();
-		$cached_result = $cache->get( $cache_key );
+		$analysis = Spam_Slayer_5000_Validator::validate_submission( $entry, $validation_options );
 		
-		if ( $cached_result !== false ) {
-			return $this->apply_validation_result( $validation_result, $cached_result );
-		}
-
-		// Analyze with AI provider
-		$provider = Spam_Slayer_5000_Provider_Factory::get_primary_provider();
-		
-		if ( ! $provider ) {
-			// No provider available, allow submission
-			return $validation_result;
-		}
-
-		$analysis = $provider->analyze( $entry );
-		
-		// Cache the result
-		if ( ! isset( $analysis['error'] ) ) {
-			$cache->set( $cache_key, $analysis, get_option( 'spam_slayer_5000_cache_duration', 3600 ) );
-		}
-
 		// Log submission
 		$this->log_submission_to_database( $entry, $form, $analysis );
 
@@ -317,6 +296,21 @@ class Spam_Slayer_5000_Gravity_Forms {
 		}
 		
 		return $entry;
+	}
+
+	/**
+	 * Get form threshold.
+	 *
+	 * @since    1.1.2
+	 * @param    array    $form    Form data.
+	 * @return   int               Threshold value.
+	 */
+	private function get_form_threshold( $form ) {
+		$settings = $this->get_form_settings( $form['id'] );
+		
+		return $settings['use_custom_threshold'] 
+			? $settings['custom_threshold'] 
+			: get_option( 'spam_slayer_5000_spam_threshold', 75 );
 	}
 
 	/**

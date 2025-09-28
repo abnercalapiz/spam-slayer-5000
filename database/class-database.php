@@ -438,13 +438,30 @@ class Spam_Slayer_5000_Database {
 		$table_name = self::get_table_name( 'blocklist' );
 		
 		// Check if already exists
-		$exists = $wpdb->get_var( $wpdb->prepare(
-			"SELECT id FROM $table_name WHERE type = %s AND value = %s",
+		$existing = $wpdb->get_row( $wpdb->prepare(
+			"SELECT id, is_active FROM $table_name WHERE type = %s AND value = %s",
 			$type,
 			$value
 		) );
 
-		if ( $exists ) {
+		if ( $existing ) {
+			// If it exists but is inactive, reactivate it
+			if ( $existing->is_active == 0 ) {
+				$result = $wpdb->update(
+					$table_name,
+					array(
+						'is_active' => 1,
+						'reason' => $reason,
+						'added_by' => get_current_user_id(),
+						'created_at' => current_time( 'mysql' ),
+					),
+					array( 'id' => $existing->id ),
+					array( '%d', '%s', '%d', '%s' ),
+					array( '%d' )
+				);
+				return $result !== false ? $existing->id : false;
+			}
+			// If it's already active, return false
 			return false;
 		}
 

@@ -52,7 +52,7 @@ if ( isset( $_POST['ss5k_add_blocklist'] ) && check_admin_referer( 'ss5k_blockli
 				'</p></div>';
 		} else {
 			echo '<div class="notice notice-error is-dismissible"><p>' . 
-				__( 'Failed to add to blocklist. It may already exist.', 'spam-slayer-5000' ) . 
+				__( 'Failed to add to blocklist. It may already be active in the blocklist.', 'spam-slayer-5000' ) . 
 				'</p></div>';
 		}
 	} else {
