@@ -409,7 +409,7 @@ class Spam_Slayer_5000_Database {
 	 * @since    1.0.0
 	 * @return   string    IP address.
 	 */
-	private function get_user_ip() {
+	public function get_user_ip() {
 		$ip = '';
 
 		if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
