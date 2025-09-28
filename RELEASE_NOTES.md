@@ -2,6 +2,49 @@
 
 Since GitHub CLI is not authenticated, you need to manually create releases on GitHub. Here are the steps and release notes for each version:
 
+## Release Notes for v1.0.9 (LATEST)
+
+**Release Title:** Spam Slayer 5000 v1.0.9
+
+**Release Notes:**
+```markdown
+## Release v1.0.9
+
+### What's New
+
+- **Release Management**: Added automated release creation script for easier GitHub releases
+- **Documentation**: Added comprehensive release notes documentation (RELEASE_NOTES.md)
+- **Update System**: Improved plugin update detection with proper GitHub release support
+- **Developer Tools**: Added create-release.sh script for automated release creation
+- **Instructions**: Better documentation for creating future releases
+
+### Why This Release?
+
+This release focuses on improving the plugin's update mechanism and release process. Previous versions had tags but no GitHub releases, which prevented the automatic update system from working properly. This version ensures smooth updates going forward.
+
+### Installation
+
+1. Download the `spam-slayer-5000.zip` file from the Assets section below
+2. In WordPress Admin, go to Plugins → Add New → Upload Plugin
+3. Upload the ZIP file and activate the plugin
+4. Configure your AI provider API keys in Spam Slayer 5000 → Settings
+
+### Update from Previous Version
+
+Once this release is published on GitHub, your WordPress site will automatically detect the update within 12 hours. You can also manually check by clicking "Check for updates" in the Plugins page.
+
+### Requirements
+
+- WordPress 5.8 or higher
+- PHP 7.4 or higher
+- At least one AI provider API key (OpenAI or Claude)
+
+### Notes for Developers
+
+- Use the included `create-release.sh` script for future releases (requires GitHub CLI)
+- See RELEASE_NOTES.md for detailed release creation instructions
+```
+
 ## How to Create a Release on GitHub
 
 1. Go to: https://github.com/abnercalapiz/spam-slayer-5000/releases/new
