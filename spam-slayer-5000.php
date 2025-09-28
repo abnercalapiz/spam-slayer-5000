@@ -3,7 +3,7 @@
  * Plugin Name:       Spam Slayer 5000
  * Plugin URI:        https://jezweb.com.au/
  * Description:       Intelligent AI-powered spam filtering for Gravity Forms and Elementor contact forms using OpenAI, Claude, and Gemini APIs.
- * Version:           1.0.5
+ * Version:           1.0.6
  * Author:            Jezweb
  * Author URI:        https://jezweb.com.au/
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'SPAM_SLAYER_5000_VERSION', '1.0.5' );
+define( 'SPAM_SLAYER_5000_VERSION', '1.0.6' );
 
 /**
  * Plugin base name.
@@ -150,12 +150,21 @@ add_filter( 'upgrader_source_selection', function( $source, $remote_source, $upg
 	// Check if this is our plugin update
 	if ( isset( $extra['plugin'] ) && strpos( $extra['plugin'], 'spam-slayer-5000.php' ) !== false ) {
 		// The source will be something like /path/to/spam-slayer-5000-main/
-		// We need to rename it to match the installed directory
-		$plugin_dir = dirname( $extra['plugin'] );
-		$desired_source = trailingslashit( dirname( $source ) ) . $plugin_dir . '/';
+		// We want to rename it to just 'spam-slayer-5000'
+		$desired_folder_name = 'spam-slayer-5000';
+		$desired_source = trailingslashit( dirname( $source ) ) . $desired_folder_name . '/';
 		
-		if ( $source !== $desired_source && $wp_filesystem->move( $source, $desired_source ) ) {
-			return $desired_source;
+		// Only move if source and desired are different
+		if ( $source !== $desired_source ) {
+			// Remove the desired directory if it exists (shouldn't happen during update)
+			if ( $wp_filesystem->exists( $desired_source ) ) {
+				$wp_filesystem->delete( $desired_source, true );
+			}
+			
+			// Move the source to the desired directory name
+			if ( $wp_filesystem->move( $source, $desired_source ) ) {
+				return $desired_source;
+			}
 		}
 	}
 	

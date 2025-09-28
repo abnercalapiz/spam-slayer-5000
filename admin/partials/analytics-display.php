@@ -20,10 +20,48 @@ if ( ! class_exists( 'Spam_Slayer_5000_Database' ) ) {
 	require_once SPAM_SLAYER_5000_PATH . 'database/class-database.php';
 }
 
+// Ensure database tables exist
+global $wpdb;
+$tables_exist = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}ss5k_submissions'" );
+if ( ! $tables_exist ) {
+	// Tables don't exist, try to create them
+	if ( ! class_exists( 'Spam_Slayer_5000_Activator' ) ) {
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-activator.php';
+	}
+	Spam_Slayer_5000_Activator::activate();
+}
+
 // Get analytics data
-$analytics = new Spam_Slayer_5000_Admin_Analytics( 'spam-slayer-5000', SPAM_SLAYER_5000_VERSION );
-$period = isset( $_GET['period'] ) ? sanitize_text_field( $_GET['period'] ) : 'week';
-$data = $analytics->get_analytics_data( $period );
+try {
+	$analytics = new Spam_Slayer_5000_Admin_Analytics( 'spam-slayer-5000', SPAM_SLAYER_5000_VERSION );
+	$period = isset( $_GET['period'] ) ? sanitize_text_field( $_GET['period'] ) : 'week';
+	$data = $analytics->get_analytics_data( $period );
+} catch ( Exception $e ) {
+	// If there's an error, provide default empty data structure
+	$data = array(
+		'summary' => array(
+			'total_submissions' => 0,
+			'spam_submissions' => 0,
+			'spam_rate' => 0,
+			'total_cost' => 0,
+			'total_api_calls' => 0,
+			'avg_response_time' => 0,
+		),
+		'daily_breakdown' => array(),
+		'providers' => array(),
+		'form_breakdown' => array(),
+		'spam_distribution' => array(
+			'0-20' => 0,
+			'21-40' => 0,
+			'41-60' => 0,
+			'61-80' => 0,
+			'81-100' => 0,
+		),
+	);
+	
+	// Show error message
+	echo '<div class="notice notice-error"><p>' . esc_html__( 'Error loading analytics data: ', 'spam-slayer-5000' ) . esc_html( $e->getMessage() ) . '</p></div>';
+}
 ?>
 
 <div class="wrap">

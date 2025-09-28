@@ -20,6 +20,17 @@ if ( ! class_exists( 'Spam_Slayer_5000_Validator' ) ) {
 	require_once SPAM_SLAYER_5000_PATH . 'includes/class-validator.php';
 }
 
+// Ensure database tables exist
+global $wpdb;
+$tables_exist = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}ss5k_submissions'" );
+if ( ! $tables_exist ) {
+	// Tables don't exist, try to create them
+	if ( ! class_exists( 'Spam_Slayer_5000_Activator' ) ) {
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-activator.php';
+	}
+	Spam_Slayer_5000_Activator::activate();
+}
+
 // Get filter parameters
 $status_filter = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '';
 $form_type_filter = isset( $_GET['form_type'] ) ? sanitize_text_field( $_GET['form_type'] ) : '';
