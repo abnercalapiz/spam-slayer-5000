@@ -3,7 +3,7 @@
  * Plugin Name:       Spam Slayer 5000
  * Plugin URI:        https://jezweb.com.au/
  * Description:       Intelligent AI-powered spam filtering for Gravity Forms and Elementor contact forms using OpenAI, Claude, and Gemini APIs.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            Jezweb
  * Author URI:        https://jezweb.com.au/
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'SPAM_SLAYER_5000_VERSION', '1.1.0' );
+define( 'SPAM_SLAYER_5000_VERSION', '1.1.1' );
 
 /**
  * Plugin base name.
@@ -117,32 +117,52 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-spam-slayer-5000.php';
 /**
  * Initialize the Plugin Update Checker
  */
-require plugin_dir_path( __FILE__ ) . 'includes/plugin-update-checker/plugin-update-checker.php';
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-
-// Initialize update checker after WordPress is loaded
-add_action( 'init', function() {
-	if ( class_exists( 'YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
-		try {
-			$myUpdateChecker = PucFactory::buildUpdateChecker(
-				'https://github.com/abnercalapiz/spam-slayer-5000/',
-				__FILE__,
-				'spam-slayer-5000'
-			);
-			
-			// Set the branch that contains the stable release
-			$myUpdateChecker->setBranch( 'main' );
-			
-			// Optional: Enable release assets
-			$myUpdateChecker->getVcsApi()->enableReleaseAssets();
-			
-		} catch ( Exception $e ) {
+if ( file_exists( plugin_dir_path( __FILE__ ) . 'includes/plugin-update-checker/plugin-update-checker.php' ) ) {
+	require plugin_dir_path( __FILE__ ) . 'includes/plugin-update-checker/plugin-update-checker.php';
+	
+	// Initialize update checker after WordPress is loaded
+	add_action( 'init', function() {
+		// Check if the factory class exists
+		if ( class_exists( 'YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
+			try {
+				$myUpdateChecker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+					'https://github.com/abnercalapiz/spam-slayer-5000',
+					__FILE__,
+					'spam-slayer-5000'
+				);
+				
+				// Set the branch that contains the stable release
+				$myUpdateChecker->setBranch( 'main' );
+				
+				// Optional: Enable release assets
+				$myUpdateChecker->getVcsApi()->enableReleaseAssets();
+				
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'Spam Slayer 5000: Update checker initialized successfully' );
+				}
+				
+			} catch ( Exception $e ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'Spam Slayer 5000 Update Checker Exception: ' . $e->getMessage() );
+					error_log( 'Stack trace: ' . $e->getTraceAsString() );
+				}
+			} catch ( Error $e ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'Spam Slayer 5000 Update Checker Fatal Error: ' . $e->getMessage() );
+					error_log( 'Stack trace: ' . $e->getTraceAsString() );
+				}
+			}
+		} else {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'Spam Slayer 5000 Update Checker Error: ' . $e->getMessage() );
+				error_log( 'Spam Slayer 5000: PucFactory class not found' );
 			}
 		}
+	}, 10 );
+} else {
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		error_log( 'Spam Slayer 5000: Plugin Update Checker library not found' );
 	}
-}, 5 );
+}
 
 // Fix directory name when updating from GitHub
 add_filter( 'upgrader_source_selection', function( $source, $remote_source, $upgrader, $extra ) {

@@ -49,7 +49,8 @@ class Spam_Slayer_5000 {
 		$this->define_integration_hooks();
 		$this->define_api_hooks();
 		$this->define_cron_hooks();
-		$this->init_github_updater();
+		// Disabled custom GitHub updater to prevent conflicts with Plugin Update Checker
+		// $this->init_github_updater();
 	}
 
 	/**
@@ -96,8 +97,8 @@ class Spam_Slayer_5000 {
 		require_once SPAM_SLAYER_5000_PATH . 'includes/class-cache.php';
 		require_once SPAM_SLAYER_5000_PATH . 'includes/class-logger.php';
 		
-		// GitHub Updater
-		require_once SPAM_SLAYER_5000_PATH . 'includes/class-github-updater.php';
+		// GitHub Updater - Disabled to prevent conflicts with Plugin Update Checker
+		// require_once SPAM_SLAYER_5000_PATH . 'includes/class-github-updater.php';
 
 		$this->loader = new Spam_Slayer_5000_Loader();
 	}
