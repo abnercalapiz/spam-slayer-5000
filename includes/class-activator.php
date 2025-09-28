@@ -166,11 +166,30 @@ class Spam_Slayer_5000_Activator {
 			INDEX idx_is_active (is_active)
 		) $charset_collate;";
 
+		// Blocklist table
+		$blocklist_table = defined( 'SPAM_SLAYER_5000_BLOCKLIST_TABLE' ) 
+			? SPAM_SLAYER_5000_BLOCKLIST_TABLE 
+			: $wpdb->prefix . 'ss5k_blocklist';
+		$sql_blocklist = "CREATE TABLE IF NOT EXISTS $blocklist_table (
+			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			type enum('email','ip') NOT NULL,
+			value varchar(255) NOT NULL,
+			reason text DEFAULT NULL,
+			added_by bigint(20) UNSIGNED NOT NULL,
+			is_active tinyint(1) DEFAULT 1,
+			created_at datetime DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			UNIQUE KEY idx_type_value (type, value),
+			INDEX idx_is_active (is_active),
+			INDEX idx_type (type)
+		) $charset_collate;";
+
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		$results = array();
 		$results[] = dbDelta( $sql_submissions );
 		$results[] = dbDelta( $sql_api_logs );
 		$results[] = dbDelta( $sql_whitelist );
+		$results[] = dbDelta( $sql_blocklist );
 
 		// Check for errors
 		global $wpdb;

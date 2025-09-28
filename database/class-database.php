@@ -424,6 +424,119 @@ class Spam_Slayer_5000_Database {
 	}
 
 	/**
+	 * Add entry to blocklist.
+	 *
+	 * @since    1.1.0
+	 * @param    string    $type     Type of entry (email or ip).
+	 * @param    string    $value    The email or IP address.
+	 * @param    string    $reason   Optional reason for blocking.
+	 * @return   int|false           Insert ID or false on failure.
+	 */
+	public function add_to_blocklist( $type, $value, $reason = '' ) {
+		global $wpdb;
+
+		$table_name = self::get_table_name( 'blocklist' );
+		
+		// Check if already exists
+		$exists = $wpdb->get_var( $wpdb->prepare(
+			"SELECT id FROM $table_name WHERE type = %s AND value = %s",
+			$type,
+			$value
+		) );
+
+		if ( $exists ) {
+			return false;
+		}
+
+		$result = $wpdb->insert(
+			$table_name,
+			array(
+				'type' => $type,
+				'value' => $value,
+				'reason' => $reason,
+				'added_by' => get_current_user_id(),
+				'is_active' => 1,
+			),
+			array( '%s', '%s', '%s', '%d', '%d' )
+		);
+
+		return $result !== false ? $wpdb->insert_id : false;
+	}
+
+	/**
+	 * Check if email is blocked.
+	 *
+	 * @since    1.1.0
+	 * @param    string    $email    Email address to check.
+	 * @return   bool                 True if blocked, false otherwise.
+	 */
+	public function is_email_blocked( $email ) {
+		global $wpdb;
+
+		if ( ! is_email( $email ) ) {
+			return false;
+		}
+
+		$table_name = self::get_table_name( 'blocklist' );
+		
+		$is_blocked = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*) FROM $table_name 
+			WHERE type = 'email' AND value = %s AND is_active = 1",
+			$email
+		) );
+
+		return (bool) $is_blocked;
+	}
+
+	/**
+	 * Check if IP is blocked.
+	 *
+	 * @since    1.1.0
+	 * @param    string    $ip    IP address to check.
+	 * @return   bool              True if blocked, false otherwise.
+	 */
+	public function is_ip_blocked( $ip ) {
+		global $wpdb;
+
+		if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			return false;
+		}
+
+		$table_name = self::get_table_name( 'blocklist' );
+		
+		$is_blocked = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*) FROM $table_name 
+			WHERE type = 'ip' AND value = %s AND is_active = 1",
+			$ip
+		) );
+
+		return (bool) $is_blocked;
+	}
+
+	/**
+	 * Remove from blocklist.
+	 *
+	 * @since    1.1.0
+	 * @param    int    $id    Blocklist entry ID.
+	 * @return   bool          Success or failure.
+	 */
+	public function remove_from_blocklist( $id ) {
+		global $wpdb;
+
+		$table_name = self::get_table_name( 'blocklist' );
+		
+		$result = $wpdb->update(
+			$table_name,
+			array( 'is_active' => 0 ),
+			array( 'id' => $id ),
+			array( '%d' ),
+			array( '%d' )
+		);
+
+		return $result !== false;
+	}
+
+	/**
 	 * Get table name with proper prefix.
 	 *
 	 * @since    1.0.0
@@ -448,6 +561,11 @@ class Spam_Slayer_5000_Database {
 				return defined( 'SPAM_SLAYER_5000_WHITELIST_TABLE' ) 
 					? SPAM_SLAYER_5000_WHITELIST_TABLE 
 					: $wpdb->prefix . 'ss5k_whitelist';
+				
+			case 'blocklist':
+				return defined( 'SPAM_SLAYER_5000_BLOCKLIST_TABLE' ) 
+					? SPAM_SLAYER_5000_BLOCKLIST_TABLE 
+					: $wpdb->prefix . 'ss5k_blocklist';
 				
 			default:
 				return $wpdb->prefix . 'ss5k_' . $table;

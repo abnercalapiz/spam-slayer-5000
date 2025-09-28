@@ -483,6 +483,34 @@ class Spam_Slayer_5000_Admin_Ajax {
 	}
 
 	/**
+	 * Remove from blocklist.
+	 *
+	 * @since    1.1.0
+	 */
+	public function remove_from_blocklist() {
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
+		
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( -1 );
+		}
+		
+		$id = absint( $_POST['id'] ?? 0 );
+		
+		if ( ! $id ) {
+			wp_send_json_error( __( 'Invalid ID', 'spam-slayer-5000' ) );
+		}
+		
+		$database = new Spam_Slayer_5000_Database();
+		$result = $database->remove_from_blocklist( $id );
+		
+		if ( $result ) {
+			wp_send_json_success();
+		} else {
+			wp_send_json_error( __( 'Failed to remove from blocklist', 'spam-slayer-5000' ) );
+		}
+	}
+
+	/**
 	 * Clear logs.
 	 *
 	 * @since    1.0.0

@@ -95,6 +95,35 @@
 			} );
 		} );
 		
+		// Handle blocklist actions
+		$( '.ss5k-remove-blocklist' ).on( 'click', function( e ) {
+			e.preventDefault();
+			
+			if ( ! confirm( spam_slayer_5000_admin.strings.confirm_remove ) ) {
+				return;
+			}
+			
+			var $link = $( this );
+			var id = $link.data( 'id' );
+			
+			$.ajax( {
+				url: spam_slayer_5000_admin.ajax_url,
+				type: 'POST',
+				data: {
+					action: 'ss5k_remove_from_blocklist',
+					id: id,
+					nonce: spam_slayer_5000_admin.nonce
+				},
+				success: function( response ) {
+					if ( response.success ) {
+						$link.closest( 'tr' ).fadeOut( function() {
+							$( this ).remove();
+						} );
+					}
+				}
+			} );
+		} );
+		
 		// Handle submission actions
 		$( document ).on( 'click', '.ss5k-action-btn', function( e ) {
 			e.preventDefault();

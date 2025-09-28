@@ -5,7 +5,7 @@
 Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection for your contact forms using AI providers including OpenAI and Claude (Anthropic).
 
 **Author:** [Jezweb](https://www.jezweb.com.au/)  
-**Version:** 1.0.9  
+**Version:** 1.1.0  
 **Requires WordPress:** 5.8 or higher  
 **Requires PHP:** 7.4 or higher  
 **License:** GPL-2.0+  
@@ -37,6 +37,7 @@ Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection fo
 
 ### ⚙️ Advanced Features
 - **Email Whitelist**: Automatically approve trusted emails/domains
+- **IP/Email Blocklist**: Instantly block known spammers without API calls
 - **Response Caching**: Reduce API costs by caching similar submissions
 - **Bulk Actions**: Approve, mark as spam, or whitelist multiple submissions
 - **Cost Tracking**: Monitor API usage and expenses
@@ -216,6 +217,17 @@ Starting with version 1.0.1, Spam Slayer 5000 supports automatic updates directl
 - No configuration required - updates work automatically
 
 ## Changelog
+
+### Version 1.1.0 - 2025-09-28
+- **NEW FEATURE**: Added Blocklist functionality for automatic spam marking
+- Added ability to block specific email addresses
+- Added ability to block specific IP addresses
+- Blocklist entries automatically mark submissions as spam (100% spam score)
+- New "Blocklist" menu item in admin panel with tabbed interface
+- Blocklist checks occur before whitelist and AI validation (saves API costs)
+- Database table `wp_ss5k_blocklist` created for storing blocked entries
+- AJAX-powered interface for adding and removing blocklist entries
+- Blocklist takes precedence over whitelist for security
 
 ### Version 1.0.9 - 2025-09-28
 - Added release creation script for easier GitHub releases

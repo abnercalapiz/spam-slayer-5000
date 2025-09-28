@@ -163,6 +163,16 @@ class Spam_Slayer_5000_Admin {
 			array( $this, 'display_whitelist_page' )
 		);
 
+		// Blocklist submenu
+		add_submenu_page(
+			'spam-slayer-5000',
+			__( 'Blocklist', 'spam-slayer-5000' ),
+			__( 'Blocklist', 'spam-slayer-5000' ),
+			'manage_options',
+			'spam-slayer-5000-blocklist',
+			array( $this, 'display_blocklist_page' )
+		);
+
 		// Settings submenu
 		add_submenu_page(
 			'spam-slayer-5000',
@@ -248,6 +258,15 @@ class Spam_Slayer_5000_Admin {
 	 */
 	public function display_whitelist_page() {
 		require_once SPAM_SLAYER_5000_PATH . 'admin/partials/whitelist-display.php';
+	}
+
+	/**
+	 * Display blocklist page.
+	 *
+	 * @since    1.1.0
+	 */
+	public function display_blocklist_page() {
+		require_once SPAM_SLAYER_5000_PATH . 'admin/partials/blocklist-display.php';
 	}
 
 	/**

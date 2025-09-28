@@ -20,6 +20,7 @@ class Spam_Slayer_5000_Validator {
 	public static function validate_submission( $submission_data, $options = array() ) {
 		$defaults = array(
 			'check_whitelist' => true,
+			'check_blocklist' => true,
 			'use_cache' => true,
 			'provider' => null,
 			'threshold' => null,
@@ -27,19 +28,44 @@ class Spam_Slayer_5000_Validator {
 
 		$options = wp_parse_args( $options, $defaults );
 
-		// Check whitelist first
+		$database = new Spam_Slayer_5000_Database();
+		$email = self::extract_email( $submission_data );
+		$ip_address = $database->get_user_ip();
+
+		// Check blocklist first - blocklist takes precedence over everything
+		if ( $options['check_blocklist'] ) {
+			// Check if email is blocked
+			if ( ! empty( $email ) && $database->is_email_blocked( $email ) ) {
+				return array(
+					'is_spam' => true,
+					'spam_score' => 100,
+					'reason' => 'Email is in blocklist',
+					'status' => 'spam',
+					'blocked_by' => 'blocklist_email',
+				);
+			}
+
+			// Check if IP is blocked
+			if ( ! empty( $ip_address ) && $database->is_ip_blocked( $ip_address ) ) {
+				return array(
+					'is_spam' => true,
+					'spam_score' => 100,
+					'reason' => 'IP address is in blocklist',
+					'status' => 'spam',
+					'blocked_by' => 'blocklist_ip',
+				);
+			}
+		}
+
+		// Check whitelist second
 		if ( $options['check_whitelist'] ) {
-			$email = self::extract_email( $submission_data );
-			if ( ! empty( $email ) ) {
-				$database = new Spam_Slayer_5000_Database();
-				if ( $database->is_whitelisted( $email ) ) {
-					return array(
-						'is_spam' => false,
-						'spam_score' => 0,
-						'reason' => 'Whitelisted email',
-						'status' => 'whitelist',
-					);
-				}
+			if ( ! empty( $email ) && $database->is_whitelisted( $email ) ) {
+				return array(
+					'is_spam' => false,
+					'spam_score' => 0,
+					'reason' => 'Whitelisted email',
+					'status' => 'whitelist',
+				);
 			}
 		}
 
