@@ -93,6 +93,7 @@ class Spam_Slayer_5000_Database {
 		global $wpdb;
 
 		$defaults = array(
+			'id' => 0,
 			'status' => '',
 			'form_type' => '',
 			'form_id' => '',
@@ -109,6 +110,11 @@ class Spam_Slayer_5000_Database {
 
 		$where_clauses = array( '1=1' );
 		$where_values = array();
+
+		if ( ! empty( $args['id'] ) ) {
+			$where_clauses[] = 'id = %d';
+			$where_values[] = $args['id'];
+		}
 
 		if ( ! empty( $args['status'] ) ) {
 			$where_clauses[] = 'status = %s';
@@ -568,6 +574,179 @@ class Spam_Slayer_5000_Database {
 		);
 
 		return $result !== false;
+	}
+
+	/**
+	 * Check for duplicate submissions within a time window.
+	 *
+	 * @since    1.1.5
+	 * @param    array    $submission_data    Submission data to check.
+	 * @param    int      $time_window       Time window in seconds (default: 300 - 5 minutes).
+	 * @return   array|false                 Array with duplicate info or false if no duplicates.
+	 */
+	public function check_duplicate_submission( $submission_data, $time_window = 300 ) {
+		global $wpdb;
+
+		// Extract key fields for duplicate checking
+		$email = '';
+		$name = '';
+		$phone = '';
+		$message = '';
+
+		foreach ( $submission_data as $key => $value ) {
+			if ( is_string( $value ) ) {
+				$key_lower = strtolower( $key );
+				
+				// Extract email
+				if ( stripos( $key_lower, 'email' ) !== false || stripos( $key_lower, 'e-mail' ) !== false ) {
+					$email = sanitize_email( $value );
+				}
+				// Extract name
+				else if ( stripos( $key_lower, 'name' ) !== false && stripos( $key_lower, 'username' ) === false ) {
+					$name = sanitize_text_field( $value );
+				}
+				// Extract phone
+				else if ( stripos( $key_lower, 'phone' ) !== false || stripos( $key_lower, 'tel' ) !== false ) {
+					$phone = preg_replace( '/[^0-9+\-\s()]/', '', $value );
+				}
+				// Extract message
+				else if ( stripos( $key_lower, 'message' ) !== false || stripos( $key_lower, 'comment' ) !== false || stripos( $key_lower, 'content' ) !== false ) {
+					$message = sanitize_textarea_field( $value );
+				}
+			}
+		}
+
+		// Build query to check for duplicates
+		$table_name = self::get_table_name( 'submissions' );
+		$where_conditions = array();
+		$where_values = array();
+
+		// Check exact duplicates or similar patterns
+		if ( ! empty( $email ) ) {
+			$where_conditions[] = "submission_data LIKE %s";
+			$where_values[] = '%' . $wpdb->esc_like( $email ) . '%';
+		}
+
+		if ( ! empty( $name ) ) {
+			$where_conditions[] = "submission_data LIKE %s";
+			$where_values[] = '%' . $wpdb->esc_like( $name ) . '%';
+		}
+
+		if ( ! empty( $phone ) ) {
+			$where_conditions[] = "submission_data LIKE %s";
+			$where_values[] = '%' . $wpdb->esc_like( $phone ) . '%';
+		}
+
+		if ( ! empty( $message ) && strlen( $message ) > 20 ) {
+			// For messages, check for exact match or very similar content
+			$message_excerpt = substr( $message, 0, 50 );
+			$where_conditions[] = "submission_data LIKE %s";
+			$where_values[] = '%' . $wpdb->esc_like( $message_excerpt ) . '%';
+		}
+
+		if ( empty( $where_conditions ) ) {
+			return false;
+		}
+
+		// Add time window condition
+		$time_cutoff = gmdate( 'Y-m-d H:i:s', time() - $time_window );
+		
+		// Query for recent submissions with matching data
+		$sql = "SELECT id, submission_data, created_at, spam_score, status 
+				FROM `{$table_name}` 
+				WHERE created_at >= %s 
+				AND (" . implode( ' OR ', $where_conditions ) . ")
+				ORDER BY created_at DESC
+				LIMIT 10";
+
+		array_unshift( $where_values, $time_cutoff );
+		$query = $wpdb->prepare( $sql, $where_values );
+		$results = $wpdb->get_results( $query, ARRAY_A );
+
+		if ( empty( $results ) ) {
+			return false;
+		}
+
+		// Check for exact or near duplicates
+		$duplicate_count = 0;
+		$duplicate_info = array();
+
+		foreach ( $results as $result ) {
+			$existing_data = json_decode( $result['submission_data'], true );
+			if ( ! is_array( $existing_data ) ) {
+				continue;
+			}
+
+			$match_score = 0;
+			$matches = array();
+
+			// Check each field for matches
+			if ( ! empty( $email ) ) {
+				foreach ( $existing_data as $e_key => $e_value ) {
+					if ( is_string( $e_value ) && stripos( $e_value, $email ) !== false ) {
+						$match_score += 25;
+						$matches[] = 'email';
+						break;
+					}
+				}
+			}
+
+			if ( ! empty( $name ) ) {
+				foreach ( $existing_data as $e_key => $e_value ) {
+					if ( is_string( $e_value ) && stripos( $e_value, $name ) !== false ) {
+						$match_score += 20;
+						$matches[] = 'name';
+						break;
+					}
+				}
+			}
+
+			if ( ! empty( $phone ) ) {
+				foreach ( $existing_data as $e_key => $e_value ) {
+					if ( is_string( $e_value ) && stripos( $e_value, $phone ) !== false ) {
+						$match_score += 20;
+						$matches[] = 'phone';
+						break;
+					}
+				}
+			}
+
+			if ( ! empty( $message ) ) {
+				foreach ( $existing_data as $e_key => $e_value ) {
+					if ( is_string( $e_value ) ) {
+						similar_text( $message, $e_value, $similarity );
+						if ( $similarity > 80 ) {
+							$match_score += 35;
+							$matches[] = 'message';
+							break;
+						}
+					}
+				}
+			}
+
+			// If high match score, consider it a duplicate
+			if ( $match_score >= 60 ) {
+				$duplicate_count++;
+				$duplicate_info[] = array(
+					'id' => $result['id'],
+					'created_at' => $result['created_at'],
+					'match_score' => $match_score,
+					'matched_fields' => $matches,
+					'spam_score' => $result['spam_score'],
+					'status' => $result['status'],
+				);
+			}
+		}
+
+		if ( $duplicate_count > 0 ) {
+			return array(
+				'count' => $duplicate_count,
+				'duplicates' => $duplicate_info,
+				'time_window' => $time_window,
+			);
+		}
+
+		return false;
 	}
 
 	/**

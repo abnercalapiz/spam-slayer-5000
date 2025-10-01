@@ -336,6 +336,24 @@ $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'gen
 										min="60" max="86400" style="width: 100px;" />
 									<?php esc_html_e( 'seconds', 'spam-slayer-5000' ); ?>
 								</label>
+								<br><br>
+								<button type="button" class="button button-secondary" id="ss5k-clear-cache">
+									<?php esc_html_e( 'Clear Cache', 'spam-slayer-5000' ); ?>
+								</button>
+								<span id="ss5k-cache-status" style="margin-left: 10px;"></span>
+								<?php
+								$cache = new Spam_Slayer_5000_Cache();
+								$stats = $cache->get_stats();
+								if ( $stats['entries'] > 0 ) {
+									echo '<p class="description" style="margin-top: 5px;">';
+									/* translators: 1: Number of cache entries, 2: Cache size */
+									printf( esc_html__( 'Currently %1$d cached entries using %2$s', 'spam-slayer-5000' ), 
+										$stats['entries'], 
+										$stats['size_formatted'] 
+									);
+									echo '</p>';
+								}
+								?>
 							</td>
 						</tr>
 						

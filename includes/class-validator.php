@@ -32,6 +32,31 @@ class Spam_Slayer_5000_Validator {
 		$email = self::extract_email( $submission_data );
 		$ip_address = $database->get_user_ip();
 
+		// Check for duplicate submissions first (before blocklist)
+		// Use a shorter time window (60 seconds) to avoid flagging legitimate resubmissions
+		$duplicate_check = $database->check_duplicate_submission( $submission_data, 60 );
+		if ( $duplicate_check !== false && $duplicate_check['count'] > 0 ) {
+			// If there are many duplicates in a very short time, it's likely spam
+			if ( $duplicate_check['count'] >= 5 ) {
+				return array(
+					'is_spam' => true,
+					'spam_score' => 95,
+					'reason' => sprintf( 'Duplicate submission detected (%d similar submissions in %d seconds)', 
+						$duplicate_check['count'], 
+						$duplicate_check['time_window'] 
+					),
+					'status' => 'spam',
+					'duplicate_info' => $duplicate_check,
+				);
+			}
+			// For fewer duplicates, only add a small penalty
+			else if ( $duplicate_check['count'] >= 3 ) {
+				// We'll add this to the spam score later in the validation
+				$options['duplicate_penalty'] = 20;
+				$options['duplicate_info'] = $duplicate_check;
+			}
+		}
+
 		// Check blocklist first - blocklist takes precedence over everything
 		if ( $options['check_blocklist'] ) {
 			// Check if email is blocked
@@ -100,6 +125,23 @@ class Spam_Slayer_5000_Validator {
 		// Validate with AI
 		$result = $provider->analyze( $submission_data );
 
+		// Apply duplicate penalty if exists
+		if ( isset( $options['duplicate_penalty'] ) && isset( $result['spam_score'] ) ) {
+			$original_score = $result['spam_score'];
+			$result['spam_score'] = min( 100, $result['spam_score'] + $options['duplicate_penalty'] );
+			$result['original_spam_score'] = $original_score;
+			$result['duplicate_info'] = $options['duplicate_info'];
+			
+			// Update reason to mention duplicates only if it significantly affected the score
+			if ( $options['duplicate_penalty'] >= 20 ) {
+				if ( ! empty( $result['reason'] ) ) {
+					$result['reason'] .= sprintf( '; Multiple similar submissions detected (+%d points)', $options['duplicate_penalty'] );
+				} else {
+					$result['reason'] = sprintf( 'Multiple similar submissions detected (%d similar submissions)', $options['duplicate_info']['count'] );
+				}
+			}
+		}
+
 		// Apply threshold
 		$threshold = $options['threshold'] !== null 
 			? $options['threshold'] 
@@ -151,6 +193,10 @@ class Spam_Slayer_5000_Validator {
 			'viagra', 'cialis', 'casino', 'poker', 'lottery',
 			'weight loss', 'diet pills', 'make money', 'work from home',
 			'click here', 'buy now', 'free trial', 'risk free',
+			'seo services', 'boost your', 'increase traffic', 'rank higher',
+			'guest post', 'link exchange', 'sponsored post', 'backlinks',
+			'digital marketing', 'web design services', 'grow your business',
+			'limited time offer', 'act now', 'don\'t miss out',
 		);
 
 		$content = implode( ' ', array_values( $submission_data ) );
@@ -181,6 +227,47 @@ class Spam_Slayer_5000_Validator {
 		if ( $caps_words > count( $words ) * 0.3 ) {
 			$spam_score += 15;
 			$reasons[] = 'Excessive capital letters';
+		}
+
+		// Check for generic greetings without context
+		$generic_patterns = array(
+			'/^(hi|hello|hey)\s*(there|admin|webmaster|team)?[\s\.,!]*$/i',
+			'/^(good\s*(morning|afternoon|evening|day))[\s\.,!]*$/i',
+			'/^(greetings|dear\s*(sir|madam|admin))[\s\.,!]*$/i',
+		);
+
+		$message_field = '';
+		foreach ( $submission_data as $key => $value ) {
+			if ( is_string( $value ) && ( 
+				stripos( $key, 'message' ) !== false || 
+				stripos( $key, 'comment' ) !== false ||
+				stripos( $key, 'content' ) !== false
+			) ) {
+				$message_field = trim( $value );
+				break;
+			}
+		}
+
+		if ( ! empty( $message_field ) ) {
+			// Check for generic greetings
+			$first_line = explode( "\n", $message_field )[0];
+			foreach ( $generic_patterns as $pattern ) {
+				if ( preg_match( $pattern, trim( $first_line ) ) ) {
+					$spam_score += 25;
+					$reasons[] = 'Generic greeting without context';
+					break;
+				}
+			}
+
+			// Check for very short vague messages
+			if ( strlen( $message_field ) < 50 && count( $words ) < 10 ) {
+				// Only penalize if it's a vague compliment without any context
+				if ( preg_match( '/(great|nice|good|love|like)\s*(website|site|content|blog|article)/i', $message_field ) &&
+					 ! preg_match( '/(test|testing|form test|contact test)/i', $message_field ) ) {
+					$spam_score += 30;
+					$reasons[] = 'Short vague compliment';
+				}
+			}
 		}
 
 		return array(

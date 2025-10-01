@@ -635,4 +635,28 @@ class Spam_Slayer_5000_Admin_Ajax {
 		echo wp_json_encode( $data, JSON_PRETTY_PRINT );
 		exit;
 	}
+
+	/**
+	 * Clear the spam detection cache.
+	 *
+	 * @since    1.1.5
+	 */
+	public function clear_cache() {
+		check_ajax_referer( 'ss5k_admin_nonce', 'nonce' );
+		
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( -1 );
+		}
+
+		$cache = new Spam_Slayer_5000_Cache();
+		$cache->flush();
+
+		// Get cache stats after clearing
+		$stats = $cache->get_stats();
+
+		wp_send_json_success( array(
+			'message' => __( 'Cache cleared successfully.', 'spam-slayer-5000' ),
+			'stats' => $stats
+		) );
+	}
 }

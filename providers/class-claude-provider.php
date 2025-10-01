@@ -441,25 +441,46 @@ class Spam_Slayer_5000_Claude_Provider implements Spam_Slayer_5000_Provider_Inte
 		}
 		
 		Spam indicators to check:
-		1. Generic/template messages ("I want to increase your traffic", "Great website")
+		1. Generic/template messages ("I want to increase your traffic", "Great website", "Nice article")
 		2. Excessive URLs or promotional content
-		3. SEO/marketing service offers
+		3. SEO/marketing service offers ("rank higher", "boost your SEO", "increase visibility")
 		4. Cryptocurrency/investment schemes
 		5. Adult content or inappropriate language
 		6. Gibberish text or random character strings
-		7. Suspicious email patterns (temporary emails, numeric sequences)
-		8. Form field misuse (URLs in name fields, keywords stuffing)
+		7. Suspicious email patterns (temporary emails, numeric sequences, fake domains)
+		8. Form field misuse (URLs in name fields, keywords stuffing, copy-pasted content)
 		9. Non-contextual or irrelevant content
 		10. Poor grammar combined with promotional intent
+		11. Link building requests ("guest post", "link exchange", "sponsored content")
+		12. Vague compliments without specifics ("love your site", "great content")
+		13. Name field containing business names or keywords instead of personal names
+		14. Phone numbers that are obviously fake (all same digits, sequential)
+		15. Messages that start with "Hi", "Hello" without context or specifics
+		16. Overly short messages with just links or promotional text
+		17. Messages mentioning improving website traffic, sales, or rankings
 		
 		Legitimate indicators:
-		- Specific questions or requests related to services
-		- Personal details and context
-		- Professional inquiries with clear intent
-		- Proper use of form fields
+		- Specific questions or requests related to actual services/products
+		- Personal details and relevant context
+		- Professional inquiries with clear intent and specific needs
+		- Proper use of form fields (real names, valid emails, contextual messages)
+		- References to specific content or pages on the website
+		- Clear business purpose without promotional language
 		
 		Be strict with obvious spam but careful not to flag legitimate business inquiries.
-		Score 70+ for likely spam, 90+ for definite spam.';
+		Score 70+ for likely spam, 90+ for definite spam.
+		
+		Pay special attention to:
+		- Messages that are too generic or could apply to any website
+		- Suspicious patterns in email/name/phone combinations
+		- Content that focuses on what they can do for the website rather than genuine inquiry
+		
+		DO NOT mark as spam if:
+		- The message references specific services, products, or pages on the site
+		- Contains specific questions about business operations
+		- Includes legitimate contact details with matching domain emails
+		- Message is clearly testing form functionality (contains "test" but with legitimate context)
+		- Has personal context or specific business needs';
 	}
 
 	/**

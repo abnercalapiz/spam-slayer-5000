@@ -161,7 +161,7 @@
 					type: 'POST',
 					data: {
 						action: 'ss5k_update_submission_status',
-						id: id,
+						submission_id: id,
 						status: action,
 						nonce: spam_slayer_5000_admin.nonce
 					},
@@ -307,6 +307,51 @@
 				$input.attr( 'type', 'password' );
 				$( this ).text( 'Show' );
 			}
+		} );
+		
+		// Clear cache button handler
+		$( '#ss5k-clear-cache' ).on( 'click', function( e ) {
+			e.preventDefault();
+			
+			var $button = $( this );
+			var $status = $( '#ss5k-cache-status' );
+			
+			$button.prop( 'disabled', true );
+			$status.html( '<span class="spinner is-active" style="float: none; margin: 0;"></span>' );
+			
+			$.ajax( {
+				url: ajaxurl,
+				type: 'POST',
+				data: {
+					action: 'ss5k_clear_cache',
+					nonce: spam_slayer_5000_admin.nonce
+				},
+				success: function( response ) {
+					if ( response.success ) {
+						$status.html( '<span style="color: green;">✓ ' + response.data.message + '</span>' );
+						
+						// Update cache stats if displayed
+						var $cacheStats = $button.closest( 'td' ).find( '.description' );
+						if ( $cacheStats.length > 0 && response.data.stats.entries === 0 ) {
+							$cacheStats.fadeOut();
+						}
+						
+						setTimeout( function() {
+							$status.fadeOut( function() {
+								$status.empty().show();
+							} );
+						}, 3000 );
+					} else {
+						$status.html( '<span style="color: red;">✗ ' + ( response.data || 'Error clearing cache' ) + '</span>' );
+					}
+				},
+				error: function() {
+					$status.html( '<span style="color: red;">✗ Error clearing cache</span>' );
+				},
+				complete: function() {
+					$button.prop( 'disabled', false );
+				}
+			} );
 		} );
 		
 	} );

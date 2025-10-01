@@ -147,6 +147,7 @@ class Spam_Slayer_5000 {
 		$this->loader->add_action( 'wp_ajax_ss5k_add_to_whitelist', $plugin_ajax, 'add_to_whitelist' );
 		$this->loader->add_action( 'wp_ajax_ss5k_remove_from_whitelist', $plugin_ajax, 'remove_from_whitelist' );
 		$this->loader->add_action( 'wp_ajax_ss5k_remove_from_blocklist', $plugin_ajax, 'remove_from_blocklist' );
+		$this->loader->add_action( 'wp_ajax_ss5k_clear_cache', $plugin_ajax, 'clear_cache' );
 	}
 
 	/**

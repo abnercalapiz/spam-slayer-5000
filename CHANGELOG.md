@@ -2,6 +2,72 @@
 
 All notable changes to Spam Slayer 5000 will be documented in this file.
 
+## [1.1.5] - 2025-01-24
+
+### 🚀 New Features
+- **Duplicate Detection System**: Added intelligent duplicate submission detection to catch repeated spam attempts
+  - Checks for matching name, email, phone, and message content
+  - Configurable time window (default: 60 seconds)
+  - Uses similarity scoring for near-duplicate detection
+- **Clear Cache Button**: Added cache management in admin settings
+  - Shows current cache statistics (entries and size)
+  - One-click cache clearing for testing
+  - Visual feedback with success/error messages
+
+### 🔧 Improvements
+- **Enhanced Spam Detection Accuracy**:
+  - Improved AI prompts with 17 specific spam indicators
+  - Better detection of generic greetings and vague compliments
+  - Added patterns for SEO/marketing offers and link building requests
+  - Smarter handling of legitimate test submissions
+- **Better Legitimate Email Handling**:
+  - AI now explicitly avoids flagging messages with specific business context
+  - Test submissions are less likely to be marked as spam
+  - Reduced false positives for genuine inquiries
+
+### 🐛 Bug Fixes
+- Fixed view modal showing incorrect submission details
+- Fixed modal content persistence between different submission views
+- Fixed JavaScript parameter mismatch in AJAX calls
+- Added support for ID filtering in database queries
+
+### 🔄 Technical Changes
+- Reduced duplicate detection sensitivity (3→5 submissions threshold)
+- Decreased duplicate penalty points (40→20)
+- Shortened duplicate check time window (300→60 seconds)
+- Added exception for test messages in rule-based validation
+
+## [1.1.4] - 2025-01-24
+
+### 🐛 Bug Fixes
+- Fixed SQL syntax errors in database operations
+- Improved query preparation for better security
+
+## [1.1.3] - 2025-01-24
+
+### 🐛 Bug Fixes
+- Fixed PHP fatal error in form validation
+
+## [1.1.2] - 2025-01-24
+
+### 🐛 Bug Fixes
+- Fixed blocklist functionality issues
+- Improved blocklist validation
+
+## [1.1.1] - 2025-01-24
+
+### 🐛 Bug Fixes
+- Fixed critical error in update checker
+
+## [1.1.0] - 2025-01-24
+
+### 🚀 New Features
+- **Blocklist Feature**: Added email and IP blocking functionality
+  - Block specific email addresses or domains
+  - Block IP addresses from submitting forms
+  - Manage blocklist from admin interface
+  - Import/export blocklist entries
+
 ## [1.0.3] - 2025-01-24
 
 ### 🧪 Test Release

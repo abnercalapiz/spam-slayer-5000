@@ -124,8 +124,8 @@ class Spam_Slayer_5000_Admin {
 	public function add_admin_menu() {
 		// Main menu
 		add_menu_page(
-			__( 'Spam Slayer 5000', 'spam-slayer-5000' ),
-			__( 'Spam Slayer 5000', 'spam-slayer-5000' ),
+			__( 'Spam Slayer', 'spam-slayer-5000' ),
+			__( 'Spam Slayer', 'spam-slayer-5000' ),
 			'manage_options',
 			'spam-slayer-5000',
 			array( $this, 'display_submissions_page' ),

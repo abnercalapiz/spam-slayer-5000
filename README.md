@@ -5,7 +5,7 @@
 Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection for your contact forms using AI providers including OpenAI and Claude (Anthropic).
 
 **Author:** [Jezweb](https://www.jezweb.com.au/)  
-**Version:** 1.1.4  
+**Version:** 1.1.5  
 **Requires WordPress:** 5.8 or higher  
 **Requires PHP:** 7.4 or higher  
 **License:** GPL-2.0+  
@@ -18,6 +18,7 @@ Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection fo
 - **Multiple Provider Support**: Choose from OpenAI or Claude (Anthropic)
 - **Smart Scoring System**: Configurable spam threshold with detailed scoring (0-100)
 - **Real-time Detection**: Instant spam analysis during form submission
+- **Duplicate Detection**: Intelligent system to catch repeated spam attempts (v1.1.5+)
 
 ### 🤖 Multi-AI Provider Support
 - **OpenAI**: Support for GPT models
@@ -39,6 +40,7 @@ Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection fo
 - **Email Whitelist**: Automatically approve trusted emails/domains
 - **IP/Email Blocklist**: Instantly block known spammers without API calls
 - **Response Caching**: Reduce API costs by caching similar submissions
+- **Cache Management**: Clear cache button for testing and troubleshooting (v1.1.5+)
 - **Bulk Actions**: Approve, mark as spam, or whitelist multiple submissions
 - **Cost Tracking**: Monitor API usage and expenses
 - **Daily Reports**: Optional email summaries of spam activity
@@ -217,6 +219,27 @@ Starting with version 1.0.1, Spam Slayer 5000 supports automatic updates directl
 - No configuration required - updates work automatically
 
 ## Changelog
+
+### Version 1.1.5 - 2025-01-24
+- **NEW**: Intelligent duplicate submission detection system
+  - Detects repeated spam attempts based on name, email, phone, and message
+  - Uses similarity scoring for near-duplicate detection
+  - Configurable time window (default: 60 seconds)
+- **NEW**: Cache management button in admin settings
+  - Clear cache with one click
+  - View cache statistics (entries and size)
+  - Helpful for testing and troubleshooting
+- **IMPROVED**: Enhanced spam detection accuracy
+  - AI prompts now include 17 specific spam indicators
+  - Better detection of generic greetings and vague compliments
+  - Smarter handling of legitimate test submissions
+- **FIXED**: View modal showing incorrect submission details
+- **FIXED**: Modal content persistence between different views
+- **FIXED**: JavaScript parameter mismatches in AJAX calls
+- **TECHNICAL**: Reduced false positives for legitimate inquiries
+  - Decreased duplicate detection sensitivity
+  - Added exceptions for test messages
+  - Improved AI instructions for better accuracy
 
 ### Version 1.1.4 - 2025-09-28
 - **Fixed SQL syntax error**: Resolved database error in analytics and daily reports
