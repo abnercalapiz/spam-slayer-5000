@@ -135,7 +135,8 @@
 			if ( action === 'view' ) {
 				// Handle view action
 				$( '#ss5k-view-modal' ).show();
-				$( '#ss5k-modal-body' ).html( '<p>Loading...</p>' );
+				// Clear any previous content and show loading message
+				$( '#ss5k-modal-body' ).empty().html( '<p>Loading...</p>' );
 				
 				$.ajax( {
 					url: spam_slayer_5000_admin.ajax_url,
@@ -203,12 +204,16 @@
 		// Modal close
 		$( '.ss5k-modal-close' ).on( 'click', function() {
 			$( '#ss5k-view-modal' ).hide();
+			// Clear modal content when closing
+			$( '#ss5k-modal-body' ).empty();
 		} );
 		
 		// Close modal on outside click
 		$( window ).on( 'click', function( e ) {
 			if ( $( e.target ).is( '#ss5k-view-modal' ) ) {
 				$( '#ss5k-view-modal' ).hide();
+				// Clear modal content when closing
+				$( '#ss5k-modal-body' ).empty();
 			}
 		} );
 		
