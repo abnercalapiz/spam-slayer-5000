@@ -71,9 +71,6 @@ class Spam_Slayer_5000_Elementor {
 		
 		// Apply validation
 		$this->apply_validation_result( $analysis, $ajax_handler, $form_settings );
-		
-		// Send notification if needed
-		$this->maybe_send_notification( $analysis, $submission_data, $form_settings );
 	}
 
 	/**
@@ -235,52 +232,5 @@ class Spam_Slayer_5000_Elementor {
 		return $database->insert_submission( $data );
 	}
 
-	/**
-	 * Maybe send notification email.
-	 *
-	 * @since    1.0.0
-	 * @param    array    $analysis           Analysis result.
-	 * @param    array    $submission_data    Submission data.
-	 * @param    array    $form_settings      Form settings.
-	 */
-	private function maybe_send_notification( $analysis, $submission_data, $form_settings ) {
-		if ( ! isset( $analysis['spam_score'] ) ) {
-			return;
-		}
-		
-		$threshold = get_option( 'spam_slayer_5000_notification_threshold', 90 );
-		
-		if ( $analysis['spam_score'] >= $threshold ) {
-			$this->send_notification( $analysis, $submission_data, $form_settings );
-		}
-	}
 
-	/**
-	 * Send notification email.
-	 *
-	 * @since    1.0.0
-	 * @param    array    $analysis           Analysis result.
-	 * @param    array    $submission_data    Submission data.
-	 * @param    array    $form_settings      Form settings.
-	 */
-	private function send_notification( $analysis, $submission_data, $form_settings ) {
-		$to = get_option( 'spam_slayer_5000_notification_email', get_option( 'admin_email' ) );
-		$form_name = isset( $form_settings['form_name'] ) ? $form_settings['form_name'] : __( 'Unknown Form', 'spam-slayer-5000' );
-		
-		$subject = sprintf(
-			__( '[Spam Slayer 5000] High spam score detected on form: %s', 'spam-slayer-5000' ),
-			$form_name
-		);
-		
-		$message = sprintf(
-			__( "A submission with a high spam score has been detected.\n\nForm: %s\nSpam Score: %d%%\nProvider: %s\n\nSubmission Data:\n%s\n\nView all submissions: %s", 'spam-slayer-5000' ),
-			$form_name,
-			$analysis['spam_score'],
-			isset( $analysis['provider'] ) ? $analysis['provider'] : 'Unknown',
-			print_r( $submission_data, true ),
-			admin_url( 'admin.php?page=spam-slayer-5000-submissions' )
-		);
-		
-		wp_mail( $to, $subject, $message );
-	}
 }

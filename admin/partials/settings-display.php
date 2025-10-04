@@ -284,39 +284,6 @@ $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'gen
 						
 						<tr>
 							<th scope="row">
-								<label for="notification_email">
-									<?php esc_html_e( 'Notification Email', 'spam-slayer-5000' ); ?>
-								</label>
-							</th>
-							<td>
-								<input type="email" id="notification_email" name="spam_slayer_5000_notification_email" 
-									value="<?php echo esc_attr( get_option( 'spam_slayer_5000_notification_email', get_option( 'admin_email' ) ) ); ?>" 
-									class="regular-text" />
-								<p class="description">
-									<?php esc_html_e( 'Email address for high spam score notifications.', 'spam-slayer-5000' ); ?>
-								</p>
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
-								<label for="notification_threshold">
-									<?php esc_html_e( 'Notification Threshold', 'spam-slayer-5000' ); ?>
-								</label>
-							</th>
-							<td>
-								<input type="number" id="notification_threshold" name="spam_slayer_5000_notification_threshold" 
-									value="<?php echo esc_attr( get_option( 'spam_slayer_5000_notification_threshold', 90 ) ); ?>" 
-									min="0" max="100" />
-								<span>%</span>
-								<p class="description">
-									<?php esc_html_e( 'Send notification when spam score exceeds this threshold.', 'spam-slayer-5000' ); ?>
-								</p>
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
 								<?php esc_html_e( 'Caching', 'spam-slayer-5000' ); ?>
 							</th>
 							<td>
@@ -354,22 +321,6 @@ $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'gen
 									echo '</p>';
 								}
 								?>
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
-								<?php esc_html_e( 'Reports', 'spam-slayer-5000' ); ?>
-							</th>
-							<td>
-								<label>
-									<input type="checkbox" name="spam_slayer_5000_daily_report" value="1" 
-										<?php checked( get_option( 'spam_slayer_5000_daily_report', false ) ); ?> />
-									<?php esc_html_e( 'Send daily analytics report', 'spam-slayer-5000' ); ?>
-								</label>
-								<p class="description">
-									<?php esc_html_e( 'Receive a daily email with spam filtering statistics.', 'spam-slayer-5000' ); ?>
-								</p>
 							</td>
 						</tr>
 					</table>

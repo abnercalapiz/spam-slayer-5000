@@ -137,59 +137,6 @@ class Spam_Slayer_5000_Admin_Analytics {
 	}
 
 	/**
-	 * Generate daily report.
-	 *
-	 * @since    1.0.0
-	 * @return   string    HTML report.
-	 */
-	public function generate_daily_report() {
-		$data = $this->get_analytics_data( 'day' );
-		
-		ob_start();
-		?>
-		<h2><?php esc_html_e( 'Spam Slayer 5000 Daily Report', 'spam-slayer-5000' ); ?></h2>
-		<p><?php echo esc_html( date_i18n( get_option( 'date_format' ) ) ); ?></p>
-		
-		<h3><?php esc_html_e( 'Summary', 'spam-slayer-5000' ); ?></h3>
-		<ul>
-			<li><?php printf( __( 'Total Submissions: %d', 'spam-slayer-5000' ), $data['summary']['total_submissions'] ); ?></li>
-			<li><?php printf( __( 'Spam Blocked: %d (%.1f%%)', 'spam-slayer-5000' ), $data['summary']['spam_submissions'], $data['summary']['spam_rate'] ); ?></li>
-			<li><?php printf( __( 'Approved: %d', 'spam-slayer-5000' ), $data['summary']['approved_submissions'] ); ?></li>
-			<li><?php printf( __( 'API Calls: %d', 'spam-slayer-5000' ), $data['summary']['total_api_calls'] ); ?></li>
-			<li><?php printf( __( 'Total Cost: $%.4f', 'spam-slayer-5000' ), $data['summary']['total_cost'] ); ?></li>
-		</ul>
-		
-		<?php if ( ! empty( $data['providers'] ) ) : ?>
-			<h3><?php esc_html_e( 'Provider Performance', 'spam-slayer-5000' ); ?></h3>
-			<table style="border-collapse: collapse; width: 100%;">
-				<tr>
-					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Provider', 'spam-slayer-5000' ); ?></th>
-					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Calls', 'spam-slayer-5000' ); ?></th>
-					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Cost', 'spam-slayer-5000' ); ?></th>
-					<th style="border: 1px solid #ddd; padding: 8px;"><?php esc_html_e( 'Success Rate', 'spam-slayer-5000' ); ?></th>
-				</tr>
-				<?php foreach ( $data['providers'] as $provider => $stats ) : ?>
-					<tr>
-						<td style="border: 1px solid #ddd; padding: 8px;"><?php echo esc_html( ucfirst( $provider ) ); ?></td>
-						<td style="border: 1px solid #ddd; padding: 8px;"><?php echo esc_html( $stats['calls'] ); ?></td>
-						<td style="border: 1px solid #ddd; padding: 8px;">$<?php echo number_format( $stats['cost'], 4 ); ?></td>
-						<td style="border: 1px solid #ddd; padding: 8px;"><?php echo number_format( $stats['success_rate'], 1 ); ?>%</td>
-					</tr>
-				<?php endforeach; ?>
-			</table>
-		<?php endif; ?>
-		
-		<p style="margin-top: 20px;">
-			<a href="<?php echo admin_url( 'admin.php?page=spam-slayer-5000-analytics' ); ?>">
-				<?php esc_html_e( 'View Full Analytics', 'spam-slayer-5000' ); ?>
-			</a>
-		</p>
-		<?php
-		
-		return ob_get_clean();
-	}
-
-	/**
 	 * Get date from based on period.
 	 *
 	 * @since    1.0.0

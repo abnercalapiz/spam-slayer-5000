@@ -202,6 +202,19 @@ class Spam_Slayer_5000_Admin {
 	 * @since    1.0.0
 	 */
 	public function register_settings() {
+		// Clean up removed options (daily report feature removed in 1.1.6+)
+		if ( get_option( 'spam_slayer_5000_daily_report' ) !== false ) {
+			delete_option( 'spam_slayer_5000_daily_report' );
+		}
+		
+		// Clean up removed notification options (removed in 1.1.6+)
+		if ( get_option( 'spam_slayer_5000_notification_email' ) !== false ) {
+			delete_option( 'spam_slayer_5000_notification_email' );
+		}
+		if ( get_option( 'spam_slayer_5000_notification_threshold' ) !== false ) {
+			delete_option( 'spam_slayer_5000_notification_threshold' );
+		}
+		
 		// Add action to show success message after settings save
 		add_action( 'admin_notices', array( $this, 'settings_updated_notice' ) );
 		
@@ -226,11 +239,8 @@ class Spam_Slayer_5000_Admin {
 		// Advanced settings
 		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_retention_days' );
 		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_daily_budget_limit' );
-		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_notification_email' );
-		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_notification_threshold' );
 		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_cache_responses' );
 		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_cache_duration' );
-		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_daily_report' );
 	}
 
 	/**

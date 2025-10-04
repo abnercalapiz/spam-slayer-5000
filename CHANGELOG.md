@@ -2,6 +2,29 @@
 
 All notable changes to Spam Slayer 5000 will be documented in this file.
 
+## [1.1.6] - 2025-01-26
+
+### 🚨 Breaking Changes
+- **Removed Email Notifications**: The plugin no longer sends email notifications for high spam scores
+- **Removed Daily Reports**: Daily analytics email reports have been discontinued
+
+### 🔧 Changes
+- **Removed Features**:
+  - Daily analytics reports (email)
+  - Email notifications for spam submissions
+  - Notification email and threshold settings
+- **Default Settings**:
+  - Daily Budget Limit now defaults to 0 (unlimited) instead of $10.00
+- **Settings Page**:
+  - Removed "Reports" section from Advanced settings tab
+  - Removed "Notification Email" field from Advanced settings
+  - Removed "Notification Threshold" field from Advanced settings
+
+### 🧹 Code Cleanup
+- Removed all notification-related functionality from codebase
+- Removed daily report generation and sending methods
+- Added automatic cleanup of deprecated options on plugin update
+
 ## [1.1.5] - 2025-01-24
 
 ### 🚀 New Features

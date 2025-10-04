@@ -43,7 +43,6 @@ Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection fo
 - **Cache Management**: Clear cache button for testing and troubleshooting (v1.1.5+)
 - **Bulk Actions**: Approve, mark as spam, or whitelist multiple submissions
 - **Cost Tracking**: Monitor API usage and expenses
-- **Daily Reports**: Optional email summaries of spam activity
 - **Automatic Updates**: Update directly from GitHub releases (v1.0.1+)
 
 ### 🔒 Security & Privacy
@@ -219,6 +218,14 @@ Starting with version 1.0.1, Spam Slayer 5000 supports automatic updates directl
 - No configuration required - updates work automatically
 
 ## Changelog
+
+### Version 1.1.6 - 2025-01-26
+- **REMOVED**: Email notifications for high spam scores
+- **REMOVED**: Daily analytics reports feature
+- **REMOVED**: Notification email and threshold settings from Advanced tab
+- **CHANGED**: Daily Budget Limit now defaults to 0 (unlimited)
+- **IMPROVED**: Code cleanup and performance optimizations
+- **ADDED**: Automatic cleanup of deprecated options on update
 
 ### Version 1.1.5 - 2025-01-24
 - **NEW**: Intelligent duplicate submission detection system

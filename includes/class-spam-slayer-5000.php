@@ -265,26 +265,6 @@ class Spam_Slayer_5000 {
 		// Clear expired cache
 		$cache = new Spam_Slayer_5000_Cache();
 		$cache->cleanup();
-		
-		// Send daily report if enabled
-		if ( get_option( 'spam_slayer_5000_daily_report', false ) ) {
-			$this->send_daily_report();
-		}
-	}
-
-	/**
-	 * Send daily analytics report.
-	 *
-	 * @since    1.0.0
-	 */
-	private function send_daily_report() {
-		$analytics = new Spam_Slayer_5000_Admin_Analytics( $this->get_plugin_name(), $this->get_version() );
-		$report = $analytics->generate_daily_report();
-		
-		$to = get_option( 'spam_slayer_5000_notification_email', get_option( 'admin_email' ) );
-		$subject = __( 'Spam Slayer 5000 Daily Report', 'spam-slayer-5000' );
-		
-		wp_mail( $to, $subject, $report, array( 'Content-Type: text/html; charset=UTF-8' ) );
 	}
 	
 	/**

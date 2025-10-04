@@ -107,29 +107,8 @@ class Spam_Slayer_5000_Gravity_Forms {
 	 * @param    array    $form     Form data.
 	 */
 	public function after_submission( $entry, $form ) {
-		// Send notifications if needed
-		$submission_id = gform_get_meta( $entry['id'], 'ss5k_submission_id' );
-		
-		if ( ! $submission_id ) {
-			return;
-		}
-
-		$database = new Spam_Slayer_5000_Database();
-		$submissions = $database->get_submissions( array(
-			'id' => $submission_id,
-			'limit' => 1,
-		) );
-
-		if ( empty( $submissions ) ) {
-			return;
-		}
-
-		$submission = $submissions[0];
-		$threshold = get_option( 'spam_slayer_5000_notification_threshold', 90 );
-		
-		if ( $submission['spam_score'] >= $threshold ) {
-			$this->send_notification( $submission, $entry, $form );
-		}
+		// This method is kept for potential future use
+		// Currently no action needed after submission
 	}
 
 	/**
@@ -443,31 +422,6 @@ class Spam_Slayer_5000_Gravity_Forms {
 		return $submission_id;
 	}
 
-	/**
-	 * Send notification email.
-	 *
-	 * @since    1.0.0
-	 * @param    array    $submission    Submission data.
-	 * @param    array    $entry         Entry data.
-	 * @param    array    $form          Form data.
-	 */
-	private function send_notification( $submission, $entry, $form ) {
-		$to = get_option( 'spam_slayer_5000_notification_email', get_option( 'admin_email' ) );
-		$subject = sprintf(
-			__( '[Spam Slayer 5000] High spam score detected on form: %s', 'spam-slayer-5000' ),
-			$form['title']
-		);
-		
-		$message = sprintf(
-			__( "A submission with a high spam score has been detected.\n\nForm: %s\nSpam Score: %d%%\nProvider: %s\n\nView details: %s", 'spam-slayer-5000' ),
-			$form['title'],
-			$submission['spam_score'],
-			$submission['provider_used'],
-			admin_url( 'admin.php?page=spam-slayer-5000-submissions&id=' . $submission['id'] )
-		);
-		
-		wp_mail( $to, $subject, $message );
-	}
 
 	/**
 	 * Check if this is a save postback.

@@ -217,9 +217,7 @@ class Spam_Slayer_5000_Activator {
 			'enable_whitelist' => true,
 			'enable_logging' => true,
 			'retention_days' => 30,
-			'daily_budget_limit' => 10.00,
-			'notification_email' => get_option( 'admin_email' ),
-			'notification_threshold' => 90,
+			'daily_budget_limit' => 0,
 			'cache_responses' => true,
 			'cache_duration' => 3600,
 		);
