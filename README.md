@@ -219,6 +219,11 @@ Starting with version 1.0.1, Spam Slayer 5000 supports automatic updates directl
 
 ## Changelog
 
+### Version 1.1.7 - 2025-01-26
+- **FIXED**: Plugin update checker "Class 'Parsedown' not found" error
+- **FIXED**: GitHub API integration for automatic updates
+- **IMPROVED**: Vendor dependency loading in update checker
+
 ### Version 1.1.6 - 2025-01-26
 - **REMOVED**: Email notifications for high spam scores
 - **REMOVED**: Daily analytics reports feature

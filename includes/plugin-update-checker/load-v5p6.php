@@ -11,6 +11,9 @@ new Autoloader();
 require __DIR__ . '/Puc/v5p6/PucFactory.php';
 require __DIR__ . '/Puc/v5/PucFactory.php';
 
+//Load vendor dependencies
+require __DIR__ . '/vendor/Parsedown.php';
+
 //Register classes defined in this version with the factory.
 foreach (
 	array(

@@ -2,6 +2,16 @@
 
 All notable changes to Spam Slayer 5000 will be documented in this file.
 
+## [1.1.7] - 2025-01-26
+
+### 🐛 Bug Fixes
+- **Fixed Plugin Update Checker Error**: Fixed "Class 'Parsedown' not found" error that occurred during update checks
+- **Fixed GitHub API Integration**: Properly loads Parsedown dependency for changelog parsing
+
+### 🔧 Technical
+- Added vendor dependency loading to plugin update checker
+- Ensures Parsedown class is available for release note parsing
+
 ## [1.1.6] - 2025-01-26
 
 ### 🚨 Breaking Changes
