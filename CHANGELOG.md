@@ -2,6 +2,16 @@
 
 All notable changes to Spam Slayer 5000 will be documented in this file.
 
+## [1.1.9] - 2025-01-26
+
+### 🐛 Bug Fixes
+- **Fixed Plugin Activation Error**: Fixed missing Parsedown vendor files causing "Failed to open stream" error
+- **Fixed .gitignore**: Updated to properly include plugin update checker vendor directory
+
+### 🔧 Technical
+- Added plugin update checker vendor files to repository
+- Ensures all required files are included in the plugin package
+
 ## [1.1.8] - 2025-01-26
 
 ### 🚀 New Features
