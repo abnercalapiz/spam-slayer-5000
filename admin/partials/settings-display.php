@@ -347,7 +347,7 @@ $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'gen
 								</label>
 							</th>
 							<td>
-								<input type="text" id="sfs_abn_api_key" name="sfs_abn_api_key" 
+								<input type="password" id="sfs_abn_api_key" name="sfs_abn_api_key" 
 									value="<?php echo esc_attr( get_option( 'sfs_abn_api_key', '' ) ); ?>" 
 									class="regular-text" />
 								<p class="description">

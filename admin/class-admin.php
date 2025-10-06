@@ -245,7 +245,7 @@ class Spam_Slayer_5000_Admin {
 		// Australian validation settings
 		register_setting( 'spam_slayer_5000_advanced', 'sfs_enable_australian_validation' );
 		register_setting( 'spam_slayer_5000_advanced', 'sfs_abn_api_key', array(
-			'sanitize_callback' => 'sanitize_text_field',
+			'sanitize_callback' => array( $this, 'sanitize_abn_api_key' ),
 		) );
 	}
 
@@ -513,6 +513,25 @@ class Spam_Slayer_5000_Admin {
 		}
 		
 		return $sanitized;
+	}
+
+	/**
+	 * Sanitize ABN API key.
+	 *
+	 * @since    1.1.9
+	 * @param    string    $api_key    API key to sanitize.
+	 * @return   string                Encrypted API key.
+	 */
+	public function sanitize_abn_api_key( $api_key ) {
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-security.php';
+		
+		$api_key = sanitize_text_field( $api_key );
+		
+		if ( ! empty( $api_key ) ) {
+			return Spam_Slayer_5000_Security::encrypt( $api_key );
+		}
+		
+		return '';
 	}
 
 	/**

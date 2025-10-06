@@ -97,7 +97,6 @@ class Spam_Slayer_5000_Validator {
 
 		// Check Australian data validation
 		if ( $options['check_australian_data'] ) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-australian-validator.php';
 			$aus_validator = new Spam_Slayer_5000_Australian_Validator();
 			
 			$aus_validation = $aus_validator->validate_all( $submission_data );

@@ -94,6 +94,7 @@ class Spam_Slayer_5000 {
 		
 		// Utilities
 		require_once SPAM_SLAYER_5000_PATH . 'includes/class-validator.php';
+		require_once SPAM_SLAYER_5000_PATH . 'includes/class-australian-validator.php';
 		require_once SPAM_SLAYER_5000_PATH . 'includes/class-cache.php';
 		require_once SPAM_SLAYER_5000_PATH . 'includes/class-logger.php';
 		

@@ -277,12 +277,21 @@ class Spam_Slayer_5000_Database {
 		$date_format = '%Y-%m-%d';
 		$interval = '1 DAY';
 
+		// Whitelist allowed periods for security
+		$allowed_periods = array( 'day', 'week', 'month' );
+		if ( ! in_array( $period, $allowed_periods, true ) ) {
+			$period = 'day';
+		}
+		
 		switch ( $period ) {
 			case 'week':
 				$interval = '7 DAY';
 				break;
 			case 'month':
 				$interval = '30 DAY';
+				break;
+			default:
+				$interval = '1 DAY';
 				break;
 		}
 

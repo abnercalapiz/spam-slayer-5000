@@ -160,13 +160,27 @@ class Spam_Slayer_5000_Australian_Validator {
 			$result['errors'][] = 'ABN API key not configured';
 			return $result;
 		}
+		
+		// Decrypt the API key
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-security.php';
+		$decrypted_key = Spam_Slayer_5000_Security::decrypt( $api_key );
+		
+		// If decryption fails, try using the raw value (for backward compatibility)
+		if ( empty( $decrypted_key ) ) {
+			$decrypted_key = $api_key;
+		}
 
 		// Query ABN Lookup API
 		$api_url = 'https://abr.business.gov.au/json/AbnDetails.aspx';
 		$response = wp_remote_get( $api_url . '?' . http_build_query( array(
 			'abn' => $abn_clean,
-			'guid' => $api_key,
-		) ) );
+			'guid' => $decrypted_key,
+		) ), array(
+			'timeout' => 10,
+			'redirection' => 5,
+			'httpversion' => '1.1',
+			'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . get_bloginfo( 'url' ),
+		) );
 
 		if ( is_wp_error( $response ) ) {
 			$result['errors'][] = 'Failed to connect to ABN Lookup API';
@@ -297,14 +311,28 @@ class Spam_Slayer_5000_Australian_Validator {
 			$result['errors'][] = 'ABN API key not configured';
 			return $result;
 		}
+		
+		// Decrypt the API key
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-security.php';
+		$decrypted_key = Spam_Slayer_5000_Security::decrypt( $api_key );
+		
+		// If decryption fails, try using the raw value (for backward compatibility)
+		if ( empty( $decrypted_key ) ) {
+			$decrypted_key = $api_key;
+		}
 
 		// Search for matching business names
 		$api_url = 'https://abr.business.gov.au/json/MatchingNames.aspx';
 		$response = wp_remote_get( $api_url . '?' . http_build_query( array(
 			'name' => $company_name,
-			'guid' => $api_key,
+			'guid' => $decrypted_key,
 			'maxResults' => 10,
-		) ) );
+		) ), array(
+			'timeout' => 10,
+			'redirection' => 5,
+			'httpversion' => '1.1',
+			'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . get_bloginfo( 'url' ),
+		) );
 
 		if ( is_wp_error( $response ) ) {
 			$result['errors'][] = 'Failed to connect to ABN Lookup API';

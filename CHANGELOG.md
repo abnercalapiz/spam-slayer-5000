@@ -2,6 +2,49 @@
 
 All notable changes to Spam Slayer 5000 will be documented in this file.
 
+## [1.2.0] - 2025-01-26
+
+### 🚀 Major Release: Australian Business Validation
+
+This release introduces comprehensive Australian business validation features with enhanced security and critical bug fixes.
+
+### ✨ New Features
+- **Australian Business Validation Suite**:
+  - **Address Validation**: Validates Australian street addresses, suburbs, states, and postcodes with state/postcode matching
+  - **Phone Number Validation**: Checks Australian mobile (04xx), landline, and special numbers (13/1300/1800)
+  - **ABN Verification**: Live lookup of Australian Business Numbers with checksum validation
+  - **Company Name Verification**: Automatically validates business names against the Australian Business Register
+  - **Smart Fuzzy Matching**: Uses 85% similarity threshold for company name matching
+  - **No ABN Required**: Can validate company names even without ABN provided
+
+### 🔒 Security Enhancements
+- **ABN API Key Encryption**: API keys are now encrypted using AES-256-CBC encryption
+- **Password Field Protection**: ABN API key displayed as password field to prevent unauthorized viewing
+- **SQL Injection Prevention**: Added input validation for database queries
+- **API Timeout Protection**: Added 10-second timeout for ABN API calls to prevent hanging
+
+### 🐛 Critical Bug Fixes
+- **Fixed Plugin Loading**: Australian validator class now properly loads on plugin initialization
+- **Fixed Class Dependencies**: Removed redundant require_once statements
+- **Fixed API Key Decryption**: Proper handling of encrypted API keys with fallback support
+- **Fixed Database Security**: Added whitelist validation for API usage statistics queries
+
+### 🔧 Technical Improvements
+- **Better Error Handling**: Improved error messages for validation failures
+- **Performance Optimization**: Removed duplicate class loading
+- **Code Organization**: Centralized class loading in main plugin file
+- **API Reliability**: Added proper HTTP headers and timeout settings
+
+### ⚙️ Changes
+- **Removed Dashboard Widget**: The Spam Slayer 5000 overview widget has been removed from WordPress dashboard
+- **Settings Enhancement**: Added new settings in Advanced tab for Australian validation configuration
+
+### 📝 Configuration
+To enable Australian validation:
+1. Go to Spam Slayer 5000 → Settings → Advanced
+2. Check "Enable Australian address, phone, and ABN validation"
+3. Add your free ABN API key from [ABR Web Services](https://abr.business.gov.au/Tools/WebServices)
+
 ## [1.1.9] - 2025-01-26
 
 ### 🐛 Bug Fixes
