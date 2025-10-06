@@ -5,7 +5,7 @@
 Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection for your contact forms using AI providers including OpenAI and Claude (Anthropic).
 
 **Author:** [Jezweb](https://www.jezweb.com.au/)  
-**Version:** 1.1.5  
+**Version:** 1.1.8  
 **Requires WordPress:** 5.8 or higher  
 **Requires PHP:** 7.4 or higher  
 **License:** GPL-2.0+  
@@ -44,6 +44,14 @@ Spam Slayer 5000 is a WordPress plugin that provides advanced spam protection fo
 - **Bulk Actions**: Approve, mark as spam, or whitelist multiple submissions
 - **Cost Tracking**: Monitor API usage and expenses
 - **Automatic Updates**: Update directly from GitHub releases (v1.0.1+)
+
+### 🇦🇺 Australian Business Validation (v1.1.8+)
+- **Address Validation**: Validates Australian street addresses, suburbs, states, and postcodes
+- **Phone Number Validation**: Checks Australian mobile, landline, and special numbers (13/1300/1800)
+- **ABN Verification**: Live lookup of Australian Business Numbers with checksum validation
+- **Company Name Verification**: Validates business names against the Australian Business Register
+- **Smart Matching**: Uses fuzzy matching to handle variations in company names
+- **Fraud Prevention**: Blocks submissions with fake Australian business details
 
 ### 🔒 Security & Privacy
 - **Encrypted API Keys**: All API credentials are securely encrypted
@@ -136,6 +144,17 @@ View insights at **Spam Slayer 5000 → Analytics**:
 - Daily submission trends
 - Spam score distribution
 - Form-specific statistics
+
+### Australian Business Validation
+
+Configure at **Spam Slayer 5000 → Settings → Advanced**:
+1. Enable Australian validation toggle
+2. Add your free ABN Lookup API key from [ABR Web Services](https://abr.business.gov.au/Tools/WebServices)
+3. The system will automatically validate:
+   - Australian addresses with state/postcode matching
+   - Australian phone numbers (mobile, landline, special numbers)
+   - Company names against the Australian Business Register
+   - ABNs with live verification
 
 ## API Providers
 

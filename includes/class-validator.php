@@ -24,6 +24,7 @@ class Spam_Slayer_5000_Validator {
 			'use_cache' => true,
 			'provider' => null,
 			'threshold' => null,
+			'check_australian_data' => get_option( 'sfs_enable_australian_validation', false ),
 		);
 
 		$options = wp_parse_args( $options, $defaults );
@@ -90,6 +91,24 @@ class Spam_Slayer_5000_Validator {
 					'spam_score' => 0,
 					'reason' => 'Whitelisted email',
 					'status' => 'whitelist',
+				);
+			}
+		}
+
+		// Check Australian data validation
+		if ( $options['check_australian_data'] ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-australian-validator.php';
+			$aus_validator = new Spam_Slayer_5000_Australian_Validator();
+			
+			$aus_validation = $aus_validator->validate_all( $submission_data );
+			
+			if ( ! $aus_validation['valid'] ) {
+				return array(
+					'is_spam' => true,
+					'spam_score' => 100,
+					'reason' => 'Failed Australian data validation: ' . implode( ', ', $aus_validation['errors'] ),
+					'status' => 'invalid_data',
+					'validation_errors' => $aus_validation['errors'],
 				);
 			}
 		}

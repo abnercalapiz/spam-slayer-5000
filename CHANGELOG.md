@@ -2,6 +2,28 @@
 
 All notable changes to Spam Slayer 5000 will be documented in this file.
 
+## [1.1.8] - 2025-01-26
+
+### 🚀 New Features
+- **Australian Data Validation**: Added comprehensive validation for Australian businesses
+  - Validates Australian addresses (street, suburb, state, postcode)
+  - Validates Australian phone numbers (mobile, landline, and special numbers)
+  - Validates business ABN (Australian Business Number) with live lookup
+  - Validates company names against Australian Business Register
+- **Company Name Verification**: Automatically verifies business names exist in ABR when no ABN is provided
+- **Smart Fuzzy Matching**: Uses 85% similarity threshold for company name matching to handle variations
+
+### 🔧 Changes
+- **Removed Dashboard Widget**: The Spam Slayer 5000 overview widget has been removed from the WordPress dashboard
+- **Settings Enhancement**: Added new settings in Advanced tab for Australian validation features
+  - Toggle to enable/disable Australian validation
+  - Field for ABN Lookup API key configuration
+
+### 🛡️ Security Improvements
+- Added validation to prevent spam submissions using fake Australian business details
+- Blocks submissions with non-existent companies or inactive ABNs
+- Validates postcode matches the selected Australian state
+
 ## [1.1.7] - 2025-01-26
 
 ### 🐛 Bug Fixes

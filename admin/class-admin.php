@@ -241,6 +241,12 @@ class Spam_Slayer_5000_Admin {
 		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_daily_budget_limit' );
 		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_cache_responses' );
 		register_setting( 'spam_slayer_5000_advanced', 'spam_slayer_5000_cache_duration' );
+		
+		// Australian validation settings
+		register_setting( 'spam_slayer_5000_advanced', 'sfs_enable_australian_validation' );
+		register_setting( 'spam_slayer_5000_advanced', 'sfs_abn_api_key', array(
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
 	}
 
 	/**

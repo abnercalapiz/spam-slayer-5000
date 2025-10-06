@@ -323,6 +323,44 @@ $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'gen
 								?>
 							</td>
 						</tr>
+						
+						<tr>
+							<th scope="row">
+								<?php esc_html_e( 'Australian Data Validation', 'spam-slayer-5000' ); ?>
+							</th>
+							<td>
+								<label>
+									<input type="checkbox" name="sfs_enable_australian_validation" 
+										value="1" <?php checked( get_option( 'sfs_enable_australian_validation', false ) ); ?> />
+									<?php esc_html_e( 'Enable Australian address, phone, and ABN validation', 'spam-slayer-5000' ); ?>
+								</label>
+								<p class="description">
+									<?php esc_html_e( 'Validates Australian addresses (street, suburb, state, postcode), phone numbers, and ABNs', 'spam-slayer-5000' ); ?>
+								</p>
+							</td>
+						</tr>
+						
+						<tr>
+							<th scope="row">
+								<label for="sfs_abn_api_key">
+									<?php esc_html_e( 'ABN Lookup API Key', 'spam-slayer-5000' ); ?>
+								</label>
+							</th>
+							<td>
+								<input type="text" id="sfs_abn_api_key" name="sfs_abn_api_key" 
+									value="<?php echo esc_attr( get_option( 'sfs_abn_api_key', '' ) ); ?>" 
+									class="regular-text" />
+								<p class="description">
+									<?php 
+									echo sprintf(
+										/* translators: %s: ABN API registration URL */
+										esc_html__( 'Get your free API key from %s', 'spam-slayer-5000' ),
+										'<a href="https://abr.business.gov.au/Tools/WebServices" target="_blank">ABR Web Services</a>'
+									);
+									?>
+								</p>
+							</td>
+						</tr>
 					</table>
 				</div>
 				<?php

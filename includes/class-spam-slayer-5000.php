@@ -126,8 +126,8 @@ class Spam_Slayer_5000 {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
 		
-		// Dashboard widgets
-		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin, 'add_dashboard_widget' );
+		// Dashboard widgets - Disabled as per request
+		// $this->loader->add_action( 'wp_dashboard_setup', $plugin_admin, 'add_dashboard_widget' );
 		
 		// Plugin action links
 		$this->loader->add_filter( 'plugin_action_links_' . SPAM_SLAYER_5000_BASENAME, $plugin_admin, 'add_action_links' );
