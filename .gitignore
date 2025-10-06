@@ -32,6 +32,8 @@ npm-debug.log
 # Composer
 vendor/
 composer.lock
+# Exception for plugin update checker vendor
+!includes/plugin-update-checker/vendor/
 
 # Build files
 *.zip
